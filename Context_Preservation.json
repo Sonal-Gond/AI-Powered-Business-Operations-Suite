@@ -1,0 +1,546 @@
+{
+  "name": "Context_Preservation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "each-detail-of-chat",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1488,
+        -512
+      ],
+      "id": "427bc62e-886b-4dd0-93e7-7b1939c0afc0",
+      "name": "Webhook",
+      "webhookId": "1ab5fb95-bbc7-4329-a4e4-46b3b3c742f2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "33e566c1-ca06-4e8d-afb1-9d7e4f87bc26",
+              "leftValue": "={{ $json['Email  '] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -976,
+        -432
+      ],
+      "id": "4e434bd5-d57f-4a0e-97e7-86dc26ca516f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "mode": "list",
+          "cachedResultName": "Lead Capture form (final_capstone)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1597501818,
+          "mode": "list",
+          "cachedResultName": "Context_Webchat",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1597501818"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email  ": "={{ $('Webhook').item.json.body['user email'] }}",
+            "Last_response_of_user": "={{ $('Webhook').item.json.body['Last user response'] }}",
+            "User_ID": "={{ $('Webhook').item.json.body.User_ID }}",
+            "Name": "={{ $('Webhook').item.json.body['User name'] }}",
+            "Conversation_stage": "={{ $('Webhook').item.json.body['conversation stage'] }}",
+            "Is_Complete": "={{ $('Webhook').item.json.body.Is_complete }}",
+            "Last_Seen": "="
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Email  ",
+              "displayName": "Email  ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "User_ID",
+              "displayName": "User_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Need",
+              "displayName": "Need",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Authority",
+              "displayName": "Authority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timeline",
+              "displayName": "Timeline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Channel",
+              "displayName": "Channel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last_response_of_user",
+              "displayName": "Last_response_of_user",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Conversation_stage",
+              "displayName": "Conversation_stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Is_Complete",
+              "displayName": "Is_Complete",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last_Seen",
+              "displayName": "Last_Seen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -512,
+        -320
+      ],
+      "id": "e743bd84-b13c-488f-a1ee-229d9a6f469e",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "usNDrYntbumBCLRa",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "mode": "list",
+          "cachedResultName": "Lead Capture form (final_capstone)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1597501818,
+          "mode": "list",
+          "cachedResultName": "Context_Webchat",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1597501818"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email  ": "={{ $('Webhook').item.json.body['user email'] }}",
+            "User_ID": "={{ $('Webhook').item.json.body.User_ID }}",
+            "Name": "={{ $('Webhook').item.json.body['User name'] }}",
+            "Phone": "",
+            "Need": "={{ $('Webhook').item.json.body.need }}",
+            "Budget": "={{ $('Webhook').item.json.body.budget }}",
+            "Authority": "={{ $('Webhook').item.json.body.authority }}",
+            "Timeline": "={{ $('Webhook').item.json.body.timeline }}",
+            "Last_response_of_user": "={{ $('Webhook').item.json.body['Last user response'] }}",
+            "Conversation_stage": "={{ $('Webhook').item.json.body['conversation stage'] }}",
+            "Is_Complete": "={{ $('Webhook').item.json.body.Is_complete }}",
+            "Last_Seen": "={{ $('Webhook').item.json.body.Last_seen }}",
+            "Last Date": "={{ $('Webhook').item.json.body.Last_Date }}"
+          },
+          "matchingColumns": [
+            "Email  "
+          ],
+          "schema": [
+            {
+              "id": "Email  ",
+              "displayName": "Email  ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "User_ID",
+              "displayName": "User_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Need",
+              "displayName": "Need",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Authority",
+              "displayName": "Authority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timeline",
+              "displayName": "Timeline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Channel",
+              "displayName": "Channel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last_response_of_user",
+              "displayName": "Last_response_of_user",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Conversation_stage",
+              "displayName": "Conversation_stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Is_Complete",
+              "displayName": "Is_Complete",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last_Seen",
+              "displayName": "Last_Seen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Date",
+              "displayName": "Last Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -512,
+        -640
+      ],
+      "id": "ca385087-12f0-470f-8173-4e0dd8e056b4",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "usNDrYntbumBCLRa",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Searching User exist or not \n-Searching row that whether user is exist or not if user exist then update existing row and If user does not exist then new user will appended"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1296,
+        -448
+      ],
+      "typeVersion": 1,
+      "id": "3ad7db5e-74b2-473c-8f35-2d4092d66c31",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "mode": "list",
+          "cachedResultName": "Lead Capture form (final_capstone)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1597501818,
+          "mode": "list",
+          "cachedResultName": "Context_Webchat",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1597501818"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Email  ",
+              "lookupValue": "={{ $json.body['user email'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1248,
+        -400
+      ],
+      "id": "648bac0a-e056-46dc-bdd8-79ee11e0fb53",
+      "name": "Searching User exist or not",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## If\n-Checks whether Email is exist or not \n-If exist then goto true and update existing row\n-if no then goes to false node and append new row\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1024,
+        -496
+      ],
+      "typeVersion": 1,
+      "id": "7fb68d44-371b-4716-814c-64a95fb9976c",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Searching User exist or not",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Searching User exist or not": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "957ccff6-fa17-454c-a6f7-cac5e22f0a54",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "K8aUp6IzRr_4DR0tywT6F",
+  "tags": []
+}
