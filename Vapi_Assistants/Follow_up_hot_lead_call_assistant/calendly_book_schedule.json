@@ -1,0 +1,49 @@
+{
+  "type": "google.calendar.event.create",
+  "function": {
+    "name": "calendly_book_schedule",
+    "description": "These tool book the appointment and store on google calendar",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  "messages": [
+    {
+      "type": "request-start",
+      "blocking": false
+    }
+  ],
+  "metadata": {
+    "calendarId": "YOUR_CALENDAR_ID"
+  },
+  "templateId": null,
+  "server": null,
+  "async": null,
+  "name": null,
+  "destinations": null,
+  "subType": null,
+  "displayWidthPx": null,
+  "displayHeightPx": null,
+  "displayNumber": null,
+  "knowledgeBases": null,
+  "url": null,
+  "method": null,
+  "headers": null,
+  "body": null,
+  "backoffPlan": null,
+  "timeoutSeconds": null,
+  "description": null,
+  "variableExtractionPlan": null,
+  "rejectionPlan": null,
+  "credentialId": null,
+  "beepDetectionEnabled": null,
+  "code": null,
+  "environmentVariables": null,
+  "parameters": null,
+  "encryptedPaths": null,
+  "sipInfoDtmfEnabled": null,
+  "verb": null,
+  "toolMessages": null
+}
