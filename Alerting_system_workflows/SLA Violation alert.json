@@ -58,7 +58,7 @@
         "select": "channel",
         "channelId": {
           "__rl": true,
-          "value": "C0B2M2M4692",
+          "value": "your-slack-channel-id",
           "mode": "id"
         },
         "text": "=\"🚨 SLA BREACHED \nWorkflow uptime dropped below 99.9%\n\nCurrent Uptime: {{$json.uptime}}%\n\nFailure Rate: {{$json.failureRate}}%\n\nSeverity: {{$json.severity}}\" ",
@@ -84,17 +84,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0",
+          "value": "your_system_health_sheet_id",
           "mode": "list",
           "cachedResultName": "Final_capstone(System_health)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_system_health_sheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_system_health_sheet_id/edit#gid=0"
         },
         "options": {}
       },
