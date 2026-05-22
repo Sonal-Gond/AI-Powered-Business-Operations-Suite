@@ -162,5 +162,13 @@ read_insights, pages_show_list, ads_management, ads_read, page_events, pages_rea
 - Open your event type → Click Share → Copy the booking link  
      https://calendly.com/your-username/your-event
 - Use this link in follow-up messages
+
+
+# Identify which wirkflow is of make.com and n8n
+**n8n workflows**
+- n8n workflows contains only .json extensions
+
+**make.com scenario**
+- Make.com workflows contains .blueprint.json at end of file_name
  
 
