@@ -1,0 +1,344 @@
+{
+  "name": "Cost analysis Report",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 12
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -976,
+        -192
+      ],
+      "id": "d251cd0a-5c7f-4d46-b020-79f3a1b2273b",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://eu1.make.com/api/v2/organizations/{organizationID}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Token Your_make.com_api_token"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -656,
+        -352
+      ],
+      "id": "f3f1c2f7-8c5e-4474-b65f-b4b53589eaa4",
+      "name": "Make.com Information"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://analytics-api.voiceflow.com/v2/query/usage",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "YOUR_Voiceflow_API_key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"data\": {\n    \"name\": \"credit_usage\",\n    \"filter\": {\n      \"projectID\": \"YOUR_Voiceflow_projectID\"\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -656,
+        -144
+      ],
+      "id": "ddcad8df-098b-49c9-bf20-62cdf3cd5a3c",
+      "name": "Voiceflow Analytics"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.vapi.ai/analytics",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_Vapi_API_Key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"queries\": [\n    {\n      \"table\": \"call\",\n      \"name\": \"Assistant Cost Analysis\",\n      \"timeRange\": {\n        \"start\": \"2026-04-23T00:00:00.000Z\",\n        \"end\": \"2026-05-07T23:59:59.999Z\"\n      },\n      \"groupBy\": [\n        \"assistantId\"\n      ],\n      \"operations\": [\n        {\n          \"operation\": \"count\",\n          \"column\": \"id\",\n          \"alias\": \"totalCalls\"\n        },\n        {\n          \"operation\": \"sum\",\n          \"column\": \"duration\",\n          \"alias\": \"totalDuration\"\n        },\n        {\n          \"operation\": \"avg\",\n          \"column\": \"duration\",\n          \"alias\": \"avgDuration\"\n        },\n        {\n          \"operation\": \"sum\",\n          \"column\": \"cost\",\n          \"alias\": \"totalCost\"\n        },\n        {\n          \"operation\": \"sum\",\n          \"column\": \"costBreakdown.llm\",\n          \"alias\": \"llmCost\"\n        },\n        {\n          \"operation\": \"sum\",\n          \"column\": \"costBreakdown.stt\",\n          \"alias\": \"sttCost\"\n        },\n        {\n          \"operation\": \"sum\",\n          \"column\": \"costBreakdown.tts\",\n          \"alias\": \"ttsCost\"\n        },\n        {\n          \"operation\": \"sum\",\n          \"column\": \"costBreakdown.transport\",\n          \"alias\": \"transportCost\"\n        },\n        {\n          \"operation\": \"sum\",\n          \"column\": \"costBreakdown.vapi\",\n          \"alias\": \"vapiCost\"\n        }\n      ]\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -640,
+        0
+      ],
+      "id": "c0e9c9af-9ae7-4b28-a38d-8493e93e27f2",
+      "name": "Vapi Analytics"
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -368,
+        -240
+      ],
+      "id": "d66ee299-0c32-466c-ac92-c2ff12506702",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "YOUR_slack_channel_id",
+          "mode": "id"
+        },
+        "text": "={{ $json.report }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        512,
+        -208
+      ],
+      "id": "d61267a3-5d60-4eef-8599-5f7a2466974f",
+      "name": "Send a message",
+      "webhookId": "68624083-5460-48d3-8865-38209f1bbbd9",
+      "credentials": {
+        "slackApi": {
+          "id": "ekJzRR6RASxiEuDX",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ==============================\n// GET RAW DATA FROM PREVIOUS NODES\n// ==============================\n\nconst makeData =\n  $('Make.com Information').first().json.organization;\n\nconst voiceflowData =\n  $('Voiceflow Analytics').first().json.result.items;\n\nconst vapiData =\n  $('Vapi Analytics').first().json.result;\n\nconst twilioData =\n  $('Twilio Analytics').first().json.usage_records;\n\n\n\n// ==============================\n// MAKE.COM ANALYSIS\n// ==============================\n\nconst makeReport = {\n  plan: makeData.productName,\n  operationsLimit: Number(makeData.license.operations || 0),\n  operationsUsed: Number(makeData.operations || 0),\n  operationsRemaining: Number(makeData.unusedOperations || 0),\n\n  creditsUsed:\n    Number(makeData.centicreditsConsumed || 0) / 100,\n\n  creditsRemaining:\n    Number(makeData.unusedCenticredits || 0) / 100,\n\n  transferUsedMB:\n    (\n      Number(makeData.transfer || 0) /\n      1024 /\n      1024\n    ).toFixed(2),\n\n  activeScenarios: makeData.activeScenarios,\n  activeApps: makeData.activeApps,\n\n  nextReset: makeData.nextReset\n};\n\n\n// ==============================\n// VOICEFLOW ANALYSIS\n// ==============================\n\nlet totalAI = 0;\nlet totalInteractions = 0;\n\nconst modelStats = {};\nconst interactionStats = {};\nconst dailyUsage = {};\n\nfor (const item of voiceflowData) {\n\n  const date = item.period.split(\"T\")[0];\n\n  // DAILY USAGE\n  if (!dailyUsage[date]) {\n    dailyUsage[date] = 0;\n  }\n\n  dailyUsage[date] += item.count;\n\n  // AI USAGE\n  if (\n    item.type === \"llm-input\" ||\n    item.type === \"llm-output\"\n  ) {\n\n    totalAI += item.count;\n\n    if (!modelStats[item.model]) {\n      modelStats[item.model] = {\n        input: 0,\n        output: 0\n      };\n    }\n\n    if (item.type === \"llm-input\") {\n      modelStats[item.model].input += item.count;\n    }\n\n    if (item.type === \"llm-output\") {\n      modelStats[item.model].output += item.count;\n    }\n  }\n\n  // INTERACTIONS\n  if (item.type === \"interaction\") {\n\n    totalInteractions += item.count;\n\n    if (!interactionStats[item.model]) {\n      interactionStats[item.model] = 0;\n    }\n\n    interactionStats[item.model] += item.count;\n  }\n}\n\n\n// ==============================\n// MOST USED MODEL\n// ==============================\n\nlet mostUsedModel = \"\";\nlet highestModelUsage = 0;\n\nfor (const model in modelStats) {\n\n  const total =\n    modelStats[model].input +\n    modelStats[model].output;\n\n  if (total > highestModelUsage) {\n    highestModelUsage = total;\n    mostUsedModel = model;\n  }\n}\n\n\n// ==============================\n// HIGHEST USAGE DAY\n// ==============================\n\nlet highestUsageDay = \"\";\nlet highestUsage = 0;\n\nfor (const day in dailyUsage) {\n\n  if (dailyUsage[day] > highestUsage) {\n    highestUsage = dailyUsage[day];\n    highestUsageDay = day;\n  }\n}\n\n\n// ==============================\n// FORMAT MODEL TABLE\n// ==============================\n\nconst aiBreakdown = [];\n\nfor (const model in modelStats) {\n\n  aiBreakdown.push({\n    model,\n    inputUsage: modelStats[model].input,\n    outputUsage: modelStats[model].output,\n    total:\n      modelStats[model].input +\n      modelStats[model].output\n  });\n}\n\n\n// ==============================\n// FORMAT INTERACTION TABLE\n// ==============================\n\nconst interactionBreakdown = [];\n\nfor (const source in interactionStats) {\n\n  interactionBreakdown.push({\n    source,\n    count: interactionStats[source]\n  });\n}\n\n\n// ==============================\n// FORMAT DAILY TREND\n// ==============================\n\nconst dailyTrend = [];\n\nfor (const day in dailyUsage) {\n\n  dailyTrend.push({\n    date: day,\n    totalUsage: dailyUsage[day]\n  });\n}\n\n\n// ==============================\n// VOICEFLOW FINAL REPORT\n// ==============================\n\nconst voiceflowReport = {\n  totalAIOperations: totalAI,\n  totalInteractions,\n  mostUsedModel,\n  highestUsageDay,\n  aiBreakdown,\n  interactionBreakdown,\n  dailyTrend,\n\n  notes: [\n    \"Counts represent usage events, not exact billing.\",\n    \"Voiceflow API does not expose exact USD costs.\",\n    \"AI usage estimated using llm-input and llm-output.\"\n  ]\n};\n\n\n// ==============================\n// VAPI ANALYSIS\n// ==============================\n\nlet totalCalls = 0;\nlet totalDuration = 0;\nlet totalCost = 0;\n\nlet llmCost = 0;\nlet sttCost = 0;\nlet ttsCost = 0;\nlet transportCost = 0;\nlet vapiCost = 0;\n\nconst assistantBreakdown = [];\n\nfor (const item of vapiData) {\n\n  totalCalls += Number(item.totalCalls || 0);\n\n  totalDuration += Number(item.totalDuration || 0);\n\n  totalCost += Number(item.totalCost || 0);\n\n  llmCost += Number(item.llmCost || 0);\n\n  sttCost += Number(item.sttCost || 0);\n\n  ttsCost += Number(item.ttsCost || 0);\n\n  transportCost += Number(item.transportCost || 0);\n\n  vapiCost += Number(item.vapiCost || 0);\n\n  assistantBreakdown.push({\n    assistantId: item.assistantId,\n    totalCalls: Number(item.totalCalls || 0),\n    totalDuration: Number(item.totalDuration || 0).toFixed(2),\n    avgDuration: Number(item.avgDuration || 0).toFixed(2),\n    totalCost: Number(item.totalCost || 0).toFixed(4)\n  });\n}\n\n\n// ==============================\n// VAPI FINAL REPORT\n// ==============================\n\nconst vapiReport = {\n\n  totalCalls,\n\n  totalDurationMinutes:\n    totalDuration.toFixed(2),\n\n  avgCallDuration:\n    totalCalls > 0\n      ? (totalDuration / totalCalls).toFixed(2)\n      : 0,\n\n  totalCost:\n    totalCost.toFixed(4),\n\n  costBreakdown: {\n    llmCost: llmCost.toFixed(4),\n    sttCost: sttCost.toFixed(4),\n    ttsCost: ttsCost.toFixed(4),\n    transportCost:\n      transportCost.toFixed(4),\n    vapiCost:\n      vapiCost.toFixed(4)\n  },\n\n  assistantBreakdown\n};\n\n\n// ==============================\n// TWILIO ANALYSIS\n// ==============================\n\nlet twilioTotalCost = 0;\nconst twilioCategoryBreakdown = [];\nconst twilioServiceGroups = {\n  sms: 0,\n  voice: 0,\n  whatsapp: 0,\n  wireless: 0,\n  video: 0,\n  other: 0\n};\n\nfor (const record of twilioData) {\n\n  const cost = Number(record.price || 0);\n\n  // Skip zero-cost records for the breakdown\n  if (cost === 0) continue;\n\n  twilioTotalCost += cost;\n\n  // Push to per-category breakdown\n  twilioCategoryBreakdown.push({\n    category: record.category,\n    description: record.description,\n    cost: cost.toFixed(4),\n    usage: record.usage,\n    usageUnit: record.usage_unit,\n    count: record.count,\n    countUnit: record.count_unit,\n    date: record.start_date\n  });\n\n  // Group into service buckets\n  const cat = record.category;\n\n  if (cat.startsWith(\"sms\")) {\n    twilioServiceGroups.sms += cost;\n  } else if (\n    cat.startsWith(\"calls\") ||\n    cat.startsWith(\"trunking\") ||\n    cat.startsWith(\"programmablevoice\")\n  ) {\n    twilioServiceGroups.voice += cost;\n  } else if (cat.startsWith(\"channels-whatsapp\")) {\n    twilioServiceGroups.whatsapp += cost;\n  } else if (cat.startsWith(\"wireless\")) {\n    twilioServiceGroups.wireless += cost;\n  } else if (\n    cat.startsWith(\"pv-\") ||\n    cat.startsWith(\"group-rooms\") ||\n    cat.startsWith(\"peer-to-peer\")\n  ) {\n    twilioServiceGroups.video += cost;\n  } else {\n    twilioServiceGroups.other += cost;\n  }\n}\n\n\n// ==============================\n// TWILIO FINAL REPORT\n// ==============================\n\nconst twilioReport = {\n\n  totalCost:\n    twilioTotalCost.toFixed(4),\n\n  currency: \"usd\",\n\n  // Only services that actually had cost\n  activeCategoryCount:\n    twilioCategoryBreakdown.length,\n\n  costByService: {\n    sms:       twilioServiceGroups.sms.toFixed(4),\n    voice:     twilioServiceGroups.voice.toFixed(4),\n    whatsapp:  twilioServiceGroups.whatsapp.toFixed(4),\n    wireless:  twilioServiceGroups.wireless.toFixed(4),\n    video:     twilioServiceGroups.video.toFixed(4),\n    other:     twilioServiceGroups.other.toFixed(4)\n  },\n\n  // Full line-item detail (only non-zero rows)\n  categoryBreakdown: twilioCategoryBreakdown,\n\n  notes: [\n    \"Prices pulled from Twilio Usage Records Daily endpoint.\",\n    \"Zero-cost categories are excluded from breakdown.\",\n    \"All costs in USD.\"\n  ]\n};\n\n\n// ==============================\n// FINAL EXECUTIVE SUMMARY\n// ==============================\n\nconst executiveSummary = {\n\n  make: {\n    operationsUsed:\n      makeReport.operationsUsed,\n\n    creditsUsed:\n      makeReport.creditsUsed\n  },\n\n  voiceflow: {\n    aiOperations:\n      voiceflowReport.totalAIOperations,\n\n    interactions:\n      voiceflowReport.totalInteractions\n  },\n\n  vapi: {\n    totalCalls:\n      vapiReport.totalCalls,\n\n    totalCost:\n      vapiReport.totalCost\n  },\n\n  // ✅ Added Twilio to executive summary\n  twilio: {\n    totalCost:\n      twilioReport.totalCost,\n\n    activeCategoryCount:\n      twilioReport.activeCategoryCount\n  }\n};\n\n\n// ==============================\n// RETURN FINAL STRUCTURED REPORT\n// ==============================\n\nreturn [\n  {\n    json: {\n      generatedAt:\n        new Date().toISOString(),\n\n      executiveSummary:\n        executiveSummary || {},\n\n      makeReport:\n        makeReport || {},\n\n      voiceflowReport:\n        voiceflowReport || {},\n\n      vapiReport:\n        vapiReport || {},\n\n      // ✅ New\n      twilioReport:\n        twilioReport || {}\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        -208
+      ],
+      "id": "93b722ad-777f-4710-8763-e080ead7287e",
+      "name": "Summary creation"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = items[0].json;\n\nconst report = `\n# 📊 Automated Cost Analysis Report\n\n📅 Generated At: ${data.generatedAt}\n\n---\n\n# 🧾 Executive Summary\n\n| Platform | Usage |\n|---|---|\n| Make.com Operations Used | ${data.executiveSummary.make.operationsUsed} |\n| Make.com Credits Used | ${data.executiveSummary.make.creditsUsed} |\n| Voiceflow AI Operations | ${data.executiveSummary.voiceflow.aiOperations} |\n| Voiceflow Interactions | ${data.executiveSummary.voiceflow.interactions} |\n| Vapi Total Calls | ${data.executiveSummary.vapi.totalCalls} |\n| Vapi Total Cost | $${data.executiveSummary.vapi.totalCost} |\n| Twilio Total Cost | $${data.executiveSummary.twilio.totalCost} |\n| Twilio Active Categories | ${data.executiveSummary.twilio.activeCategoryCount} |\n\n---\n\n# ⚙️ Make.com Usage\n\n| Metric | Value |\n|---|---|\n| Plan | ${data.makeReport.plan} |\n| Operations Remaining | ${data.makeReport.operationsRemaining} |\n| Credits Remaining | ${data.makeReport.creditsRemaining} |\n| Active Scenarios | ${data.makeReport.activeScenarios} |\n\n---\n\n# 🤖 Voiceflow Usage\n\n| Metric | Value |\n|---|---|\n| Most Used Model | ${data.voiceflowReport.mostUsedModel} |\n| Highest Usage Day | ${data.voiceflowReport.highestUsageDay} |\n| Total AI Operations | ${data.executiveSummary.voiceflow.aiOperations} |\n| Total Interactions | ${data.executiveSummary.voiceflow.interactions} |\n\n---\n\n# 📞 Vapi Call Analytics\n\n| Metric | Value |\n|---|---|\n| Total Calls | ${data.executiveSummary.vapi.totalCalls} |\n| Average Call Duration | ${data.vapiReport.avgCallDuration} mins |\n| Total Cost | $${data.executiveSummary.vapi.totalCost} |\n\n## 💰 Vapi Cost Breakdown\n\n| Cost Type | Amount |\n|---|---|\n| LLM Cost | $${data.vapiReport.costBreakdown.llmCost} |\n| STT Cost | $${data.vapiReport.costBreakdown.sttCost} |\n| TTS Cost | $${data.vapiReport.costBreakdown.ttsCost} |\n| Transport Cost | $${data.vapiReport.costBreakdown.transportCost} |\n| Vapi Platform Cost | $${data.vapiReport.costBreakdown.vapiCost} |\n\n---\n\n# 📱 Twilio Usage\n\n| Metric | Value |\n|---|---|\n| Total Cost | $${data.twilioReport.totalCost} |\n| Currency | ${data.twilioReport.currency.toUpperCase()} |\n| Active Billed Categories | ${data.twilioReport.activeCategoryCount} |\n\n## 💰 Twilio Cost by Service\n\n| Service | Cost |\n|---|---|\n| SMS | $${data.twilioReport.costByService.sms} |\n| Voice | $${data.twilioReport.costByService.voice} |\n| WhatsApp | $${data.twilioReport.costByService.whatsapp} |\n| Wireless | $${data.twilioReport.costByService.wireless} |\n| Video | $${data.twilioReport.costByService.video} |\n| Other | $${data.twilioReport.costByService.other} |\n\n${data.twilioReport.categoryBreakdown.length > 0\n  ? `## 📋 Twilio Line Items\\n\\n| Category | Description | Cost | Usage |\\n|---|---|---|---|\\n` +\n    data.twilioReport.categoryBreakdown\n      .map(r => `| ${r.category} | ${r.description} | $${r.cost} | ${r.usage} ${r.usageUnit} |`)\n      .join(\"\\n\")\n  : \"## 📋 Twilio Line Items\\n\\nNo billable usage recorded for this period.\"\n}\n\n---\n\n# 📝 Notes\n\n- Voiceflow usage represents event counts, not direct billing.\n- Make.com credits are calculated from centicredits / 100.\n- n8n is self-hosted, therefore no platform billing cost.\n- Vapi costs are actual monetary usage values.\n- Twilio shows only categories with non-zero cost. All costs in USD.\n\n`;\n\nreturn [\n  {\n    json: {\n      report\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        256,
+        -208
+      ],
+      "id": "9a83aec8-b8c2-4132-914e-d9f6415c2455",
+      "name": "Structured format message"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.twilio.com/2010-04-01/Accounts/{{Twilio_Account_SID}}/Usage/Records/Daily.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -624,
+        144
+      ],
+      "id": "1a9c7d8b-8133-482e-b079-63c7a91d69a1",
+      "name": "Twilio Analytics",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "67u243m9t2dqzV05",
+          "name": "Twilio basic auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://n8n-domain/webhook/ROI-report",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $('Summary creation').first().json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        48,
+        -208
+      ],
+      "id": "8de88027-9a2b-450c-a4ff-7745cd6b51d3",
+      "name": "Cost-report sending for ROI"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Make.com Information",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Voiceflow Analytics",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Vapi Analytics",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Twilio Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Make.com Information": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Voiceflow Analytics": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Vapi Analytics": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Summary creation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "Summary creation": {
+      "main": [
+        [
+          {
+            "node": "Cost-report sending for ROI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured format message": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twilio Analytics": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Cost-report sending for ROI": {
+      "main": [
+        [
+          {
+            "node": "Structured format message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Kolkata",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "1485f4ae-da6f-4209-8135-6a0252048358",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "L1tUzccN3pb9xzsOPQoXs",
+  "tags": []
+}
