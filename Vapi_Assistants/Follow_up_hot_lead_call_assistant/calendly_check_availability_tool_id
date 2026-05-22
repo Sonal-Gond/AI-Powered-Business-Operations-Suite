@@ -1,0 +1,20 @@
+{
+  "type": "google.calendar.availability.check",
+  "function": {
+    "name": "calendly_check_availability_tool",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  "messages": [
+    {
+      "type": "request-start",
+      "blocking": false
+    }
+  ],
+  "metadata": {
+    "calendarId": "YOUR_GOOGLE_CALENDAR_ID"
+  }
+}
