@@ -1,0 +1,1579 @@
+{
+  "name": "Social_Media_posting",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -4688,
+        928
+      ],
+      "id": "2c417d94-76f4-47c0-821e-077c40b2a30e",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "OFFnvbcMdDG5SrSG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"linkedin_content\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"hook\": { \"type\": \"string\" },\n        \"caption\": { \"type\": \"string\" },\n        \"cta\": { \"type\": \"string\" },\n        \"full_post\": { \"type\": \"string\" }\n      },\n      \"required\": [\"hook\", \"caption\", \"cta\", \"full_post\"]\n    },\n    \"facebook_content\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"hook\": { \"type\": \"string\" },\n        \"caption\": { \"type\": \"string\" },\n        \"cta\": { \"type\": \"string\" },\n        \"full_post\": { \"type\": \"string\" }\n      },\n      \"required\": [\"hook\", \"caption\", \"cta\", \"full_post\"]\n    },\n    \"image_prompt\": {\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\"linkedin_content\", \"facebook_content\", \"image_prompt\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -4240,
+        944
+      ],
+      "id": "d007a8ac-b1af-44e8-a394-7eea04508e9f",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "=v23.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $('Caption+Prompt Agent1').item.json.output.facebook_content.full_post }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -2592,
+        368
+      ],
+      "id": "2a03f646-e915-4dc9-8a8d-92ca0f64e6b6",
+      "name": "Facebook Graph API1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "pYcR7Uf12bSblI1J",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## LinkedIn-Register Upload Node\n\n- POST → api.linkedin.com/v2/assets?action=registerUpload\n- Author: urn:li:organization:YOUR_ORG_ID\n- Returns: uploadUrl + asset URN\n- Save asset URN for final post node\n- Recipe: feedshare-image",
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3840,
+        2304
+      ],
+      "typeVersion": 1,
+      "id": "48515ec7-f5f5-4fbf-baac-227b95efe530",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.linkedin.com/v2/assets?action=registerUpload",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "linkedInOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"registerUploadRequest\": {\n    \"recipes\": [\"urn:li:digitalmediaRecipe:feedshare-image\"],\n    \"owner\": \"urn:li:person:wFI_ouB88P\",\n    \"serviceRelationships\": [\n      {\n        \"relationshipType\": \"OWNER\",\n        \"identifier\": \"urn:li:userGeneratedContent\"\n      }\n    ]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -3088,
+        1024
+      ],
+      "id": "a27c7feb-4846-4d85-8f86-fccf21217553",
+      "name": "LinkedIn-Register Upload Node1",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "y5ZbgxcejFO3cBUd",
+          "name": "LinkedIn account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Generate an image1\n-Generate images using prompt that was comes from Caption+Prompt Agent"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3984,
+        2624
+      ],
+      "typeVersion": 1,
+      "id": "f9878a19-1206-4d89-93c3-f5872a96b6da",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a high-converting social media strategist for an AI automation solutions company.\n\nYour goal is to generate platform-specific content that drives users to start a conversation (WhatsApp/chat/call).\n\n---\n\nINPUT:\n- Topic: {{ $('Get row(s) in sheet1').item.json.topic_title }}\n- Keyword: {{ $('Get row(s) in sheet1').item.json.topic_keyword }}\n- Intent: {{ $('Get row(s) in sheet1').item.json.intent }}\n- Target Problem: {{ $('Get row(s) in sheet1').item.json.target_problem }}\n- CTA Angle: {{ $('Get row(s) in sheet1').item.json.cta_angle }}\n- Content ID: {{ $('Get row(s) in sheet1').item.json.content_id }}\n\n---\n\nTASK:\n\nGenerate TWO different social media posts:\n\n1. LinkedIn post (professional, insight-driven)\n2. Facebook post (simple, emotional, relatable)\n\nAlso generate ONE image prompt that works for both platforms.\n\n---\n\nOUTPUT FORMAT (STRICT JSON):\n\n{\n  \"linkedin_content\": {\n    \"hook\": \"\",\n    \"caption\": \"\",\n    \"cta\": \"\",\n    \"full_post\": \"\"\n  },\n  \"facebook_content\": {\n    \"hook\": \"\",\n    \"caption\": \"\",\n    \"cta\": \"\",\n    \"full_post\": \"\"\n  },\n  \"image_prompt\": \"\"\n}\n\n---\n\nINSTRUCTIONS:\n\n---\n\n1. LINKEDIN CONTENT:\n\n- Tone: Professional, business-focused\n- Style: Insight + value-driven\n- Length: Medium to long\n- Structure:\n  Hook → Problem → Insight → Solution → Benefit → CTA\n\n---\n\n2. FACEBOOK CONTENT:\n\n- Tone: Simple, relatable, emotional\n- Style: Easy to understand\n- Length: Short to medium\n- Structure:\n  Hook → Problem → Solution → CTA\n\n---\n\n3. HOOK (for both):\n\n- First 1–2 lines must grab attention\n- Focus on pain/problem or curiosity\n\n---\n\n4. CTA (VERY IMPORTANT):\n\n- MUST include ONE primary action:\n  → Visit the solution page (TRACKED LINK)\n\nPRIMARY CTA LINK (MANDATORY):\n\nUse this EXACT format:\n\nhttps://celadon-fairy-685068.netlify.app/?utm_source=PLATFORM&content_id={{ $('Get row(s) in sheet1').item.json.content_id }}\n\nWhere:\n- PLATFORM = linkedin OR facebook\n\n---\n\n5. FULL POST:\n\nCombine:\nhook + caption + CTA\n\n---\n\n6. IMAGE PROMPT:\n\nGenerate a HIGH-CONVERTING visual idea:\n\nInclude:\n- Scene (real-life business problem)\n- Subject (business owner / team)\n- Emotion (frustration / stress / relief)\n- Text overlay (max 5–6 words)\n\nExample:\n“A frustrated business owner checking phone notifications with text overlay: ‘Losing Leads Daily?’”\n\n---\n\n7. GOAL:\n\n- Trigger pain\n- Show solution\n- Push conversation\n\n---\n\nIMPORTANT:\n\n- LinkedIn and Facebook content MUST be different\n- Do NOT repeat same text\n- Do NOT merge both into one\n\n---\n\nReturn ONLY valid JSON. No extra text.",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -4400,
+        704
+      ],
+      "id": "f2cbc9f5-e89d-4602-99a0-250ad7cba403",
+      "name": "Caption+Prompt Agent1"
+    },
+    {
+      "parameters": {
+        "content": "## Generate an image1\n-Generate images using prompt that was comes from Caption+Prompt Agent"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3648,
+        2752
+      ],
+      "typeVersion": 1,
+      "id": "5356e4d9-a4af-45aa-bb88-c07dcca32b53",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "## Facebook Graph API\nIt post image + text on facebook page",
+        "height": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1776,
+        2576
+      ],
+      "typeVersion": 1,
+      "id": "b7bfb218-0d1d-4744-926b-26efab084946",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "## LinkedIn - Upload Binary Image\n\n- Method: PUT\n- URL: from Register node → uploadUrl\n- Body Type: Binary\n- Binary Field Name: data (must match exactly)\n- Header: Content-Type → image/jpeg or image/png\n- If error: check binary field name in \n  image gen node output tab\n",
+        "height": 320,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3184,
+        2528
+      ],
+      "typeVersion": 1,
+      "id": "543535bb-ef01-490b-af88-811de9104370",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $('LinkedIn-Register Upload Node1').item.json.value.uploadMechanism['com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest'].uploadUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-type",
+              "value": "image/jpeg"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -2272,
+        1184
+      ],
+      "id": "7780ef4f-6c1d-4b5d-84fd-d83d56413788",
+      "name": "LinkedIn - Upload Binary Image1"
+    },
+    {
+      "parameters": {
+        "content": "## LinkedIn - Publish Post \n\n- POST → api.linkedin.com/v2/ugcPosts\n- Author: urn:li:person:person_id\n- shareMediaCategory: IMAGE (not NONE)\n- media[0].media: asset URN from Register node\n- Scope needed: w_organization_social\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1536,
+        2288
+      ],
+      "typeVersion": 1,
+      "id": "82ea299b-ca20-4e85-81bc-ca7cc31d4808",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.linkedin.com/v2/ugcPosts",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "linkedInOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "LinkedIn-Version",
+              "value": "202401"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"author\": \"urn:li:person:wFI_ouB88P\",\n  \"lifecycleState\": \"PUBLISHED\",\n  \"specificContent\": {\n    \"com.linkedin.ugc.ShareContent\": {\n      \"shareCommentary\": {\n        \"text\": {{ JSON.stringify($('Caption+Prompt Agent1').item.json.output.linkedin_content.full_post) }}\n      },\n      \"shareMediaCategory\": \"IMAGE\",\n      \"media\": [\n        {\n          \"status\": \"READY\",\n          \"description\": {\n            \"text\": \"Image description\"\n          },\n          \"media\": \"{{ $('LinkedIn-Register Upload Node1').item.json.value.asset }}\",\n          \"title\": {\n            \"text\": \"Post Image\"\n          }\n        }\n      ]\n    }\n  },\n  \"visibility\": {\n    \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n  }\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1872,
+        1088
+      ],
+      "id": "f4d65350-56bc-49c5-b902-326b0b1502c6",
+      "name": "LinkedIn- Publish Post1",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "y5ZbgxcejFO3cBUd",
+          "name": "LinkedIn account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "##Update status of facebook post \n-change the Incomplete status to Posted\n-add the time of posting and id of post"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2752,
+        2624
+      ],
+      "typeVersion": 1,
+      "id": "0fa1e6a5-02d5-4f41-8904-fcb45ac25b96",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "content": "## Update status of LinkedIn post\n-change the Incomplete status to Posted of LinkedIn_post_status\n-add the time of posting and id of post"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1424,
+        2560
+      ],
+      "typeVersion": 1,
+      "id": "4c4d73a3-d502-4368-874e-ae7ffaecedb9",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1488,
+        1200
+      ],
+      "id": "febbb278-d1c6-4851-985a-13fe85d4835c",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -2528,
+        592
+      ],
+      "id": "cf132c91-bacd-4ad3-9424-6d528ea280fc",
+      "name": "Merge3"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "mode": "list",
+          "cachedResultName": "Final_capstone(Content-creation)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 415154879,
+          "mode": "list",
+          "cachedResultName": "Unified data of post",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=415154879"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Platform ": "LinkedIn",
+            "POST type": "Social Media Post",
+            "URL": "={{ $('LinkedIn- Publish Post1').item.json.id }}",
+            "Posted Time": "={{ new Date().toLocaleString('en', { timeZone: 'Asia/Kolkata' }) }}",
+            "Content_id": "={{ $('Get row(s) in sheet1').item.json.content_id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Platform ",
+              "displayName": "Platform ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Posted Time",
+              "displayName": "Posted Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "POST type",
+              "displayName": "POST type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Content_id",
+              "displayName": "Content_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -576,
+        1360
+      ],
+      "id": "491039a7-99eb-43c4-8079-73f9c6f41ca1",
+      "name": "Append row in sheet3",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a5c362b7-da31-4f7e-84cb-fdcd19310e22",
+              "leftValue": "={{ $('Get row(s) in sheet1').item.json.Facebook_status }}",
+              "rightValue": "=Pending",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -3760,
+        656
+      ],
+      "id": "c09112fa-f8c1-468b-bff4-f2121c810f1e",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ca236083-564c-4c0d-917d-5c24b97633e4",
+              "leftValue": "={{ $('Get row(s) in sheet1').item.json.LinkedIn_status }}",
+              "rightValue": "Pending",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -3616,
+        944
+      ],
+      "id": "de009cb9-b041-4e02-b41d-062d05858802",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "mode": "list",
+          "cachedResultName": "Final_capstone(Content-creation)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1331242044,
+          "mode": "list",
+          "cachedResultName": "Content_research",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=1331242044"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Facebook_status",
+              "lookupValue": "Pending"
+            },
+            {
+              "lookupColumn": "LinkedIn_status",
+              "lookupValue": "Pending"
+            }
+          ]
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -4720,
+        384
+      ],
+      "id": "5306db36-b19d-4ac6-84bd-a167eb19769a",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "mode": "list",
+          "cachedResultName": "Final_capstone(Content-creation)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 415154879,
+          "mode": "list",
+          "cachedResultName": "Unified data of post",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=415154879"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Platform ": "Facebook",
+            "POST type": "Social Media Post",
+            "URL": "={{ $json.post_id }}",
+            "Posted Time": "={{ new Date().toLocaleString('en', { timeZone: 'Asia/Kolkata' }) }}",
+            "Content_id": "={{ $('Get row(s) in sheet1').item.json.content_id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Platform ",
+              "displayName": "Platform ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Posted Time",
+              "displayName": "Posted Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "POST type",
+              "displayName": "POST type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Content_id",
+              "displayName": "Content_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2096,
+        768
+      ],
+      "id": "d5b56e8b-fa0a-4817-a80a-364593ce4c78",
+      "name": "Content_id Info Adding",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "mode": "list",
+          "cachedResultName": "Final_capstone(Content-creation)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1331242044,
+          "mode": "list",
+          "cachedResultName": "Content_research",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=1331242044"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "content_id": "={{ $('Get row(s) in sheet1').item.json.content_id }}",
+            "LinkedIn_status": "Posted"
+          },
+          "matchingColumns": [
+            "content_id"
+          ],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Time",
+              "displayName": "Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "content_id",
+              "displayName": "content_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "topic_title",
+              "displayName": "topic_title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "topic_keyword",
+              "displayName": "topic_keyword",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "intent",
+              "displayName": "intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "target_problem",
+              "displayName": "target_problem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cta_angle",
+              "displayName": "cta_angle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "problem_explanation",
+              "displayName": "problem_explanation",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "why_it_happens",
+              "displayName": "why_it_happens",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "business_impact",
+              "displayName": "business_impact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "current_wrong_solution",
+              "displayName": "current_wrong_solution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "automation_solution",
+              "displayName": "automation_solution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "real_world_example",
+              "displayName": "real_world_example",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Blog_Status",
+              "displayName": "Blog_Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Facebook_status",
+              "displayName": "Facebook_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "LinkedIn_status",
+              "displayName": "LinkedIn_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -464,
+        992
+      ],
+      "id": "babc08b6-30e1-48ae-a72d-e6d47f5a94fd",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "80418c84-3142-4a43-a04a-6f0f0adb2637",
+              "name": "telegram_link",
+              "value": "https://t.me/Business_service_solution_bot",
+              "type": "string"
+            },
+            {
+              "id": "b12308c5-91d3-45f3-9bda-ca03265208c2",
+              "name": "phone",
+              "value": "+1 (814) 632 2931",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4544,
+        592
+      ],
+      "id": "3144fc99-1d2f-4da1-a90c-22acfc84659c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/system-health",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "workflow_name",
+              "value": "={{ $workflow.name }}"
+            },
+            {
+              "name": "workflow_id",
+              "value": "={{ $workflow.id }}"
+            },
+            {
+              "name": "platform",
+              "value": "n8n"
+            },
+            {
+              "name": "Status",
+              "value": "Success"
+            },
+            {
+              "name": "timestamp",
+              "value": "={{ new Date().toLocaleString('en', { timeZone: 'Asia/Kolkata' }) }}"
+            },
+            {
+              "name": "execution_id",
+              "value": "={{ $execution.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1664,
+        784
+      ],
+      "id": "0fba2192-bbd9-4bc5-91b6-6edb822f135f",
+      "name": "HTTP Request7"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/system-health",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "workflow_name",
+              "value": "={{ $workflow.name }}"
+            },
+            {
+              "name": "workflow_id",
+              "value": "={{ $workflow.id }}"
+            },
+            {
+              "name": "platform",
+              "value": "n8n"
+            },
+            {
+              "name": "Status",
+              "value": "Success"
+            },
+            {
+              "name": "timestamp",
+              "value": "={{ new Date().toLocaleString('en', { timeZone: 'Asia/Kolkata' }) }}"
+            },
+            {
+              "name": "execution_id",
+              "value": "={{ $execution.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -208,
+        1360
+      ],
+      "id": "3978feef-d9e0-4160-b39f-0846d7036803",
+      "name": "HTTP Request8"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 12,
+              "triggerAtMinute": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -4976,
+        352
+      ],
+      "id": "60b510d6-eb2e-44df-af14-8faa9240c593",
+      "name": "Schedule at 12:15"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "model": "gpt-image-1",
+        "prompt": "={{ $json.output.image_prompt }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -3104,
+        352
+      ],
+      "id": "7af4aae4-f5ef-4622-a204-b42511c51f7d",
+      "name": "Generate an image for facebook",
+      "credentials": {
+        "openAiApi": {
+          "id": "OFFnvbcMdDG5SrSG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "mode": "list",
+          "cachedResultName": "Final_capstone(Content-creation)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1331242044,
+          "mode": "list",
+          "cachedResultName": "Content_research",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=1331242044"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "content_id": "={{ $('Get row(s) in sheet1').item.json.content_id }}",
+            "Facebook_status": "Posted"
+          },
+          "matchingColumns": [
+            "content_id"
+          ],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Time",
+              "displayName": "Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "content_id",
+              "displayName": "content_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "topic_title",
+              "displayName": "topic_title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "topic_keyword",
+              "displayName": "topic_keyword",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "intent",
+              "displayName": "intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "target_problem",
+              "displayName": "target_problem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cta_angle",
+              "displayName": "cta_angle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "problem_explanation",
+              "displayName": "problem_explanation",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "why_it_happens",
+              "displayName": "why_it_happens",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "business_impact",
+              "displayName": "business_impact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "current_wrong_solution",
+              "displayName": "current_wrong_solution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "automation_solution",
+              "displayName": "automation_solution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "real_world_example",
+              "displayName": "real_world_example",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Blog_Status",
+              "displayName": "Blog_Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Facebook_status",
+              "displayName": "Facebook_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "LinkedIn_status",
+              "displayName": "LinkedIn_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2016,
+        384
+      ],
+      "id": "f2911ea6-c542-4c42-b380-5f70b2ece4a2",
+      "name": "Update status in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "=channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AU5CG7D3P",
+          "mode": "id"
+        },
+        "user": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "text": "=Facebook Post :   \nTopic: {{ $('Get row(s) in sheet1').item.json.topic_title }} \nTime of post : {{ new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) }}\nPost_id: {{ $('Facebook Graph API1').item.json.post_id }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        -1760,
+        512
+      ],
+      "id": "70f15c95-0025-4a2f-9c1b-f6707dc6b164",
+      "name": "Send a Post message to slack",
+      "webhookId": "436b7cb9-cc08-4a5f-8490-5295d4b2664d",
+      "credentials": {
+        "slackApi": {
+          "id": "ekJzRR6RASxiEuDX",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AU5CG7D3P",
+          "mode": "id"
+        },
+        "text": "=LinkedIn Post status:  \nTopic: {{ $('Get row(s) in sheet1').item.json.topic_title }}\nTime of posting: {{ new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) }}\nPost_id: {{ $json.id }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        -656,
+        1664
+      ],
+      "id": "bc0ad278-2acf-4c22-bd31-baaa149d2a32",
+      "name": "Send LinkedIn post message",
+      "webhookId": "72709646-3427-40a3-b7fe-90bceb850ec9",
+      "credentials": {
+        "slackApi": {
+          "id": "ekJzRR6RASxiEuDX",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "model": "gpt-image-1",
+        "prompt": "={{ $('Caption+Prompt Agent1').item.json.output.image_prompt }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -2896,
+        1216
+      ],
+      "id": "558279ee-e364-4bc9-b6e6-e6cfcd9bcc21",
+      "name": "Generate an image2",
+      "credentials": {
+        "openAiApi": {
+          "id": "OFFnvbcMdDG5SrSG",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Schedule at 12:15": [
+      {
+        "json": {
+          "timestamp": "2026-05-18T15:00:01.018+05:30",
+          "Readable date": "May 18th 2026, 3:00:01 pm",
+          "Readable time": "3:00:01 pm",
+          "Day of week": "Monday",
+          "Year": "2026",
+          "Month": "May",
+          "Day of month": "18",
+          "Hour": "15",
+          "Minute": "00",
+          "Second": "01",
+          "Timezone": "Asia/Kolkata (UTC+05:30)"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Caption+Prompt Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Caption+Prompt Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Facebook Graph API1": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LinkedIn-Register Upload Node1": {
+      "main": [
+        [
+          {
+            "node": "Generate an image2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Caption+Prompt Agent1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LinkedIn - Upload Binary Image1": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn- Publish Post1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LinkedIn- Publish Post1": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Send LinkedIn post message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Append row in sheet3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "Send a Post message to slack",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Content_id Info Adding",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update status in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Generate an image for facebook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn-Register Upload Node1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet1": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Caption+Prompt Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content_id Info Adding": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule at 12:15": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate an image for facebook": {
+      "main": [
+        [
+          {
+            "node": "Facebook Graph API1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update status in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "Generate an image2": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn - Upload Binary Image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Kolkata",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "IKMAttkJdoMmQk3fxlmuu"
+  },
+  "versionId": "a12828ae-6c7e-4878-988a-59622b8bae9a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "wWifXA5I-dSTpFZQ9gUEA",
+  "tags": []
+}
