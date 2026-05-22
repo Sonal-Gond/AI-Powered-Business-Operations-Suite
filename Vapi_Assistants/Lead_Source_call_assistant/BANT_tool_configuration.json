@@ -1,0 +1,35 @@
+{
+  "type": "function",
+  "function": {
+    "name": "BANT_of_lead_sorce_call",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "description": "Full transcript including BANT, name, and email",
+          "type": "string"
+        }
+      },
+      "required": [
+        "details"
+      ]
+    }
+  },
+  "messages": [
+    {
+      "type": "request-start",
+      "blocking": false
+    }
+  ],
+  "server": {
+    "url": "https://www.make_lead_qualification_webhook",
+    "timeoutSeconds": 20
+  },
+  "variableExtractionPlan": {
+    "schema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    }
+  }
+}
