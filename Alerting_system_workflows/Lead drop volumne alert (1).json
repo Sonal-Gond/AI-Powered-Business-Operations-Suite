@@ -1,0 +1,304 @@
+{
+  "name": "Lead drop volumne alert",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Lead drop count\nReads all lead rows from input.\nConverts timestamps into a standard YYYY-MM-DD format.\nCounts total leads for each day.\nCalculates:\nToday’s lead count\n7-day rolling average\nLead drop percentage\nDetects:\nLead drop alerts\nZero lead critical alerts\nGenerates:\nSeverity level (NORMAL, WARNING, HIGH, CRITICAL)\nChannel-wise breakdown\nSource-wise breakdown\nBest-performing day in rolling window"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -112,
+        -576
+      ],
+      "typeVersion": 1,
+      "id": "88ea3e11-5d26-4f88-b768-cfca05fbb4c8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ── CONFIG ───────────────────────────────────────────────\nconst DROP_THRESHOLD_PERCENT = 50;   // alert if today < 50% of avg\nconst ROLLING_DAYS           = 7;    // how many past days to average\nconst MIN_AVG_TO_ALERT       = 0.5;    // skip alert if avg itself is < 1\n// ─────────────────────────────────────────────────────────\n\nconst rows  = $input.all();\nconst today = new Date();\n\n// normalise any date string → \"YYYY-MM-DD\"\nfunction toDateKey(raw) {\n  if (!raw) return null;\n  const s = String(raw).trim();\n\n  // handle DD/MM/YYYY  or  MM/DD/YYYY  or  ISO\n  let d;\n  if (/^\\d{2}\\/\\d{2}\\/\\d{4}/.test(s)) {\n    const [p1, p2, p3] = s.split('/');\n    // your sheet uses DD/MM/YYYY  — adjust if MM/DD/YYYY\n    d = new Date(`${p3}-${p2}-${p1}`);\n  } else {\n    d = new Date(s);\n  }\n  if (isNaN(d)) return null;\n  return d.toISOString().slice(0, 10);          // \"YYYY-MM-DD\"\n}\n\nfunction dateKey(d) {\n  return d.toISOString().slice(0, 10);\n}\n\n// ── BUILD DAILY COUNT MAP ────────────────────────────────\nconst countByDate = {};\n\nfor (const row of rows) {\n  const raw = row.json['Timestamp'] ?? row.json['timestamp'] ?? '';\n  const key = toDateKey(raw);\n  if (!key) continue;\n  countByDate[key] = (countByDate[key] || 0) + 1;\n}\n\n// ── TODAY'S COUNT ────────────────────────────────────────\nconst todayKey   = dateKey(today);\nconst todayCount = countByDate[todayKey] || 0;\n\n// ── ROLLING AVERAGE (past N days, excluding today) ───────\nconst pastCounts = [];\nfor (let i = 1; i <= ROLLING_DAYS; i++) {\n  const d = new Date(today);\n  d.setDate(d.getDate() - i);\n  const k = dateKey(d);\n  pastCounts.push(countByDate[k] || 0);\n}\n\nconst rollingSum = pastCounts.reduce((a, b) => a + b, 0);\nconst rollingAvg = rollingSum / ROLLING_DAYS;\n\n// ── DROP DETECTION ───────────────────────────────────────\nconst dropPercent   = rollingAvg > 0\n  ? Math.round(((rollingAvg - todayCount) / rollingAvg) * 100)\n  : 0;\n\nconst isDropAlert   = rollingAvg  >= MIN_AVG_TO_ALERT &&\n                      todayCount  <  rollingAvg * (1 - DROP_THRESHOLD_PERCENT / 100);\nconst isZeroAlert   = todayCount === 0 && rollingAvg >= MIN_AVG_TO_ALERT;\n\n// ── CHANNEL BREAKDOWN FOR TODAY ──────────────────────────\nconst channelBreakdown = {};\nfor (const row of rows) {\n  const key = toDateKey(row.json['Timestamp'] ?? '');\n  if (key !== todayKey) continue;\n  const ch = row.json['Channel'] || 'Unknown';\n  channelBreakdown[ch] = (channelBreakdown[ch] || 0) + 1;\n}\n\n// ── SOURCE BREAKDOWN FOR TODAY ───────────────────────────\nconst sourceBreakdown = {};\nfor (const row of rows) {\n  const key = toDateKey(row.json['Timestamp'] ?? '');\n  if (key !== todayKey) continue;\n  const src = row.json['Source'] || 'Direct/Unknown';\n  sourceBreakdown[src] = (sourceBreakdown[src] || 0) + 1;\n}\n\n// ── BEST DAY IN ROLLING WINDOW ───────────────────────────\nlet bestDay = '', bestCount = 0;\nfor (let i = 1; i <= ROLLING_DAYS; i++) {\n  const d = new Date(today);\n  d.setDate(d.getDate() - i);\n  const k = dateKey(d);\n  if ((countByDate[k] || 0) > bestCount) {\n    bestCount = countByDate[k];\n    bestDay   = k;\n  }\n}\n\n// ── SEVERITY ─────────────────────────────────────────────\nlet severity = 'NORMAL';\nif (isZeroAlert)                         severity = 'CRITICAL';\nelse if (isDropAlert && dropPercent > 70) severity = 'HIGH';\nelse if (isDropAlert)                     severity = 'WARNING';\n\n// ── OUTPUT ───────────────────────────────────────────────\nreturn [{\n  json: {\n    todayKey,\n    todayCount,\n    rollingAvg:         Math.round(rollingAvg * 10) / 10,\n    dropPercent:        Math.max(dropPercent, 0),\n    isDropAlert,\n    isZeroAlert,\n    severity,\n    channelBreakdown,\n    sourceBreakdown,\n    bestDay,\n    bestCount,\n    rollingWindow:      ROLLING_DAYS,\n    thresholdUsed:      DROP_THRESHOLD_PERCENT,\n    dailyCountMap:      countByDate,\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        -96
+      ],
+      "id": "0feb3b55-73c3-4bed-adfc-6026048c29ae",
+      "name": "Lead drop count"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.severity }}",
+                    "rightValue": "CRITICAL",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7100b578-2085-4a97-9666-289842c9a565"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Critical"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ea0cd466-b434-43de-ab77-6c0755cf9b93",
+                    "leftValue": "={{ $json.severity }}",
+                    "rightValue": "HIGH",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "High"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "85c2555a-bb6a-44ac-aca8-344c1ab33897",
+                    "leftValue": "={{ $json.severity }}",
+                    "rightValue": "WARNING",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Warning"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -32,
+        -96
+      ],
+      "id": "97c6b2a5-74e3-4fe4-9656-1c78809f4fa8",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 18
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -640,
+        -96
+      ],
+      "id": "8d9d5750-efee-4035-a55d-67cc43c4d3cc",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "mode": "list",
+          "cachedResultName": "Lead Capture form (final_capstone)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1709189993,
+          "mode": "list",
+          "cachedResultName": "Omnichannel_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -464,
+        -96
+      ],
+      "id": "d9094851-9fe6-4cc6-b935-6f472d862057",
+      "name": "Getting lead data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0B2M2M4692",
+          "mode": "id"
+        },
+        "text": "=🚨 *CRITICAL Lead Volume Alert*\n\nA severe drop in lead volume has been detected.\n\n• Today's Leads:{{ $json.todayCount }} \n• 7-Day Avg: {{$json.rollingAvg}}\n• Drop Percentage: {{$json.dropPercent}}%\n• Severity: {{$json.severity}}\n\nPossible causes:\n• Ads stopped\n• CRM/webhook failure\n• Tracking issue\n• Form submission failure\n• Traffic outage\n\nBest Recent Day:\n• {{$json.bestDay}} → {{$json.bestCount}} leads\n\nImmediate investigation recommended.\n",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        240,
+        -176
+      ],
+      "id": "5691a029-61a6-4d3a-886a-35f562e60501",
+      "name": "Send alert for criticala nd high risk",
+      "webhookId": "ef958e02-6e8d-4092-8ee9-c58a2b8f1dc2",
+      "credentials": {
+        "slackApi": {
+          "id": "ekJzRR6RASxiEuDX",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0B2M2M4692",
+          "mode": "id"
+        },
+        "text": "=⚠️ *Lead Drop Warning Detected*  Lead volume has dropped below the expected threshold.  \n• Today's Leads:{{ $('Lead drop count').item.json.todayCount }}  \n• 7-Day Avg:{{ $json.rollingAvg }} \n• Drop Percentage:{{ $('Lead drop count').item.json.dropPercent }} % \n• Threshold:{{ $json.thresholdUsed }}%  \nPlease review campaigns, forms, and lead sources.  Channel Breakdown:{{ $json.channelBreakdown }} Source Breakdown: {{ $json.sourceBreakdown }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        240,
+        64
+      ],
+      "id": "20b608f1-23e3-4a3e-b7c8-2fab4dd1fc0d",
+      "name": "Normal slack message for warning",
+      "webhookId": "5f178710-52f7-4302-82db-d11cc051ed0c",
+      "credentials": {
+        "slackApi": {
+          "id": "ekJzRR6RASxiEuDX",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Lead drop count": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send alert for criticala nd high risk",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send alert for criticala nd high risk",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Normal slack message for warning",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Getting lead data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Getting lead data": {
+      "main": [
+        [
+          {
+            "node": "Lead drop count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send alert for criticala nd high risk": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "05425014-82ad-4bf3-a5e9-85374edbfdd2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "MjT0Q1QbCtc_5x0QJ-9jX",
+  "tags": []
+}
