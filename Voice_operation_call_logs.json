@@ -25,7 +25,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 1beb307d-08f4-481b-98dc-cf0ebb00456b"
+              "value": "Bearer YOUR_VAPI_API_KEY"
             }
           ]
         },
@@ -58,17 +58,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "YOUR_voice_opn_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_voice_opn_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1428000902,
           "mode": "list",
           "cachedResultName": "Voice_operation_call_summary",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=1428000902"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_voice_opn_spreadsheet_id/edit#gid=1428000902"
         },
         "columns": {
           "mappingMode": "defineBelow",
