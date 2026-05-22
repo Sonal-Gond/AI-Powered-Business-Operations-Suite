@@ -49,17 +49,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1709189993"
         },
         "options": {}
       },
@@ -82,17 +82,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Final_capstone(Content-creation)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1331242044,
           "mode": "list",
           "cachedResultName": "Content_research",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=1331242044"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1331242044"
         },
         "options": {}
       },
@@ -115,17 +115,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_lead_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_lead_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1428000902,
           "mode": "list",
           "cachedResultName": "Voice_operation_call_summary",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=1428000902"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_lead_spreadsheet_id/edit#gid=1428000902"
         },
         "options": {}
       },
@@ -148,17 +148,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 757520354,
           "mode": "list",
           "cachedResultName": "Chatbot_performance",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=757520354"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=757520354"
         },
         "options": {}
       },
@@ -181,17 +181,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_lead_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_lead_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Appointment_details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_lead_spreadsheet_id/edit#gid=0"
         },
         "options": {}
       },
@@ -214,17 +214,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_lead_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_lead_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 461571680,
           "mode": "list",
           "cachedResultName": "Re-Engagement ",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=461571680"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_lead_spreadsheet_id/edit#gid=461571680"
         },
         "options": {}
       },
