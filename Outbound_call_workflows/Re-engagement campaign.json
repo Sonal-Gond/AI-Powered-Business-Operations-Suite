@@ -5,17 +5,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 461571680,
           "mode": "list",
           "cachedResultName": "Re-Engagement ",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=461571680"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=461571680"
         },
         "options": {}
       },
@@ -149,7 +149,7 @@
         "genericAuthType": "httpBearerAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"phoneNumberId\": \"2c5b5379-cd5e-40dd-b6f3-07f514ab1ae5\",\n  \"assistantId\": \"626c8905-4807-42ee-9400-ed5ba37ce432\",\n  \"customer\": {\n    \"name\": \"{{ $json.Name }}\",\n    \"number\":\"+{{ $json.Phone }}\"\n  },\n \"assistantOverrides\": {\n  \"variableValues\": {\n    \"Name\": \"{{ $json.Name }}\",\n    \"phone\": \"{{ $json.Phone }}\",\n    \"Plan\": \"{{ $json.Plan }}\",\n    \"phone\":\"{{ $json.Phone }}\",\n    \"Days_inactive\": \"{{ $json[\"Days Inactive\"] }}\",\n    \"Last active date\": \"{{ $json[\"Last Active Date\"] }}\"\n  } \n}\n}",
+        "jsonBody": "={\n  \"phoneNumberId\": \"your-vapi-phone-number-id\",\n  \"assistantId\": \"re-engagement-assistant-id\",\n  \"customer\": {\n    \"name\": \"{{ $json.Name }}\",\n    \"number\":\"+{{ $json.Phone }}\"\n  },\n \"assistantOverrides\": {\n  \"variableValues\": {\n    \"Name\": \"{{ $json.Name }}\",\n    \"phone\": \"{{ $json.Phone }}\",\n    \"Plan\": \"{{ $json.Plan }}\",\n    \"phone\":\"{{ $json.Phone }}\",\n    \"Days_inactive\": \"{{ $json[\"Days Inactive\"] }}\",\n    \"Last active date\": \"{{ $json[\"Last Active Date\"] }}\"\n  } \n}\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -185,17 +185,17 @@
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 461571680,
           "mode": "list",
           "cachedResultName": "Re-Engagement ",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=461571680"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=461571680"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -426,17 +426,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 461571680,
           "mode": "list",
           "cachedResultName": "Re-Engagement ",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=461571680"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=461571680"
         },
         "columns": {
           "mappingMode": "defineBelow",
