@@ -1,0 +1,30 @@
+{
+  "type": "function",
+  "function": {
+    "name": "update_payment_status",
+    "description": "These tool send payment status to server url.",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  "messages": [
+    {
+      "type": "request-start",
+      "blocking": false
+    }
+  ],
+  "server": {
+    "url": "https://n8nwebhook.ngrok-free.app/webhook/payment_status",
+    "timeoutSeconds": 20
+  },
+  "async": false,
+  "variableExtractionPlan": {
+    "schema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    }
+  }
+}
