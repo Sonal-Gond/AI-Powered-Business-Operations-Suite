@@ -17,17 +17,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0",
+          "value": "your_system_log_sheet_id",
           "mode": "list",
           "cachedResultName": "Final_capstone(System_health)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_system_log_sheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_system_log_sheet_id/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -144,7 +144,7 @@
         "select": "channel",
         "channelId": {
           "__rl": true,
-          "value": "C0AR2A6ATK4",
+          "value": "your_spreadsheet_id",
           "mode": "id"
         },
         "text": "=Workflow error:  \nPlatform : n8n\nWorkflow name: {{ $('Error Trigger').item.json.workflow.name }}\nWorkflow_id : {{ $('Error Trigger').item.json.workflow.id }}\nError message: {{ $('Error Trigger').item.json.execution.error.message }}\nError_node : {{ $('Error Trigger').item.json.execution.lastNodeExecuted }}",
