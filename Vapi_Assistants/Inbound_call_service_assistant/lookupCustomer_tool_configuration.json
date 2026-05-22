@@ -1,0 +1,69 @@
+{
+  "type": "function",
+  "function": {
+    "name": "lookupCustomer",
+    "description": "These tools checks whether same customer returns or new customer",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "description": "Customer email address",
+          "type": "string"
+        },
+        "phone": {
+          "description": "Customer phone number",
+          "type": "string"
+        }
+      },
+      "required": [
+        "email"
+      ]
+    }
+  },
+  "messages": [
+    {
+      "type": "request-start",
+      "blocking": false
+    }
+  ],
+  "metadata": null,
+  "templateId": null,
+  "server": {
+    "url": "https://make.com/webhook",
+    "credentialId": null,
+    "timeoutSeconds": 20,
+    "staticIpAddressesEnabled": false
+  },
+  "async": false,
+  "name": null,
+  "destinations": null,
+  "subType": null,
+  "displayWidthPx": null,
+  "displayHeightPx": null,
+  "displayNumber": null,
+  "knowledgeBases": null,
+  "url": null,
+  "method": null,
+  "headers": null,
+  "body": null,
+  "backoffPlan": null,
+  "timeoutSeconds": null,
+  "description": null,
+  "variableExtractionPlan": {
+    "schema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    }
+  },
+  "rejectionPlan": null,
+  "credentialId": null,
+  "beepDetectionEnabled": null,
+  "code": null,
+  "environmentVariables": null,
+  "parameters": null,
+  "encryptedPaths": null,
+  "sipInfoDtmfEnabled": null,
+  "verb": null,
+  "toolMessages": null
+}
