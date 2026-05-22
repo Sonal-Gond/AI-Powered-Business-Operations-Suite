@@ -1,0 +1,437 @@
+{
+  "name": "ROI_Calculation report",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -208,
+        176
+      ],
+      "id": "2369977b-dfef-49f6-bc06-1dc3ec8131f5",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ROI-report",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -512,
+        16
+      ],
+      "id": "cda9260f-8b72-4c99-8808-6d31438bf0dc",
+      "name": "Receive Cost Data",
+      "webhookId": "2619e9f0-8bfe-4307-9e9f-9103e98d34db"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "mode": "list",
+          "cachedResultName": "Lead Capture form (final_capstone)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1709189993,
+          "mode": "list",
+          "cachedResultName": "Omnichannel_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -288,
+        -48
+      ],
+      "id": "0a6b4681-8cd8-47ad-bf06-3b7f6c97c244",
+      "name": "Get All leads",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "usNDrYntbumBCLRa",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ==============================\n// COST DATA FROM WORKFLOW 1\n// ==============================\n\nconst costData        = $('Receive Cost Data').first().json.body;\nconst makeReport      = costData.makeReport;\nconst vapiReport      = costData.vapiReport;\nconst twilioReport    = costData.twilioReport;\nconst voiceflowReport = costData.voiceflowReport;\n\n\n// ==============================\n// MANUAL SUBSCRIPTION COSTS\n// ── ONLY CHANGE THESE VALUES ──\n// When you upgrade a plan, update\n// the monthly USD cost below.\n// Everything else calculates itself.\n// ==============================\n\nconst MAKE_MONTHLY_USD      = 0;  // Free=0, Core=$9, Pro=$16\nconst VOICEFLOW_MONTHLY_USD = 0;  // Starter=0, Teams=$80\n\n// Daily cost = monthly fee / days in current month\nconst daysInMonth = new Date(\n  new Date().getFullYear(),\n  new Date().getMonth() + 1,\n  0\n).getDate();\n\nconst makeDailyCost      = MAKE_MONTHLY_USD      / daysInMonth;\nconst voiceflowDailyCost = VOICEFLOW_MONTHLY_USD / daysInMonth;\n\n\n// ==============================\n// TOTAL COST (ALL 4 PLATFORMS)\n// ==============================\n\nconst vapiCost   = Number(vapiReport.totalCost   || 0); // real USD from API\nconst twilioCost = Number(twilioReport.totalCost  || 0); // real USD from API\n\nconst totalCostUSD =\n  vapiCost        +   // usage-based, from API\n  twilioCost      +   // usage-based, from API\n  makeDailyCost   +   // subscription, manual\n  voiceflowDailyCost; // subscription, manual\n\n// Convert full cost to INR for ROI comparison\n// Update this rate if INR/USD changes significantly\nconst USD_TO_INR   = 96.36;\nconst totalCostINR = totalCostUSD * USD_TO_INR;\n\n\n// ==============================\n// LEAD DATA FROM SHEET\n// ==============================\n\nconst leads = $('Get All leads').all().map(i => i.json);\nconst today = new Date().toISOString().split('T')[0];\n\n\n// ==============================\n// COUNTERS\n// ==============================\n\nlet totalLeads         = 0;\nlet newLeadsToday      = 0;\nlet contactedLeads     = 0;\nlet qualifiedLeads     = 0;\nlet opportunityLeads   = 0;\nlet meetingScheduled   = 0;\nlet wonLeads           = 0;\nlet lostLeads          = 0;\nlet bookedAppointments = 0;\nlet totalLeadScore     = 0;\nlet whatsappSent       = 0;\nlet whatsappSkipped    = 0;\n\n// Won lead budget parsing — INR only\nlet wonRevenueMin = 0;\nlet wonRevenueMax = 0;\n\nconst pipelineStats = {\n  'Contacted':         0,\n  'Qualified':         0,\n  'Opportunity':       0,\n  'Meeting Scheduled': 0,\n  'Won':               0,\n  'Lost':              0,\n  'Unknown':           0\n};\n\nconst channelStats = {};\nconst sourceStats  = {};\n\n\n// ==============================\n// LOOP THROUGH LEADS\n// ==============================\n\nfor (const lead of leads) {\n\n  totalLeads++;\n  totalLeadScore += Number(lead['Lead score'] || 0);\n\n  // New today\n  const entryDate = String(lead['Lead Entry'] || '');\n  if (entryDate.startsWith(today)) newLeadsToday++;\n\n  // Channel\n  let channel = lead.Channel || 'Unknown';\n  // Replace Website Form with Social Media\n  if (channel === 'Website Form') {\n  channel = 'Social Media';\n  }\n  if (!channelStats[channel]) {\n    channelStats[channel] = {\n      total: 0, contacted: 0, qualified: 0,\n      opportunity: 0, meetingScheduled: 0,\n      won: 0, lost: 0, booked: 0\n    };\n  }\n  channelStats[channel].total++;\n\n  // Source\n  const source = lead.Source || 'Unknown';\n  if (!sourceStats[source]) sourceStats[source] = 0;\n  sourceStats[source]++;\n\n  // WhatsApp\n  const wa = (lead.Whatsapp_Status || '').trim().toLowerCase();\n  if (wa === 'sent')    whatsappSent++;\n  if (wa === 'skipped') whatsappSkipped++;\n\n  // Appointment\n  const appt = (lead.Appointment_Status || '').trim().toLowerCase();\n  if (appt === 'booked') {\n    bookedAppointments++;\n    channelStats[channel].booked++;\n  }\n\n  // Pipeline stage\n  const stage = (lead.Pipeline_stage || '').trim();\n  if (pipelineStats.hasOwnProperty(stage)) {\n    pipelineStats[stage]++;\n  } else {\n    pipelineStats['Unknown']++;\n  }\n\n  switch (stage) {\n    case 'Contacted':\n      contactedLeads++;\n      channelStats[channel].contacted++;\n      break;\n    case 'Qualified':\n      qualifiedLeads++;\n      channelStats[channel].qualified++;\n      break;\n    case 'Opportunity':\n      opportunityLeads++;\n      channelStats[channel].opportunity++;\n      break;\n    case 'Meeting Scheduled':\n      meetingScheduled++;\n      channelStats[channel].meetingScheduled++;\n      break;\n    case 'Won':\n      wonLeads++;\n      channelStats[channel].won++;\n      break;\n    case 'Lost':\n      lostLeads++;\n      channelStats[channel].lost++;\n      break;\n  }\n\n\n  // ==============================\n  // BUDGET PARSING — WON LEADS ONLY\n  // Only Won leads count toward\n  // revenue estimate for ROI\n  // ==============================\n\n  if (stage === 'Won') {\n\n    const raw = String(lead.Budget || '').trim();\n\n    // Detect currency\n    const isUSD = raw.includes('$');\n    const isINR = raw.includes('₹') || (!isUSD && /\\d/.test(raw));\n\n    // Clean and expand shorthand\n    const cleaned = raw\n      .replace(/[₹$,+\\s]/g, '')\n      .replace(/k/gi,   '000')\n      .replace(/l/gi,   '00000');\n\n    const nums = cleaned.match(/\\d+/g);\n\n    if (nums && nums.length >= 1) {\n\n      let min = Number(nums[0]);\n      let max = Number(nums[nums.length - 1]);\n\n      // Convert USD to INR so everything\n      // is in the same currency\n      if (isUSD) {\n        min = min * USD_TO_INR;\n        max = max * USD_TO_INR;\n      }\n\n      wonRevenueMin += min;\n      wonRevenueMax += max;\n    }\n  }\n}\n\n\n// ==============================\n// ROI CALCULATIONS\n// ==============================\n\nconst avgLeadScore = totalLeads > 0\n  ? (totalLeadScore / totalLeads).toFixed(1)\n  : '0';\n\n// Cost metrics\nconst costPerLead = totalLeads > 0 && totalCostINR > 0\n  ? (totalCostINR / totalLeads).toFixed(2)\n  : '0.00';\n\nconst costPerQualified = qualifiedLeads > 0 && totalCostINR > 0\n  ? (totalCostINR / qualifiedLeads).toFixed(2)\n  : '0.00';\n\nconst costPerMeeting = meetingScheduled > 0 && totalCostINR > 0\n  ? (totalCostINR / meetingScheduled).toFixed(2)\n  : '0.00';\n\nconst costPerWon = wonLeads > 0 && totalCostINR > 0\n  ? (totalCostINR / wonLeads).toFixed(2)\n  : '0.00';\n\n// Conversion rates\nconst leadToQualifiedRate = totalLeads > 0\n  ? ((qualifiedLeads / totalLeads) * 100).toFixed(1) + '%'\n  : '0%';\n\nconst leadToMeetingRate = totalLeads > 0\n  ? ((meetingScheduled / totalLeads) * 100).toFixed(1) + '%'\n  : '0%';\n\nconst meetingToWonRate = meetingScheduled > 0\n  ? ((wonLeads / meetingScheduled) * 100).toFixed(1) + '%'\n  : '0%';\n\nconst overallConversionRate = totalLeads > 0\n  ? ((wonLeads / totalLeads) * 100).toFixed(1) + '%'\n  : '0%';\n\n// Revenue from Won leads only (all converted to INR)\nconst wonRevenueMid = (wonRevenueMin + wonRevenueMax) / 2;\n\n// Estimated ROI — based on Won lead budgets vs total cost\n// Both in INR\nlet estimatedROI = 'N/A';\nlet estimatedROINote = '';\n\nif (wonLeads === 0) {\n  estimatedROINote = 'No won leads yet';\n} else if (totalCostINR === 0) {\n  estimatedROINote = 'No platform cost recorded yet';\n  // Still show revenue signal even without cost\n  estimatedROI = 'Cost = ₹0, Revenue signal = ₹' +\n    wonRevenueMid.toLocaleString('en-IN');\n} else {\n  const roi = ((wonRevenueMid - totalCostINR) / totalCostINR) * 100;\n  estimatedROI     = roi.toFixed(1) + '%';\n  estimatedROINote =\n    'Based on Won lead budget midpoints converted to INR vs total platform cost in INR';\n}\n\n\n// ==============================\n// MAKE OPS BURN RATE\n// ==============================\n\nconst makeOpsBurnRate = makeReport.operationsLimit > 0\n  ? ((makeReport.operationsUsed / makeReport.operationsLimit) * 100).toFixed(1) + '%'\n  : '0%';\n\nconst daysToReset = makeReport.nextReset\n  ? Math.ceil(\n      (new Date(makeReport.nextReset) - new Date()) /\n      (1000 * 60 * 60 * 24)\n    )\n  : 0;\n\n\n// ==============================\n// CHANNEL BREAKDOWN\n// ==============================\n\nconst channelBreakdown = Object.entries(channelStats).map(([ch, s]) => ({\n  channel:          ch,\n  totalLeads:       s.total,\n  contacted:        s.contacted,\n  qualified:        s.qualified,\n  opportunity:      s.opportunity,\n  meetingScheduled: s.meetingScheduled,\n  won:              s.won,\n  lost:             s.lost,\n  bookedAppts:      s.booked,\n  conversionRate:   s.total > 0\n    ? ((s.won / s.total) * 100).toFixed(1) + '%'\n    : '0%'\n}));\n\nconst bestChannel = [...channelBreakdown]\n  .sort((a, b) => parseFloat(b.conversionRate) - parseFloat(a.conversionRate))\n  [0]?.channel || 'N/A';\n\n\n// ==============================\n// SOURCE BREAKDOWN\n// ==============================\n\nconst sourceBreakdown = Object.entries(sourceStats)\n  .map(([source, count]) => ({ source, count }))\n  .sort((a, b) => b.count - a.count);\n\n\n// ==============================\n// PIPELINE FUNNEL\n// ==============================\n\nconst pipelineOrder = [\n  'Contacted', 'Qualified', 'Opportunity',\n  'Meeting Scheduled', 'Won', 'Lost', 'Unknown'\n];\n\nconst pipelineBreakdown = pipelineOrder\n  .filter(s => pipelineStats[s] > 0)\n  .map(s => ({\n    stage:          s,\n    count:          pipelineStats[s],\n    percentOfTotal: totalLeads > 0\n      ? ((pipelineStats[s] / totalLeads) * 100).toFixed(1) + '%'\n      : '0%'\n  }));\n\n\n// ==============================\n// RETURN ROI REPORT\n// ==============================\n\nreturn [{\n  json: {\n    roiReport: {\n\n      reportDate:  today,\n      generatedAt: new Date().toISOString(),\n\n      // ── Platform costs (all 4) ──\n      platformCosts: {\n\n        // Usage-based (from API)\n        vapiCost_USD:          vapiCost.toFixed(4),\n        twilioCost_USD:        twilioCost.toFixed(4),\n\n        // Subscription-based (manual config)\n        makeCost_USD:          makeDailyCost.toFixed(4),\n        voiceflowCost_USD:     voiceflowDailyCost.toFixed(4),\n\n        // Totals\n        totalCost_USD:         totalCostUSD.toFixed(4),\n        totalCost_INR:         totalCostINR.toFixed(2),\n        exchangeRateUsed:      `1 USD = ₹${USD_TO_INR}`,\n\n        // Make.com usage context\n        makeOperationsUsed:    makeReport.operationsUsed,\n        makeOperationsLimit:   makeReport.operationsLimit,\n        makeOpsBurnRate,\n        makeDaysToReset:       daysToReset,\n        makeCreditsUsed:       makeReport.creditsUsed,\n\n        // Voiceflow usage context\n        voiceflowAIOperations: voiceflowReport.totalAIOperations,\n        voiceflowInteractions: voiceflowReport.totalInteractions,\n        voiceflowTopModel:     voiceflowReport.mostUsedModel,\n\n        // Vapi usage context\n        vapiTotalCalls:        vapiReport.totalCalls,\n        vapiAvgCallDuration:   vapiReport.avgCallDuration,\n        vapiCostBreakdown:     vapiReport.costBreakdown\n      },\n\n      // ── Lead funnel ──\n      funnel: {\n        totalLeads,\n        newLeadsToday,\n        contactedLeads,\n        qualifiedLeads,\n        opportunityLeads,\n        meetingScheduled,\n        wonLeads,\n        lostLeads,\n        bookedAppointments,\n        avgLeadScore,\n        whatsappSent,\n        whatsappSkipped\n      },\n\n      // ── ROI (all in INR) ──\n      roi: {\n        currency:              'INR',\n        totalCostINR:          totalCostINR.toFixed(2),\n        costPerLead_INR:       costPerLead,\n        costPerQualified_INR:  costPerQualified,\n        costPerMeeting_INR:    costPerMeeting,\n        costPerWon_INR:        costPerWon,\n        overallConversionRate,\n        estimatedROI,\n        estimatedROINote\n      },\n\n      // ── Revenue from Won leads only ──\n      wonLeadRevenue: {\n        currency:       'INR',\n        note:           'Budget range of Won leads only, USD budgets converted at ₹' + USD_TO_INR,\n        wonLeadCount:   wonLeads,\n        revenueMin_INR: wonRevenueMin,\n        revenueMax_INR: wonRevenueMax,\n        revenueMid_INR: Math.round(wonRevenueMid)\n      },\n\n      // ── Conversion rates ──\n      conversionRates: {\n        leadToQualifiedRate,\n        leadToMeetingRate,\n        meetingToWonRate,\n        overallConversionRate\n      },\n\n      // ── Breakdowns ──\n      pipelineBreakdown,\n      channelBreakdown,\n      bestChannel,\n      sourceBreakdown\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        112
+      ],
+      "id": "5d2d1cac-fece-43f5-8102-ab6a442d1a58",
+      "name": "ROI generates"
+    },
+    {
+      "parameters": {
+        "sendTo": "sonal.aimaven@gmail.com",
+        "subject": "ROI Calculation Report",
+        "message": "={{ $json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        496,
+        208
+      ],
+      "id": "cdfa1cd5-66d2-4fdb-b2dd-ca0456b0a47f",
+      "name": "Email message",
+      "webhookId": "b864c3f0-13d3-4c6f-8374-200644d86ca1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aNbQYToMkCwBUu0P",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0",
+          "mode": "list",
+          "cachedResultName": "Final_capstone(System_health)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1206985668,
+          "mode": "list",
+          "cachedResultName": "cost_analysis_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit#gid=1206985668"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $json.roiReport.reportDate }}",
+            "Vapi_cost": "={{ $json.roiReport.platformCosts.vapiCost_USD }}",
+            "twilio_cost": "={{ $json.roiReport.platformCosts.twilioCost_USD }}",
+            "makeCost": "={{ $json.roiReport.platformCosts.makeCost_USD }}",
+            "voiceflow_cost": "={{ $json.roiReport.platformCosts.voiceflowCost_USD }}",
+            "Total_cost (USD)": "={{ $json.roiReport.platformCosts.totalCost_USD }}",
+            "Total_cost (INR)": "={{ $json.roiReport.platformCosts.totalCost_INR }}",
+            "Make_operation_used": "={{ $json.roiReport.platformCosts.makeOperationsUsed }}",
+            "Voiceflow_AI_ops": "={{ $json.roiReport.platformCosts.voiceflowAIOperations }}",
+            "Voiceflow_interaction": "={{ $json.roiReport.platformCosts.voiceflowInteractions }}",
+            "Vapi_Total_calls": "={{ $json.roiReport.platformCosts.vapiTotalCalls }}",
+            "Vapi_avg_call_duration": "={{ $json.roiReport.platformCosts.vapiAvgCallDuration }}",
+            "Total_leads": "={{ $json.roiReport.funnel.totalLeads }}",
+            "Total_won_leads": "={{ $json.roiReport.funnel.wonLeads }}",
+            "Total_lost_leads": "={{ $json.roiReport.funnel.lostLeads }}",
+            "Estimated_ROI": "={{ $json.roiReport.roi.estimatedROI }}",
+            "Cost_per_lead": "={{ $json.roiReport.roi.costPerLead_INR }}",
+            "Overall_conversion_rate": "={{ $json.roiReport.roi.overallConversionRate }}"
+          },
+          "matchingColumns": [
+            "Date"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Vapi_cost",
+              "displayName": "Vapi_cost",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "twilio_cost",
+              "displayName": "twilio_cost",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "makeCost",
+              "displayName": "makeCost",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "voiceflow_cost",
+              "displayName": "voiceflow_cost",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Total_cost (USD)",
+              "displayName": "Total_cost (USD)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Total_cost (INR)",
+              "displayName": "Total_cost (INR)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Make_operation_used",
+              "displayName": "Make_operation_used",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Voiceflow_AI_ops",
+              "displayName": "Voiceflow_AI_ops",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Voiceflow_interaction",
+              "displayName": "Voiceflow_interaction",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Vapi_Total_calls",
+              "displayName": "Vapi_Total_calls",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Vapi_avg_call_duration",
+              "displayName": "Vapi_avg_call_duration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Total_leads",
+              "displayName": "Total_leads",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Total_won_leads",
+              "displayName": "Total_won_leads",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Total_lost_leads",
+              "displayName": "Total_lost_leads",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Estimated_ROI",
+              "displayName": "Estimated_ROI",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Cost_per_lead",
+              "displayName": "Cost_per_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Overall_conversion_rate",
+              "displayName": "Overall_conversion_rate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        240,
+        48
+      ],
+      "id": "9a49658f-2ace-4b36-9e2f-cda9998de5cd",
+      "name": "Add data in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "usNDrYntbumBCLRa",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ==========================================\n// SIMPLE EXECUTIVE ROI EMAIL REPORT\n// Easy to understand within 15 seconds\n// n8n Code Node\n// ==========================================\n\nconst report = $json.roiReport;\n\n\n// ==========================================\n// HTML TEMPLATE\n// ==========================================\n\nconst html = `\n<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"UTF-8\">\n<title>Daily ROI Report</title>\n</head>\n\n<body style=\"\n  margin:0;\n  padding:30px;\n  background:#f4f6f8;\n  font-family:Arial,sans-serif;\n  color:#111827;\n\">\n\n<table width=\"700\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\"\nstyle=\"\n  background:#ffffff;\n  border-radius:12px;\n  overflow:hidden;\n  box-shadow:0 2px 10px rgba(0,0,0,0.08);\n\">\n\n<!-- HEADER -->\n<tr>\n<td style=\"\n  background:#111827;\n  padding:30px;\n  color:white;\n\">\n\n<h1 style=\"margin:0;font-size:28px;\">\n📊 Daily ROI Report\n</h1>\n\n<p style=\"margin:10px 0 0 0;color:#d1d5db;\">\n${report.reportDate}\n</p>\n\n</td>\n</tr>\n\n\n<!-- KPI CARDS -->\n<tr>\n<td style=\"padding:25px;\">\n\n<table width=\"100%\" cellpadding=\"10\" cellspacing=\"10\">\n\n<tr>\n\n<td width=\"33%\"\nstyle=\"\n  background:#f9fafb;\n  border:1px solid #e5e7eb;\n  border-radius:10px;\n  text-align:center;\n  padding:20px;\n\">\n\n<div style=\"font-size:14px;color:#6b7280;\">\nTotal Leads\n</div>\n\n<div style=\"\n  font-size:32px;\n  font-weight:bold;\n  margin-top:10px;\n\">\n${report.funnel.totalLeads}\n</div>\n\n</td>\n\n\n<td width=\"33%\"\nstyle=\"\n  background:#f9fafb;\n  border:1px solid #e5e7eb;\n  border-radius:10px;\n  text-align:center;\n  padding:20px;\n\">\n\n<div style=\"font-size:14px;color:#6b7280;\">\nWon Leads\n</div>\n\n<div style=\"\n  font-size:32px;\n  font-weight:bold;\n  margin-top:10px;\n\">\n${report.funnel.wonLeads}\n</div>\n\n</td>\n\n\n<td width=\"33%\"\nstyle=\"\n  background:#ecfdf5;\n  border:1px solid #10b981;\n  border-radius:10px;\n  text-align:center;\n  padding:20px;\n\">\n\n<div style=\"font-size:14px;color:#065f46;\">\nProjected ROI\n</div>\n\n<div style=\"\n  font-size:24px;\n  font-weight:bold;\n  margin-top:10px;\n  color:#059669;\n\">\n${report.roi.estimatedROI}\n</div>\n\n</td>\n\n</tr>\n\n</table>\n\n</td>\n</tr>\n\n\n<!-- MAIN SUMMARY -->\n<tr>\n<td style=\"padding:0 30px 30px 30px;\">\n\n<h2 style=\"\n  font-size:22px;\n  margin-bottom:15px;\n\">\n📈 Executive Summary\n</h2>\n\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"\nstyle=\"\n  border:1px solid #e5e7eb;\n  border-radius:10px;\n  overflow:hidden;\n\">\n\n<tr style=\"background:#f9fafb;\">\n<td style=\"padding:14px;font-weight:bold;\">Metric</td>\n<td style=\"padding:14px;font-weight:bold;\">Value</td>\n</tr>\n\n<tr>\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\nAutomation Cost\n</td>\n\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\n₹${report.platformCosts.totalCost_INR}\n</td>\n</tr>\n\n<tr>\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\nQualified Leads\n</td>\n\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\n${report.funnel.qualifiedLeads}\n</td>\n</tr>\n\n<tr>\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\nMeetings Scheduled\n</td>\n\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\n${report.funnel.meetingScheduled}\n</td>\n</tr>\n\n<tr>\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\nCost Per Lead\n</td>\n\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\n₹${report.roi.costPerLead_INR}\n</td>\n</tr>\n\n<tr>\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\nLead → Qualified Rate\n</td>\n\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\n${report.conversionRates.leadToQualifiedRate}\n</td>\n</tr>\n\n<tr>\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\nMeeting → Won Rate\n</td>\n\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\n${report.conversionRates.meetingToWonRate}\n</td>\n</tr>\n\n<tr>\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\nEstimated Pipeline Value\n</td>\n\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\n₹${Number(report.wonLeadRevenue.revenueMid_INR).toLocaleString('en-IN')}\n</td>\n</tr>\n\n<tr>\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\nBest Channel\n</td>\n\n<td style=\"padding:14px;border-top:1px solid #e5e7eb;\">\n${report.bestChannel}\n</td>\n</tr>\n\n</table>\n\n</td>\n</tr>\n\n\n<!-- FOOTER -->\n<tr>\n<td style=\"\n  background:#111827;\n  color:#9ca3af;\n  text-align:center;\n  padding:18px;\n  font-size:12px;\n\">\n\nAutomated Operational ROI Report\n\n</td>\n</tr>\n\n</table>\n\n</body>\n</html>\n`;\n\n\n// ==========================================\n// RETURN FOR GMAIL NODE\n// ==========================================\n\nreturn [{\n  json: {\n    subject: `📊 ROI Report - ${report.reportDate}`,\n    html\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        256
+      ],
+      "id": "5a8f0373-92d2-46a2-90db-30c6b5f53edb",
+      "name": "Email builder"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "ROI generates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Receive Cost Data": {
+      "main": [
+        [
+          {
+            "node": "Get All leads",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Get All leads": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ROI generates": {
+      "main": [
+        [
+          {
+            "node": "Add data in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email builder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email builder": {
+      "main": [
+        [
+          {
+            "node": "Email message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "1ae2c196-e946-4f6d-bcc3-22a4eaa7356c",
+  "meta": {
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "p13Ong7kdxwJcx7o0sern",
+  "tags": []
+}
