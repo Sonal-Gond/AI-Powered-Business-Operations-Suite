@@ -45,14 +45,14 @@
   Save the id from each tool response  
 
 - Create Assistant
-  Download assistant configurations from this repository  
-  Replace YOUR_WEBHOOK_URL in assistant.json with your server URL  
-  Replace the toolIds array values with the IDs saved from tool creation  
-  Send a POST request:  
-  URL → https://api.vapi.ai/assistant  
-  Header → Authorization: Bearer YOUR_API_KEY  
-  Header → Content-Type: application/json  
-  Body → contents of assistant configurations
+  Download assistant configurations from this repository    
+  Replace YOUR_WEBHOOK_URL in assistant.json with your server URL    
+  Replace the toolIds array values with the IDs saved from tool creation    
+  Send a POST request:    
+  URL → https://api.vapi.ai/assistant    
+  Header → Authorization: Bearer YOUR_API_KEY    
+  Header → Content-Type: application/json    
+  Body → contents of assistant configurations  
 
  - Now see in vapi dashboard you will see the assistant 
  
