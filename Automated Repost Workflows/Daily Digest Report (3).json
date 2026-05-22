@@ -273,7 +273,7 @@
         "select": "channel",
         "channelId": {
           "__rl": true,
-          "value": "C0B1RSBSCNP",
+          "value": "your-slack-channel-id",
           "mode": "id"
         },
         "text": "=📊 *Daily Business Digest (Key Metrics)*\n\n━━━━━━━━━━━━━━━━━━\n\n🧲 *Leads*\n• Total: {{$json.leads.totalLeads}}\n• New: {{$json.leads.newLeads}} | Existing: {{$json.leads.existingLeads}}\n• Warm/Hot: {{$json.leads.warmLeads + $json.leads.hotLeads}}\n• Meetings: {{$json.leads.meetingsScheduled}}\n\n━━━━━━━━━━━━━━━━━━\n\n🧠 *Content*\n• Topic: {{$json.content.topic}}\n• Status: {{$json.content.overallStatus}}\n• WP: {{$json.content.publishingStatus.wordpress}}\n• FB: {{$json.content.publishingStatus.facebook}}\n• LI: {{$json.content.publishingStatus.linkedin}}\n\n━━━━━━━━━━━━━━━━━━\n\n📞 *Voice AI*\n• Calls: {{$json.voice.totalCalls}}\n• Connection: {{$json.voice.metrics.connectionRate}}\n• Success: {{$json.voice.metrics.successRate}}\n\n━━━━━━━━━━━━━━━━━━\n\n🤖 *Chatbot*\n• Conversations: {{$json.chatbot.totalConversations}}\n• Resolution: {{$json.chatbot.effectiveness.resolutionRate}}\n• Latency: {{$json.chatbot.performance.avgLatencyMs}} ms\n\n━━━━━━━━━━━━━━━━━━\n\n📅 *Appointments*\n• Total: {{$json.appointments.totalBookings}}\n• Upcoming: {{$json.appointments.schedule.upcomingAppointments}}\n• ⚠️ Pending Issues: {{$json.appointments.alerts}}\n\n━━━━━━━━━━━━━━━━━━\n\n🚨 *Key Insights*\n• {{$json.chatbot.alerts[0] || \"Chatbot stable\"}}\n• {{$json.voice.insight}}\n• {{$json.content.overallStatus.includes(\"⚠️\") ? \"Content not fully published\" : \"Content fully published\"}}\n• {{$json.appointments.alerts[0] || \"Appointments healthy\"}}\n\n━━━━━━━━━━━━━━━━━━\n",
@@ -297,7 +297,7 @@
     },
     {
       "parameters": {
-        "sendTo": "sonal.aimaven@gmail.com",
+        "sendTo": "your-email-id",
         "subject": "Daily Digest Report",
         "message": "={{ $json.html }}",
         "options": {}
