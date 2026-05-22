@@ -23,7 +23,7 @@
     },
     {
       "parameters": {
-        "url": "https://eu1.make.com/api/v2/organizations/6512127",
+        "url": "https://eu1.make.com/api/v2/organizations/{{organizationID}}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -53,13 +53,13 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "VF.DM.69eb4452c7feddfd4ab9dc92.OuCz0OZmDnBTmlBF"
+              "value": "YOUR_VOICEFLOW_API_KEY"
             }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "{\n  \"data\": {\n    \"name\": \"credit_usage\",\n    \"filter\": {\n      \"projectID\": \"69eb3f83b35e2349a18f88cd\"\n    }\n  }\n}",
+        "jsonBody": "{\n  \"data\": {\n    \"name\": \"credit_usage\",\n    \"filter\": {\n      \"projectID\": \"YOUR_VOICEFLOW_projectID\"\n    }\n  }\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -80,7 +80,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 1beb307d-08f4-481b-98dc-cf0ebb00456b"
+              "value": "Bearer YOUR_VAPI_API_KEY"
             }
           ]
         },
@@ -150,7 +150,7 @@
         "select": "channel",
         "channelId": {
           "__rl": true,
-          "value": "C0B2M2M4692",
+          "value": "your-slack-channel-id",
           "mode": "id"
         },
         "text": "=🚨 Budget Threshold Alert  \nSeverity: {{$json.overallSeverity}}  \n\nVapi: \n• Current Cost: ${{$json.summary.vapi.totalCost}} \n• Projected Cost: ${{$json.summary.vapi.projectedCost}} \n\nVoiceflow: \n• AI Ops: {{$json.summary.voiceflow.aiOperations}}  \n\nMake.com: \n• Operations Used: {{$json.summary.make.operationsUsed}}  \n\nGenerated: {{$json.generatedAt}}",
