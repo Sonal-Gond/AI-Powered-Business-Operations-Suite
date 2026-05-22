@@ -1,0 +1,291 @@
+{
+  "name": "Last inactive days count for re-engagement",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        0,
+        -48
+      ],
+      "id": "5e0799dc-a6dd-44d4-8ac3-f8fb717e0fb1",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -432,
+        -96
+      ],
+      "id": "4a1dece9-cee8-4eae-878e-d4ce8671a953",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "mode": "list",
+          "cachedResultName": "final_capstone(Voice_operations)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 461571680,
+          "mode": "list",
+          "cachedResultName": "Re-Engagement ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=461571680"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -224,
+        -32
+      ],
+      "id": "12c3a102-9608-4b50-93ba-bef38908be31",
+      "name": "Get re-engagement data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "usNDrYntbumBCLRa",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "mode": "list",
+          "cachedResultName": "final_capstone(Voice_operations)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 461571680,
+          "mode": "list",
+          "cachedResultName": "Re-Engagement ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=461571680"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $json.row_number }}",
+            "Days Inactive": "={{ Math.floor(DateTime.now().startOf('day').diff(DateTime.fromFormat($json['Last Active Date'], \"MM/dd/yyyy HH:mm\").startOf('day'), 'days').days) }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Service",
+              "displayName": "Service",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Active Date",
+              "displayName": "Last Active Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Days Inactive",
+              "displayName": "Days Inactive",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Called",
+              "displayName": "Called",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Call_time",
+              "displayName": "Call_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Intent",
+              "displayName": "Intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Call_status",
+              "displayName": "Call_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        48
+      ],
+      "id": "01a19c77-45d5-4740-8957-88d22f104be5",
+      "name": "Count days and update it",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "usNDrYntbumBCLRa",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Count days and update it",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get re-engagement data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get re-engagement data": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Count days and update it": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Kolkata",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "3a6a2cde-e291-4dbf-91db-af61112537cc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "UBb27EaHztnP7HVaoo_Yp",
+  "tags": []
+}
