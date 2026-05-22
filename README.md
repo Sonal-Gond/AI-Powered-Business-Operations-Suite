@@ -1,6 +1,6 @@
 # AI-Powered-Business-Operations-Suite
 
-**Requiremnets**
+# Requiremnets**
 - n8n self hosted or cloud based account
 - make.com account
 - OpenAI API key 
@@ -12,3 +12,6 @@
 - WordPress account with free domain website
 - Slack account (for sending Alert and report) 
 - Calendly account (For Appoinment link)  
+
+
+**Setup steps**
