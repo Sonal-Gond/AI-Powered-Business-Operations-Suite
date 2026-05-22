@@ -30,5 +30,13 @@
 - Click on Project (left sidebar)
 - Click import (top right corner) -> Selct downloaded .vf file
 - Replace url of API tools with your urls
+
+
+**VAPI Assistant Setup Steps**
+- Download the VAPI tool and assistant JSON files from this repository
+- Get your API Key from VAPI Dashboard → API Keys
+- Create each tool by sending a POST request to https://api.vapi.ai/tool with each tool JSON file as the request body — save the id returned from each response
+- Create the assistant by sending a POST request to https://api.vapi.ai/assistant with the assistant JSON file as the request body — replace the toolIds array with the IDs saved in the previous step
+- Replace example_server_url in each tool JSON and assistnats with your actual server URL before sending requests
  
 
