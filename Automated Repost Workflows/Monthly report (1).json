@@ -1,0 +1,625 @@
+{
+  "name": "Monthly report",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "months",
+              "triggerAtHour": 18
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -2000,
+        112
+      ],
+      "id": "a88f1301-32e0-47f1-b914-6b4a0a2474bb",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a8b59ea9-cb40-48fb-924a-99acfde11250",
+              "name": "_sheet",
+              "value": "reeng",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -592,
+        688
+      ],
+      "id": "53380f5b-8d82-49a0-9897-fc29d412674b",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "mode": "list",
+          "cachedResultName": "Lead Capture form (final_capstone)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1709189993,
+          "mode": "list",
+          "cachedResultName": "Omnichannel_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1184,
+        -256
+      ],
+      "id": "d3f2fa57-6d48-4362-90f1-4133796440a4",
+      "name": "Lead capture",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "mode": "list",
+          "cachedResultName": "Final_capstone(Content-creation)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1331242044,
+          "mode": "list",
+          "cachedResultName": "Content_research",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=1331242044"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1168,
+        -32
+      ],
+      "id": "bdb334d1-9156-4535-8e97-3b8e5983064b",
+      "name": "Content",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "mode": "list",
+          "cachedResultName": "final_capstone(Voice_operations)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1428000902,
+          "mode": "list",
+          "cachedResultName": "Voice_operation_call_summary",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=1428000902"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1168,
+        192
+      ],
+      "id": "7b3f3ca0-eec3-4848-a037-e783cdd7c4a3",
+      "name": "Call",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "mode": "list",
+          "cachedResultName": "Lead Capture form (final_capstone)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 757520354,
+          "mode": "list",
+          "cachedResultName": "Chatbot_performance",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=757520354"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1168,
+        368
+      ],
+      "id": "5636a1fe-b0fb-4552-82d7-3a2f2c057da6",
+      "name": "Chatbot",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "mode": "list",
+          "cachedResultName": "final_capstone(Voice_operations)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Appointment_details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1296,
+        512
+      ],
+      "id": "fe324e70-f5f5-4819-8565-a2f2404c9433",
+      "name": "Appointment",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "mode": "list",
+          "cachedResultName": "final_capstone(Voice_operations)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 461571680,
+          "mode": "list",
+          "cachedResultName": "Re-Engagement ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=461571680"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1200,
+        720
+      ],
+      "id": "534a8a5a-663d-49fd-a161-a5a8f110117d",
+      "name": "Re-engagement",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "08de9cea-e917-4937-9334-7d5ff734e7e7",
+              "name": "_sheet",
+              "value": "leads",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -704,
+        -240
+      ],
+      "id": "5b704bd5-0ba6-4d35-8433-191e7f082e32",
+      "name": "lead"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "932c2740-20b1-4431-b5c3-6334d044e7f6",
+              "name": "_sheet",
+              "value": "content",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -672,
+        -32
+      ],
+      "id": "c037651f-8fdb-47d8-8011-4a654aeab606",
+      "name": "content"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1928d916-772e-4459-b811-6b46063d682a",
+              "name": "_sheet",
+              "value": "calls",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -656,
+        160
+      ],
+      "id": "5cfc64f7-f103-4aab-b91d-ce2fdc8bd80c",
+      "name": "calls"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "985ed659-c1a1-400a-a3d6-7f1083262fdb",
+              "name": "_sheet",
+              "value": "chat",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -640,
+        336
+      ],
+      "id": "ca2fd85b-3d3b-4f73-8e77-ffad9ff955fd",
+      "name": "chat"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a91d10b8-d8ce-49b5-923e-945e7574ef0f",
+              "name": "_sheet",
+              "value": "appts",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -656,
+        512
+      ],
+      "id": "baeaa321-8998-4b3f-bf37-348b0c754e67",
+      "name": "appts"
+    },
+    {
+      "parameters": {
+        "numberInputs": 6
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -240,
+        96
+      ],
+      "id": "4284b66d-933b-490b-ad51-febb62de3b3a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ═══════════════════════════════════════════════════════════════\n// MONTHLY REPORT CODE NODE\n// Captures: 1st day → last day of CURRENT month\n// ═══════════════════════════════════════════════════════════════\n\n// Get all incoming data\nconst allRows = $input.all().map(i => i.json);\n\n// Split by sheet (_sheet must be set in Set nodes)\nconst allLeads   = allRows.filter(r => r._sheet === 'leads');\nconst allChats   = allRows.filter(r => r._sheet === 'chats');\nconst allAppts   = allRows.filter(r => r._sheet === 'appts');\nconst allReeng   = allRows.filter(r => r._sheet === 'reeng');\nconst allCalls   = allRows.filter(r => r._sheet === 'calls');\nconst allContent = allRows.filter(r => r._sheet === 'content'); // ✅ NEW\n\n// ── Monthly window ─────────────────────────────────────────────\nconst now = new Date();\n\n// Start of month\nconst monthStart = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0);\n\n// End of month\nconst monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);\n\n// ── Date Parsers (same as your weekly) ─────────────────────────\n\n// DD/MM/YYYY\nfunction parseLeadDate(val) {\n  if (!val) return null;\n  const [mm, dd, yyyy] = val.split('/');\n  return new Date(yyyy, mm - 1, dd);\n}\n\n// ISO\nfunction parseISODate(val) {\n  if (!val) return null;\n  return new Date(val);\n}\n\n// DD/MM/YYYY, time\nfunction parseDDMMTime(val) {\n  if (!val || !val.includes(',')) return null;\n\n  const [datePart, timePart] = val.split(',');\n  const [dd, mm, yyyy] = datePart.trim().split('/');\n\n  let [time, modifier] = timePart.trim().split(' ');\n  let [hours, minutes, seconds] = time.split(':');\n\n  hours = parseInt(hours);\n  minutes = parseInt(minutes);\n  seconds = parseInt(seconds);\n\n  if (modifier === 'pm' && hours < 12) hours += 12;\n  if (modifier === 'am' && hours === 12) hours = 0;\n\n  return new Date(yyyy, mm - 1, dd, hours, minutes, seconds);\n}\n\n// ── Check if inside month ──────────────────────────────────────\nfunction inMonth(d) {\n  return d && d >= monthStart && d <= monthEnd;\n}\n\n// ── Filter data ────────────────────────────────────────────────\nconst monthlyLeads   = allLeads.filter(r => inMonth(parseLeadDate(r.Timestamp)));\nconst monthlyChats   = allChats.filter(r => inMonth(parseISODate(r.created_At)));\nconst monthlyAppts   = allAppts.filter(r => inMonth(parseDDMMTime(r.Timestamp)));\nconst monthlyReeng   = allReeng.filter(r => inMonth(parseDDMMTime(r.Call_time)));\nconst monthlyCalls   = allCalls.filter(r => inMonth(parseDDMMTime(r.Timestamp)));\nconst monthlyContent = allContent.filter(r => inMonth(parseLeadDate(r.Timestamp))); // ✅ NEW\n\n// ── Lead metrics ───────────────────────────────────────────────\nconst totalLeads = monthlyLeads.length;\n\nconst hotLeads  = monthlyLeads.filter(r => (r.Lead_type || '').toLowerCase() === 'hot').length;\nconst warmLeads = monthlyLeads.filter(r => (r.Lead_type || '').toLowerCase() === 'warm').length;\nconst coldLeads = monthlyLeads.filter(r => (r.Lead_type || '').toLowerCase() === 'cold').length;\n\n// ── Call metrics ───────────────────────────────────────────────\nconst totalCalls = monthlyCalls.length;\n\nconst successCalls = monthlyCalls.filter(r =>\n  (r.Call_outcome || '').toLowerCase() === 'success' ||\n  (r.Call_status || '').toLowerCase() === 'completed'\n).length;\n\nconst totalCallCost = monthlyCalls\n  .reduce((sum, r) => sum + Number(r.Call_cost || 0), 0)\n  .toFixed(2);\n\n// ── Chat metrics ───────────────────────────────────────────────\nconst totalChats = monthlyChats.length;\n\nconst avgResolution = totalChats\n  ? (\n      monthlyChats.reduce((sum, r) => sum + Number(r.resolution_rate || 0), 0) /\n      totalChats * 100\n    ).toFixed(1)\n  : '0';\n\n// ── Appointment metrics ────────────────────────────────────────\nconst totalAppts = monthlyAppts.length;\n\nconst confirmedAppts = monthlyAppts.filter(r =>\n  (r.Appintment_status || '').toLowerCase() === 'confirmed'\n).length;\n\n// ── Re-engagement metrics ──────────────────────────────────────\nconst reengContacted = monthlyReeng.length;\n\nconst reengInterested = monthlyReeng.filter(r =>\n  (r.Intent || '').toLowerCase() === 'interested'\n).length;\n\n// ── Content metrics (NEW) ──────────────────────────────────────\nconst totalContent = monthlyContent.length;\n\nconst fullyPublished = monthlyContent.filter(r =>\n  r.Blog_Status === 'Posted' &&\n  r.Facebook_status === 'Posted' &&\n  r.LinkedIn_status === 'Posted'\n).length;\n\nconst pendingContent = monthlyContent.filter(r =>\n  r.Blog_Status !== 'Posted' ||\n  r.Facebook_status !== 'Posted' ||\n  r.LinkedIn_status !== 'Posted'\n).length;\n\n// ── Output ─────────────────────────────────────────────────────\nreturn [{\n  json: {\n    reportType: \"Monthly\",\n    period: `${monthStart.toDateString()} – ${monthEnd.toDateString()}`,\n\n    // Leads\n    totalLeads,\n    hotLeads,\n    warmLeads,\n    coldLeads,\n\n    // Chats\n    totalChats,\n    avgResolution,\n\n    // Calls\n    totalCalls,\n    successCalls,\n    totalCallCost,\n\n    // Appointments\n    totalAppts,\n    confirmedAppts,\n\n    // Re-engagement\n    reengContacted,\n    reengInterested,\n\n    // Content\n    totalContent,\n    fullyPublished,\n    pendingContent\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        160
+      ],
+      "id": "f5fd38cb-7a6d-4b64-82f4-bc5beb1f5e04",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0B4ZBFQZP0",
+          "mode": "id"
+        },
+        "text": "=📊 * Automation Report*\n🗓️ *Period:* {{$json.period}}\n\n━━━━━━━━━━━━━━\n📌 *Lead Summary*\n• Total Leads: *{{$json.totalLeads}}*\n• 🔥 Hot Leads: *{{$json.hotLeads}}*\n• 🟡 Warm Leads: *{{$json.warmLeads}}*\n• ❄️ Cold Leads: *{{$json.coldLeads}}*\n\n━━━━━━━━━━━━━━\n📞 *Call Performance*\n• Total Calls: *{{$json.totalCalls}}*\n• ✅ Successful Calls: *{{$json.successCalls}}*\n• 💰 Total Call Cost: *${{$json.totalCallCost}}*\n\n━━━━━━━━━━━━━━\n💬 *Chat Metrics*\n• Total Chats: *{{$json.totalChats}}*\n• ⏱️ Avg Resolution Time: *{{$json.avgResolution}}*\n\n━━━━━━━━━━━━━━\n📅 *Appointments*\n• Total Appointments: *{{$json.totalAppts}}*\n• ✅ Confirmed Appointments: *{{$json.confirmedAppts}}*\n\n━━━━━━━━━━━━━━\n🔄 *Re-engagement*\n• Contacted: *{{$json.reengContacted}}*\n• Interested: *{{$json.reengInterested}}*\n\n━━━━━━━━━━━━━━\n📝 *Content Performance*\n• Total Content Pieces: *{{$json.totalContent}}*\n• ✅ Fully Published: *{{$json.fullyPublished}}*\n• ⏳ Pending Content: *{{$json.pendingContent}}*\n {{ $json.period }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        224,
+        160
+      ],
+      "id": "b2a54d58-1ee5-4060-bf17-23e5c90cd9f3",
+      "name": "Send a message",
+      "webhookId": "9538707b-0fcf-4b1c-b2b8-92d329a3e473",
+      "credentials": {
+        "slackApi": {
+          "id": "ekJzRR6RASxiEuDX",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Lead capture": {
+      "main": [
+        [
+          {
+            "node": "lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content": {
+      "main": [
+        [
+          {
+            "node": "content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call": {
+      "main": [
+        [
+          {
+            "node": "calls",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chatbot": {
+      "main": [
+        [
+          {
+            "node": "chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Appointment": {
+      "main": [
+        [
+          {
+            "node": "appts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Re-engagement": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Lead capture",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Content",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Call",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Chatbot",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Appointment",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Re-engagement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "lead": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "content": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "calls": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "chat": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "appts": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "91345a25-d333-495b-a3c6-e9ccb02c785c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "JQkM5pKGL-_Ovrn_xxbmW",
+  "tags": []
+}
