@@ -1,0 +1,65 @@
+{
+  "type": "function",
+  "function": {
+    "name": "appointment_booked_detail",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "description": "Customer email address",
+          "type": "string"
+        },
+        "service": {
+          "description": "Type of service booked",
+          "type": "string"
+        },
+        "user_name": {
+          "description": "Full name of the customer",
+          "type": "string"
+        },
+        "appointment_id": {
+          "description": "id that is created after meeting has booked you will get it from tool response of book_appointment",
+          "type": "string"
+        },
+        "appointment_date": {
+          "description": "Date of appointment in YYYY-MM-DD format",
+          "type": "string"
+        },
+        "appointment_time": {
+          "description": "Start time of appointment in HH:MM format (24-hour)",
+          "type": "string"
+        },
+        "appointment_hours": {
+          "description": "Duration of appointment in hours (e.g., 0.5, 1, 2)",
+          "type": "number"
+        }
+      },
+      "required": [
+        "appointment_date",
+        "appointment_time",
+        "appointment_hours",
+        "appointment_id",
+        "user_name",
+        "service"
+      ]
+    }
+  },
+  "messages": [
+    {
+      "type": "request-start",
+      "blocking": false
+    }
+  ]
+  "server": {
+    "url": "https://makewebhookurl.com/webhook",
+    "timeoutSeconds": 20,
+    "staticIpAddressesEnabled": false
+  },
+  "variableExtractionPlan": {
+    "schema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    }
+  }
+}
