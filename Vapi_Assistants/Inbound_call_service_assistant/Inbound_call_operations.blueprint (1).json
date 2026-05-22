@@ -5,7 +5,7 @@
             "id": 1,
             "module": "gateway:CustomWebHook",
             "version": 1,
-            "parameters": {
+            "parameters": { 
                 "hook": 2846248,
                 "maxResults": 1
             },
