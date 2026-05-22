@@ -16,7 +16,7 @@
 
 # Setup steps
 **n8n workflows setup steps**
--> Download n8n workflow from these repository
--> Goto n8n dashboard 
--> Create workflow -> click on three dots (top right corner) -> select import from file -> select   json file (downloaded workflow) 
+- Download n8n workflow from these repository
+- Goto n8n dashboard
+- Create workflow -> click on three dots (top right corner) -> select import from file -> select   json file (downloaded workflow) 
  
