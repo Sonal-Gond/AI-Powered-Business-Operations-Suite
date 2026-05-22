@@ -1,0 +1,29 @@
+{
+  "type": "query",
+  "function": {
+    "name": "Novatech_Customer_support",
+    "description": "These tool is used for searching knowledge base and give response",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  "messages": [
+    {
+      "type": "request-start",
+      "blocking": false
+    }
+  ],
+  "knowledgeBases": [
+    {
+      "name": "Customer_support",
+      "provider": "google",
+      "model": "gemini-2.0-flash",
+      "description": "These Knowledge base contains customer support issue and solution.",
+      "fileIds": [
+        "your_kb_id_of_customer_support"
+      ]
+    }
+  ]
+}
