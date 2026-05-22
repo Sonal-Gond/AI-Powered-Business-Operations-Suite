@@ -1,0 +1,120 @@
+{
+  "type": "function",
+  "function": {
+    "name": "calendly_meeting",
+    "description": "These tool sends call status and call outcome to webhook for storing lead pipeline stage",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "description": "Meeting date in MM/DD/YYYY format",
+          "type": "string"
+        },
+        "name": {
+          "description": "Full name of the lead",
+          "type": "string"
+        },
+        "time": {
+          "description": "Meeting start time in 24-hour format (HH:MM)",
+          "type": "string"
+        },
+        "email": {
+          "description": "Email of the lead",
+          "type": "string"
+        },
+        "notes": {
+          "description": "Short summary of the call",
+          "type": "string"
+        },
+        "phone": {
+          "description": "Phone number of the lead",
+          "type": "string"
+        },
+        "intent": {
+          "type": "string",
+          "enum": [
+            "interested",
+            "not_interested",
+            "booked",
+            "already_booked",
+            "busy",
+            "unclear"
+          ]
+        },
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "no_answer",
+            "short_call",
+            "interested",
+            "not_interested",
+            "booking",
+            "already_booked"
+          ]
+        },
+        "service": {
+          "description": "User requirement or service they are interested in",
+          "type": "string"
+        },
+        "responded": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no"
+          ]
+        },
+        "call_status": {
+          "type": "string",
+          "enum": [
+            "no_answer",
+            "short_call",
+            "connected",
+            "booked"
+          ]
+        },
+        "duration_hours": {
+          "description": "Meeting duration in hours (e.g., 1, 0.5, 1.5)",
+          "type": "number"
+        },
+        "preferred_time_iso": {
+          "description": "Full ISO datetime (derived from date + time)",
+          "type": "string"
+        },
+        "call_pipeline_stage": {
+          "description": "Pipeline stage derived ONLY from call outcome",
+          "type": "string",
+          "enum": [
+            "Engaged",
+            "Meeting Scheduled",
+            "Lost",
+            "No Change"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "call_pipeline_stage",
+        "outcome",
+        "email"
+      ]
+    }
+  },
+  "messages": [
+    {
+      "type": "request-start",
+      "blocking": false
+    }
+  ],
+  "server": {
+    "url": "https://n8nwebhookurl.ngrok-free.dev/webhook/meeting-on-call-for-hot-lead",
+    "timeoutSeconds": 20,
+    "staticIpAddressesEnabled": false
+  },
+  "variableExtractionPlan": {
+    "schema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    }
+  }
+}
