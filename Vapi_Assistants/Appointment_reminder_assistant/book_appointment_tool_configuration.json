@@ -1,0 +1,22 @@
+{
+  "type": "google.calendar.event.create",
+  "function": {
+    "name": "book_appointment",
+    "description": "These tool is used for appointment booking",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  "messages": [
+    {
+      "type": "request-start",
+      "content": "Please hold on We are booking your appointment",
+      "blocking": false
+    }
+  ],
+  "metadata": {
+    "calendarId": "YOUR_CALENDAR_ID"
+  }
+}
