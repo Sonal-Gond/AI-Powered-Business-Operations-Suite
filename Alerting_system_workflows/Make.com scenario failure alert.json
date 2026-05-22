@@ -28,7 +28,7 @@
           "parameters": [
             {
               "name": "scenarioId",
-              "value": "5426827"
+              "value": "YOUR_SCENARIO_ID"
             }
           ]
         },
@@ -37,7 +37,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Token c9a74278-7fbd-4af0-926e-8841ec5a5828"
+              "value": "Token YOUR_MAKE.COM_API_KEY"
             }
           ]
         },
@@ -70,23 +70,23 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0",
+          "value": "YOUR_system_health_loging_sheet_id",
           "mode": "list",
           "cachedResultName": "Final_capstone(System_health)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_system_health_loging_sheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_system_health_loging_sheet_id/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
             "Workflow_name": "Lead qualification and Follow up",
-            "Workflow_id": "5426827",
+            "Workflow_id": "YOUR_SCENARIO_ID",
             "Platform": "make.com",
             "Status": "Error",
             "Error_msg": "={{ $('Loop Over Items').item.json.reason }}",
@@ -192,17 +192,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0",
+          "value": "YOUR_system_health_loging_sheet_id",
           "mode": "list",
           "cachedResultName": "Final_capstone(System_health)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_system_health_loging_sheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_system_health_loging_sheet_id/edit#gid=0"
         },
         "filtersUI": {
           "values": [
@@ -283,10 +283,10 @@
         "select": "channel",
         "channelId": {
           "__rl": true,
-          "value": "C0AR2A6ATK4",
+          "value": "your-slack-channel-id",
           "mode": "id"
         },
-        "text": "=Workflow Error:  \nPlatform: make.com \nWorkflow name: Lead Qualification and follow up \nTime : {{ new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) }}",
+        "text": "=Workflow Error:  \nPlatform: make.com \nWorkflow name: Lead Qualification and follow up \nTime : {{ new Date().toLocaleString('en', { timeZone: 'Asia/Kolkata' }) }}",
         "otherOptions": {}
       },
       "type": "n8n-nodes-base.slack",
