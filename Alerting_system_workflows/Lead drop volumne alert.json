@@ -139,17 +139,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_lead_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_lead_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_lead_spreadsheet_id/edit#gid=1709189993"
         },
         "options": {}
       },
@@ -173,7 +173,7 @@
         "select": "channel",
         "channelId": {
           "__rl": true,
-          "value": "C0B2M2M4692",
+          "value": "your-slack-channel-id",
           "mode": "id"
         },
         "text": "=🚨 *CRITICAL Lead Volume Alert*\n\nA severe drop in lead volume has been detected.\n\n• Today's Leads:{{ $json.todayCount }} \n• 7-Day Avg: {{$json.rollingAvg}}\n• Drop Percentage: {{$json.dropPercent}}%\n• Severity: {{$json.severity}}\n\nPossible causes:\n• Ads stopped\n• CRM/webhook failure\n• Tracking issue\n• Form submission failure\n• Traffic outage\n\nBest Recent Day:\n• {{$json.bestDay}} → {{$json.bestCount}} leads\n\nImmediate investigation recommended.\n",
@@ -200,7 +200,7 @@
         "select": "channel",
         "channelId": {
           "__rl": true,
-          "value": "C0B2M2M4692",
+          "value": "your-slack-channel-id",
           "mode": "id"
         },
         "text": "=⚠️ *Lead Drop Warning Detected*  Lead volume has dropped below the expected threshold.  \n• Today's Leads:{{ $('Lead drop count').item.json.todayCount }}  \n• 7-Day Avg:{{ $json.rollingAvg }} \n• Drop Percentage:{{ $('Lead drop count').item.json.dropPercent }} % \n• Threshold:{{ $json.thresholdUsed }}%  \nPlease review campaigns, forms, and lead sources.  Channel Breakdown:{{ $json.channelBreakdown }} Source Breakdown: {{ $json.sourceBreakdown }}",
