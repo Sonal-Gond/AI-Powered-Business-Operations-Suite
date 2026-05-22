@@ -130,7 +130,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=You are a high-converting social media strategist for an AI automation solutions company.\n\nYour goal is to generate platform-specific content that drives users to start a conversation (WhatsApp/chat/call).\n\n---\n\nINPUT:\n- Topic: {{ $('Get row(s) in sheet1').item.json.topic_title }}\n- Keyword: {{ $('Get row(s) in sheet1').item.json.topic_keyword }}\n- Intent: {{ $('Get row(s) in sheet1').item.json.intent }}\n- Target Problem: {{ $('Get row(s) in sheet1').item.json.target_problem }}\n- CTA Angle: {{ $('Get row(s) in sheet1').item.json.cta_angle }}\n- Content ID: {{ $('Get row(s) in sheet1').item.json.content_id }}\n\n---\n\nTASK:\n\nGenerate TWO different social media posts:\n\n1. LinkedIn post (professional, insight-driven)\n2. Facebook post (simple, emotional, relatable)\n\nAlso generate ONE image prompt that works for both platforms.\n\n---\n\nOUTPUT FORMAT (STRICT JSON):\n\n{\n  \"linkedin_content\": {\n    \"hook\": \"\",\n    \"caption\": \"\",\n    \"cta\": \"\",\n    \"full_post\": \"\"\n  },\n  \"facebook_content\": {\n    \"hook\": \"\",\n    \"caption\": \"\",\n    \"cta\": \"\",\n    \"full_post\": \"\"\n  },\n  \"image_prompt\": \"\"\n}\n\n---\n\nINSTRUCTIONS:\n\n---\n\n1. LINKEDIN CONTENT:\n\n- Tone: Professional, business-focused\n- Style: Insight + value-driven\n- Length: Medium to long\n- Structure:\n  Hook → Problem → Insight → Solution → Benefit → CTA\n\n---\n\n2. FACEBOOK CONTENT:\n\n- Tone: Simple, relatable, emotional\n- Style: Easy to understand\n- Length: Short to medium\n- Structure:\n  Hook → Problem → Solution → CTA\n\n---\n\n3. HOOK (for both):\n\n- First 1–2 lines must grab attention\n- Focus on pain/problem or curiosity\n\n---\n\n4. CTA (VERY IMPORTANT):\n\n- MUST include ONE primary action:\n  → Visit the solution page (TRACKED LINK)\n\nPRIMARY CTA LINK (MANDATORY):\n\nUse this EXACT format:\n\nhttps://celadon-fairy-685068.netlify.app/?utm_source=PLATFORM&content_id={{ $('Get row(s) in sheet1').item.json.content_id }}\n\nWhere:\n- PLATFORM = linkedin OR facebook\n\n---\n\n5. FULL POST:\n\nCombine:\nhook + caption + CTA\n\n---\n\n6. IMAGE PROMPT:\n\nGenerate a HIGH-CONVERTING visual idea:\n\nInclude:\n- Scene (real-life business problem)\n- Subject (business owner / team)\n- Emotion (frustration / stress / relief)\n- Text overlay (max 5–6 words)\n\nExample:\n“A frustrated business owner checking phone notifications with text overlay: ‘Losing Leads Daily?’”\n\n---\n\n7. GOAL:\n\n- Trigger pain\n- Show solution\n- Push conversation\n\n---\n\nIMPORTANT:\n\n- LinkedIn and Facebook content MUST be different\n- Do NOT repeat same text\n- Do NOT merge both into one\n\n---\n\nReturn ONLY valid JSON. No extra text.",
+        "text": "=You are a high-converting social media strategist for an AI automation solutions company.\n\nYour goal is to generate platform-specific content that drives users to start a conversation (WhatsApp/chat/call).\n\n---\n\nINPUT:\n- Topic: {{ $('Get row(s) in sheet1').item.json.topic_title }}\n- Keyword: {{ $('Get row(s) in sheet1').item.json.topic_keyword }}\n- Intent: {{ $('Get row(s) in sheet1').item.json.intent }}\n- Target Problem: {{ $('Get row(s) in sheet1').item.json.target_problem }}\n- CTA Angle: {{ $('Get row(s) in sheet1').item.json.cta_angle }}\n- Content ID: {{ $('Get row(s) in sheet1').item.json.content_id }}\n\n---\n\nTASK:\n\nGenerate TWO different social media posts:\n\n1. LinkedIn post (professional, insight-driven)\n2. Facebook post (simple, emotional, relatable)\n\nAlso generate ONE image prompt that works for both platforms.\n\n---\n\nOUTPUT FORMAT (STRICT JSON):\n\n{\n  \"linkedin_content\": {\n    \"hook\": \"\",\n    \"caption\": \"\",\n    \"cta\": \"\",\n    \"full_post\": \"\"\n  },\n  \"facebook_content\": {\n    \"hook\": \"\",\n    \"caption\": \"\",\n    \"cta\": \"\",\n    \"full_post\": \"\"\n  },\n  \"image_prompt\": \"\"\n}\n\n---\n\nINSTRUCTIONS:\n\n---\n\n1. LINKEDIN CONTENT:\n\n- Tone: Professional, business-focused\n- Style: Insight + value-driven\n- Length: Medium to long\n- Structure:\n  Hook → Problem → Insight → Solution → Benefit → CTA\n\n---\n\n2. FACEBOOK CONTENT:\n\n- Tone: Simple, relatable, emotional\n- Style: Easy to understand\n- Length: Short to medium\n- Structure:\n  Hook → Problem → Solution → CTA\n\n---\n\n3. HOOK (for both):\n\n- First 1–2 lines must grab attention\n- Focus on pain/problem or curiosity\n\n---\n\n4. CTA (VERY IMPORTANT):\n\n- MUST include ONE primary action:\n  → Visit the solution page (TRACKED LINK)\n\nPRIMARY CTA LINK (MANDATORY):\n\nUse this EXACT format:\n\nYOUR-CTA-LINK\n\nWhere:\n- PLATFORM = linkedin OR facebook\n\n---\n\n5. FULL POST:\n\nCombine:\nhook + caption + CTA\n\n---\n\n6. IMAGE PROMPT:\n\nGenerate a HIGH-CONVERTING visual idea:\n\nInclude:\n- Scene (real-life business problem)\n- Subject (business owner / team)\n- Emotion (frustration / stress / relief)\n- Text overlay (max 5–6 words)\n\nExample:\n“A frustrated business owner checking phone notifications with text overlay: ‘Losing Leads Daily?’”\n\n---\n\n7. GOAL:\n\n- Trigger pain\n- Show solution\n- Push conversation\n\n---\n\nIMPORTANT:\n\n- LinkedIn and Facebook content MUST be different\n- Do NOT repeat same text\n- Do NOT merge both into one\n\n---\n\nReturn ONLY valid JSON. No extra text.",
         "hasOutputParser": true,
         "options": {}
       },
@@ -325,17 +325,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Final_capstone(Content-creation)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 415154879,
           "mode": "list",
           "cachedResultName": "Unified data of post",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=415154879"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=415154879"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -485,17 +485,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Final_capstone(Content-creation)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1331242044,
           "mode": "list",
           "cachedResultName": "Content_research",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=1331242044"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1331242044"
         },
         "filtersUI": {
           "values": [
@@ -532,17 +532,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Final_capstone(Content-creation)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 415154879,
           "mode": "list",
           "cachedResultName": "Unified data of post",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=415154879"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=415154879"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -627,17 +627,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Final_capstone(Content-creation)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1331242044,
           "mode": "list",
           "cachedResultName": "Content_research",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=1331242044"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1331242044"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -869,7 +869,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://localhost:5678/webhook/system-health",
+        "url": "http://your-n8n-domain/webhook/system-health",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -913,7 +913,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://localhost:5678/webhook/system-health",
+        "url": "http://your-n8n-domain/webhook/system-health",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -1001,17 +1001,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Final_capstone(Content-creation)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1331242044,
           "mode": "list",
           "cachedResultName": "Content_research",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=1331242044"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1331242044"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -1216,7 +1216,7 @@
         "select": "=channel",
         "channelId": {
           "__rl": true,
-          "value": "C0AU5CG7D3P",
+          "value": "your-slack-channel-id",
           "mode": "id"
         },
         "user": {
@@ -1248,7 +1248,7 @@
         "select": "channel",
         "channelId": {
           "__rl": true,
-          "value": "C0AU5CG7D3P",
+          "value": "your-slack-channel-id",
           "mode": "id"
         },
         "text": "=LinkedIn Post status:  \nTopic: {{ $('Get row(s) in sheet1').item.json.topic_title }}\nTime of posting: {{ new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) }}\nPost_id: {{ $json.id }}",
