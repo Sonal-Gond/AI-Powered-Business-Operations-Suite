@@ -1,0 +1,81 @@
+{
+  "type": "function",
+  "function": {
+    "name": "save_survey_response",
+    "description": "These tool send the response of survey to webhook for storing response",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "phone": {
+          "description": "Customer phone number",
+          "type": "string"
+        },
+        "feature_used": {
+          "description": "Service or feature the customer found most useful",
+          "type": "string"
+        },
+        "recommendation": {
+          "description": "Whether the customer would recommend the service: yes, no, or maybe",
+          "type": "string"
+        },
+        "satisfaction_rating": {
+          "description": "Customer satisfaction rating from 1 to 5",
+          "type": "string"
+        }
+      },
+      "required": [
+        "phone",
+        "satisfaction_rating",
+        "feature_used",
+        "recommendation"
+      ]
+    }
+  },
+  "messages": [
+    {
+      "type": "request-start",
+      "blocking": false
+    }
+  ],
+  "metadata": null,
+  "orgId": "82b21d5e-f543-40b5-92c6-6846ec831834",
+  "templateId": null,
+  "server": {
+    "url": "https://n8n-webhook.ngrok-free.dev/webhook/survey-call-report",
+    "credentialId": null,
+    "timeoutSeconds": 20,
+    "staticIpAddressesEnabled": false
+  },
+  "async": false,
+  "name": null,
+  "destinations": null,
+  "subType": null,
+  "displayWidthPx": null,
+  "displayHeightPx": null,
+  "displayNumber": null,
+  "knowledgeBases": null,
+  "url": null,
+  "method": null,
+  "headers": null,
+  "body": null,
+  "backoffPlan": null,
+  "timeoutSeconds": null,
+  "description": null,
+  "variableExtractionPlan": {
+    "schema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    }
+  },
+  "rejectionPlan": null,
+  "credentialId": null,
+  "beepDetectionEnabled": null,
+  "code": null,
+  "environmentVariables": null,
+  "parameters": null,
+  "encryptedPaths": null,
+  "sipInfoDtmfEnabled": null,
+  "verb": null,
+  "toolMessages": null
+}
