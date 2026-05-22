@@ -1,0 +1,57 @@
+{
+  "type": "function",
+  "function": {
+    "name": "createTicket",
+    "description": "These tool is used for creating support ticket on zendesk.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Full name of the customer. If not already known, ask the user before calling this tool.",
+          "type": "string"
+        },
+        "email": {
+          "description": "Customer's email address used for communication and ticket creation in Zendesk.",
+          "type": "string"
+        },
+        "issue": {
+          "description": "Clear and detailed description of the customer's issue. Summarize the problem, including what the user reported and any troubleshooting steps already attempted.",
+          "type": "string"
+        },
+        "phone": {
+          "description": "Customer's phone number including country code (e.g., +919876543210). Optional but recommended.",
+          "type": "string"
+        },
+        "severity": {
+          "description": "Severity level of the issue. Use 'standard' for normal issues and 'high' for urgent issues (e.g., service down, repeated failures, or customer frustration).",
+          "type": "string"
+        },
+        "customerId": {
+          "description": "Unique ID of the customer obtained from lookupCustomer tool. If not available, leave empty or null.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "issue",
+        "severity"
+      ]
+    }
+  },
+  "messages": [
+    {
+      "type": "request-start",
+      "blocking": false
+    }
+  ],
+  "server": {
+    "url": "https://make.com/webhook",
+    "timeoutSeconds": 20
+  },
+  "variableExtractionPlan": {
+    "schema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    }
+  }
+}
