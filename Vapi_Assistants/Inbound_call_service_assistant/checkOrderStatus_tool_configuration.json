@@ -1,0 +1,38 @@
+{
+  "type": "function",
+  "function": {
+    "name": "checkOrderStatus",
+    "description": "These tool checks the order status using orderID",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "description": "Email address used when placing the order. Use this if the customer does not have the order ID.",
+          "type": "string"
+        },
+        "orderId": {
+          "description": "Unique order number provided by the customer. Use this if the customer gives an order ID.",
+          "type": "string"
+        }
+      },
+      "required": []
+    }
+  },
+  "messages": [
+    {
+      "type": "request-start",
+      "blocking": false
+    }
+  ],
+  "server": {
+    "url": "https://make.com/webhook",
+    "timeoutSeconds": 20
+  },
+  "variableExtractionPlan": {
+    "schema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    }
+  }
+}
