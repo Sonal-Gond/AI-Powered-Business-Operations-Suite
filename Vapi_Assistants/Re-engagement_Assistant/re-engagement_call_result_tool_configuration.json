@@ -1,0 +1,109 @@
+{
+  "type": "function",
+  "function": {
+    "name": "re-enagement_call_result",
+    "description": "These tool send the re-engagement outcome to webhook for storing result",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Customer name",
+          "type": "string"
+        },
+        "notes": {
+          "description": "Short summary of conversation",
+          "type": "string"
+        },
+        "phone": {
+          "description": "Customer phone number",
+          "type": "string"
+        },
+        "called": {
+          "description": "Whether call was made",
+          "type": "string",
+          "enum": [
+            "Yes",
+            "No"
+          ]
+        },
+        "intent": {
+          "description": "Customer intent after call",
+          "type": "string",
+          "enum": [
+            "interested",
+            "not_interested",
+            "callback",
+            "unclear"
+          ]
+        },
+        "call_status": {
+          "description": "Call outcome status",
+          "type": "string",
+          "enum": [
+            "Completed",
+            "No Answer",
+            "Failed"
+          ]
+        },
+        "callback_time": {
+          "description": "Callback time if requested",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "phone",
+        "called",
+        "call_status",
+        "intent",
+        "notes"
+      ]
+    }
+  },
+  "messages": [
+    {
+      "type": "request-start",
+      "blocking": false
+    }
+  ],
+  "metadata": null,
+  "templateId": null,
+  "server": {
+    "url": "https://n8n-webhook.ngrok-free.dev/webhook/vapi-re-enagaement-call-details",
+    "credentialId": null,
+    "timeoutSeconds": 20,
+    "staticIpAddressesEnabled": false
+  },
+  "async": null,
+  "name": null,
+  "destinations": null,
+  "subType": null,
+  "displayWidthPx": null,
+  "displayHeightPx": null,
+  "displayNumber": null,
+  "knowledgeBases": null,
+  "url": null,
+  "method": null,
+  "headers": null,
+  "body": null,
+  "backoffPlan": null,
+  "timeoutSeconds": null,
+  "description": null,
+  "variableExtractionPlan": {
+    "schema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    }
+  },
+  "rejectionPlan": null,
+  "credentialId": null,
+  "beepDetectionEnabled": null,
+  "code": null,
+  "environmentVariables": null,
+  "parameters": null,
+  "encryptedPaths": null,
+  "sipInfoDtmfEnabled": null,
+  "verb": null,
+  "toolMessages": null
+}
