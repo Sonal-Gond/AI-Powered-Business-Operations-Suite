@@ -32,17 +32,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_lead_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_lead_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_lead_spreadsheet_id/edit#gid=1709189993"
         },
         "options": {}
       },
@@ -76,7 +76,7 @@
     },
     {
       "parameters": {
-        "sendTo": "sonal.aimaven@gmail.com",
+        "sendTo": "your_email@gmail.com",
         "subject": "ROI Calculation Report",
         "message": "={{ $json.html }}",
         "options": {}
@@ -102,17 +102,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0",
+          "value": "your_cost_analysis_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Final_capstone(System_health)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_cost_analysis_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1206985668,
           "mode": "list",
           "cachedResultName": "cost_analysis_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit#gid=1206985668"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_cost_analysis_spreadsheet_id/edit#gid=1206985668"
         },
         "columns": {
           "mappingMode": "defineBelow",
