@@ -6,17 +6,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_srpead_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Appointment_details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -232,17 +232,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1709189993"
         },
         "filtersUI": {
           "values": [
@@ -275,17 +275,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Appointment_details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -459,7 +459,7 @@
         },
         "calendarId": {
           "__rl": true,
-          "value": "3f54f9b3ef6f3fb6a33a3450c9108a3a3f3f45701d7332b6577c300471d748fa@group.calendar.google.com",
+          "value": "YOUR_CALENDAR_ID",
           "mode": "list",
           "cachedResultName": "Calendly Scheduling"
         },
@@ -486,17 +486,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Appointment_details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -674,7 +674,7 @@
         },
         "calendarId": {
           "__rl": true,
-          "value": "3f54f9b3ef6f3fb6a33a3450c9108a3a3f3f45701d7332b6577c300471d748fa@group.calendar.google.com",
+          "value": "YOUR_CALENDAR_ID",
           "mode": "list",
           "cachedResultName": "Calendly Scheduling"
         },
@@ -707,7 +707,7 @@
         },
         "calendarId": {
           "__rl": true,
-          "value": "3f54f9b3ef6f3fb6a33a3450c9108a3a3f3f45701d7332b6577c300471d748fa@group.calendar.google.com",
+          "value": "YOUR_CALENDAR_ID",
           "mode": "list",
           "cachedResultName": "Calendly Scheduling"
         },
@@ -775,34 +775,20 @@
     },
     {
       "parameters": {
-        "url": "https://graph.facebook.com/me/accounts?access_token=EAAgJCQpo6x8BRf2ssMozp2ehcxUAfDnJ9AwiiGbQLDCrvoYtZBL5unFiJlTiDo6i7A5gNmaKpv6OiPgXYpZBbP8WZAx2WZCiGpwZCwgdUKh7sCOUr9ZBnvafmdh7c9U3li3TPOLuG0Vyqi4SZAieZAIwcnyBl6bifojkELk5MmZBse3mSndKpLhgtvh1n0KiZBHe4B",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.3,
-      "position": [
-        -1440,
-        -592
-      ],
-      "id": "a7f6a2b3-306e-4e70-bead-4f4defe178d1",
-      "name": "HTTP Request"
-    },
-    {
-      "parameters": {
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Appointment_details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -1076,17 +1062,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Appointment_details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -1253,17 +1239,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1709189993"
         },
         "filtersUI": {
           "values": [
@@ -1410,17 +1396,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1709189993"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -1685,17 +1671,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1709189993"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -1960,17 +1946,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1709189993"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -2236,17 +2222,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1709189993"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -2512,17 +2498,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 461571680,
           "mode": "list",
           "cachedResultName": "Re-Engagement ",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=461571680"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=461571680"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -2663,17 +2649,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1709189993"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -2938,17 +2924,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1709189993"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -3212,17 +3198,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=17000000093"
         },
         "filtersUI": {
           "values": [
@@ -3296,7 +3282,7 @@
       ],
       "id": "1215e08b-890b-4bc6-b2b6-854f74246c79",
       "name": "Call campaign for hot lead - status of call",
-      "webhookId": "7b1dd53f-7bcc-470a-8472-65bf8d30d849"
+      "webhookId": "7b1sdre22f-7bcc-470a-8472-65xx8dxxd849"
     }
   ],
   "pinData": {},
