@@ -394,7 +394,7 @@
         "select": "channel",
         "channelId": {
           "__rl": true,
-          "value": "C0B4ZBFQZP0",
+          "value": "your-slack-channel-id",
           "mode": "id"
         },
         "text": "=📊 * Automation Report*\n🗓️ *Period:* {{$json.period}}\n\n━━━━━━━━━━━━━━\n📌 *Lead Summary*\n• Total Leads: *{{$json.totalLeads}}*\n• 🔥 Hot Leads: *{{$json.hotLeads}}*\n• 🟡 Warm Leads: *{{$json.warmLeads}}*\n• ❄️ Cold Leads: *{{$json.coldLeads}}*\n\n━━━━━━━━━━━━━━\n📞 *Call Performance*\n• Total Calls: *{{$json.totalCalls}}*\n• ✅ Successful Calls: *{{$json.successCalls}}*\n• 💰 Total Call Cost: *${{$json.totalCallCost}}*\n\n━━━━━━━━━━━━━━\n💬 *Chat Metrics*\n• Total Chats: *{{$json.totalChats}}*\n• ⏱️ Avg Resolution Time: *{{$json.avgResolution}}*\n\n━━━━━━━━━━━━━━\n📅 *Appointments*\n• Total Appointments: *{{$json.totalAppts}}*\n• ✅ Confirmed Appointments: *{{$json.confirmedAppts}}*\n\n━━━━━━━━━━━━━━\n🔄 *Re-engagement*\n• Contacted: *{{$json.reengContacted}}*\n• Interested: *{{$json.reengInterested}}*\n\n━━━━━━━━━━━━━━\n📝 *Content Performance*\n• Total Content Pieces: *{{$json.totalContent}}*\n• ✅ Fully Published: *{{$json.fullyPublished}}*\n• ⏳ Pending Content: *{{$json.pendingContent}}*\n {{ $json.period }}",
