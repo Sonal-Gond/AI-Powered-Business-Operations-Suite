@@ -35,8 +35,24 @@
 **VAPI Assistant Setup Steps**
 - Download the VAPI tool and assistant JSON files from this repository
 - Get your API Key from VAPI Dashboard → API Keys
-- Create each tool by sending a POST request to https://api.vapi.ai/tool with each tool JSON file as the request body — save the id returned from each response
-- Create the assistant by sending a POST request to https://api.vapi.ai/assistant with the assistant JSON file as the request body — replace the toolIds array with the IDs saved in the previous step
+- Create tool 
+  Download all tool JSON files from this repository
+  For each tool JSON file send a POST request:
+  URL → https://api.vapi.ai/tool
+  Header → Authorization: Bearer YOUR_API_KEY
+  Header → Content-Type: application/json
+  Body → contents of the tool JSON file
+  Save the id from each tool response
+
+- Create Assistant
+  Download assistant configurations from this repository
+  Replace YOUR_WEBHOOK_URL in assistant.json with your server URL
+  Replace the toolIds array values with the IDs saved from tool creation
+  Send a POST request:
+  URL → https://api.vapi.ai/assistant
+  Header → Authorization: Bearer YOUR_API_KEY
+  Header → Content-Type: application/json
+  Body → contents of assistant.json
 - Replace example_server_url in each tool JSON and assistnats with your actual server URL before sending requests
  
 
