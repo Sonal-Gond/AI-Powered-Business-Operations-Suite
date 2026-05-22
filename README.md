@@ -36,13 +36,13 @@
 - Download the VAPI tool and assistant JSON files from this repository
 - Get your API Key from VAPI Dashboard → API Keys
 - Create tool 
-  Download all tool JSON files from this repository
-  For each tool JSON file send a POST request:
-  URL → https://api.vapi.ai/tool
-  Header → Authorization: Bearer YOUR_API_KEY
-  Header → Content-Type: application/json
-  Body → contents of the tool JSON file
-  Save the id from each tool response
+  Download all tool JSON files from this repository  
+  For each tool JSON file send a POST request:  
+  URL → https://api.vapi.ai/tool  
+  Header → Authorization: Bearer YOUR_API_KEY  
+  Header → Content-Type: application/json  
+  Body → contents of the tool JSON file  
+  Save the id from each tool response  
 
 - Create Assistant
   Download assistant configurations from this repository
