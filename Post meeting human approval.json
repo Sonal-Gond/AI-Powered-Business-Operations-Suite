@@ -108,17 +108,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Appointment_details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=0"
         },
         "filtersUI": {
           "values": [
@@ -160,7 +160,7 @@
     },
     {
       "parameters": {
-        "sendTo": "sonal.aimaven@gmail.com",
+        "sendTo": "your_email@gmail.com",
         "subject": "Meeting Review ",
         "message": "=<h2>📌 Lead Review Required</h2>  <p>Please review the lead and select the correct outcome.</p>  <hr/>  <h3>🧾 Lead Information</h3>  <ul>   <li><b>Name:</b>{{ $json.User_name }} </li>   <li><b>Phone:</b>{{ $json.User_number }} </li>   <li><b>Email:</b>{{ $json.User_email }} </li>   <li><b>Service:</b>{{ $json.Service }} </li>   <li><b>Meeting Time:</b>{{ $json.Appointmnet_date }} {{ $json.Appointment_time }} </li> </ul>  <hr/>  <h3>❓ Question</h3> <p><b>What is the outcome of this lead?</b></p>  <br/>  <!-- BUTTON 1 --> <a href=\"http://localhost:5678/webhook/meeting-review?lead_id={{ $json.User_email }}&action=won\" style=\"padding:10px 18px;background:#28a745;color:#fff;text-decoration:none;border-radius:6px;\"> ✅ Deal Done (Lead Won) </a>  <br/><br/>  <!-- BUTTON 2 --> <a href=\"http://localhost:5678/webhook/meeting-review?lead_id={{ $json.User_email }}&action=lost\" style=\"padding:10px 18px;background:#dc3545;color:#fff;text-decoration:none;border-radius:6px;\"> ❌ Lead Lost </a>  <br/><br/>  <!-- BUTTON 3 --> <a href=\"http://localhost:5678/webhook/meeting-review?lead_id={{ $json.User_email }}&action=opportunity\" style=\"padding:10px 18px;background:#ffc107;color:#000;text-decoration:none;border-radius:6px;\"> 🟡 Opportunity (Interested but not closed) </a>",
         "options": {}
@@ -173,7 +173,7 @@
       ],
       "id": "36a61dc0-d3f7-4b12-9280-fbd0de8d7f3a",
       "name": "Sending HTML formatted message to host",
-      "webhookId": "16630dcb-1439-4099-8808-2d545088b5a6",
+      "webhookId": "166xxcb-1439-4099-8808-2d5xxxx5a6",
       "credentials": {
         "gmailOAuth2": {
           "id": "aNbQYToMkCwBUu0P",
@@ -186,17 +186,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Appointment_details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -378,17 +378,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "final_capstone(Voice_operations)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Appointment_details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -555,17 +555,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1709189993"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -824,17 +824,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=17011223993"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -1093,17 +1093,17 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Lead Capture form (final_capstone)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1709189993,
           "mode": "list",
           "cachedResultName": "Omnichannel_data",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1709123993"
         },
         "columns": {
           "mappingMode": "defineBelow",
