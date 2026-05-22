@@ -1,0 +1,22 @@
+{
+  "type": "google.calendar.availability.check",
+  "function": {
+    "name": "check_availability_tool",
+    "description": "Use these tool to checks the availability on google calendar\n\nUse Asia/Calcutta Timezone \n\nNote:\nThese tools must be return unavailable if date and time are already occupied \n\nfor example :\nIf someone booked the appointment on 17 April at 10 am and another person give same date and time you must be say that slot is unavailable ",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  "messages": [
+    {
+      "type": "request-start",
+      "content": "Please hold on. I am checking available slots",
+      "blocking": false
+    }
+  ],
+  "metadata": {
+    "calendarId": "YOUR_GOOGLE_CALENDAR_ID"
+  }
+}
