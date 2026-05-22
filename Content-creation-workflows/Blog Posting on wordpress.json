@@ -1,0 +1,933 @@
+{
+  "name": "Blog Posting on wordpress",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -608,
+        2352
+      ],
+      "id": "49465284-3e97-4dc8-b50c-8b1fc59e6ae0",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "OFFnvbcMdDG5SrSG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"post_title\": \"Post Title\",\n\t\"post_content\":\"Main Content\" ,\n  \"post_keywords\": \"Keywords\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -432,
+        2560
+      ],
+      "id": "0c9d5bf6-1f4f-4333-afb4-69563a34c48d",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert SEO blog writer and conversion strategist for an AI automation company.\n\nYour goal is to write blog posts that:\n- Rank on search engines\n- Educate users\n- Convert readers into leads (chat/call)\n\n---\n\nINPUT:\n- Topic: {{ $json.topic_title }}\n- Keyword: {{ $json.topic_keyword }}\n- Intent: {{ $json.intent }}\n- Content ID: {{ $json.content_id }}\n\n- Research Data:\n  - problem_explanation: {{ $json.problem_explanation }}\n  - why_it_happens: {{ $json.why_it_happens }}\n  - business_impact: {{ $json.business_impact }}\n  - automation_solution: {{ $json.automation_solution }}\n  - real_world_example: {{ $json.real_world_example }}\n\n---\n\nTASK:\n\nGenerate a complete SEO-optimized blog post.\n\n---\n\n6. CTA (VERY IMPORTANT):\n\nYou MUST include ONLY ONE type of CTA:\n→ Landing page link (TRACKED)\n\n---\n\nCTA LINK FORMAT:\n\nhttps://celadon-fairy-685068.netlify.app/?utm_source=wordpress&content_id={{ $json.content_id }}\n\nPLACEMENT:\n\nInsert CTA in 3 places:\n\n1. After \"Business Impact\" section\n2. Before \"Conclusion\"\n3. At the end of blog\n\nCTA FORMAT (HTML):\n\n<p><strong>Want to solve this for your business?</strong><br>\n<a href=\"https://celadon-fairy-685068.netlify.app/?utm_source=wordpress&content_id={{ $json.content_id }}\">\nGet your AI automation solution here\n</a></p>\n\nOUTPUT FORMAT (STRICT JSON):\n\n{\n  \"title\": \"\",\n  \"meta_title\": \"\",\n  \"meta_description\": \"\",\n  \"slug\": \"\",\n  \"content_html\": \"\",\n  \"seo_suggestions\": []\n}\n\n---\n\nINSTRUCTIONS:\n\n---\n\n1. TITLE:\n- SEO optimized\n- Include keyword naturally\n- Make it click-worthy\n\n---\n\n2. META TITLE:\n- 50–60 characters\n- Keyword included\n\n---\n\n3. META DESCRIPTION:\n- 140–160 characters\n- Include problem + solution\n\n---\n\n4. SLUG:\n- lowercase\n- hyphen-separated\n- keyword-based\n\n---\n\n5. BLOG STRUCTURE (HTML FORMAT):\n\nUse proper HTML tags:\n\n<h1> Title </h1>\n\n<h2> Problem </h2>\nExplain pain clearly\n\n<h2> Why It Happens </h2>\n\n<h2> Business Impact </h2>\n\n<h2> Solution (AI Automation) </h2>\n\n<h2> Real Example </h2>\n\n<h2> Benefits </h2>\n<ul>\n<li>...</li>\n</ul>\n\n<h2> Common Concerns </h2>\n\n<h2> Conclusion </h2>\n\n---\n\n6. CTA (VERY IMPORTANT):\n\nAdd 3 CTAs:\n\n- Mid content\n- Before conclusion\n- End\n\nExample:\n“Want to automate this? Chat with us now (Ref: {{ $json.content_id }})”\n\n---\n\n7. SEO OPTIMIZATION:\n\n- Use keyword naturally (not spam)\n- Use headings properly\n- Keep paragraphs short\n\n---\n\n8. SEO_SUGGESTIONS:\n\nReturn suggestions like:\n- keyword placement\n- internal linking ideas\n- improvement ideas\n\n---\n\nGOAL:\n\n- Rank + Convert\n- Not just informational\n\n---\n\nReturn ONLY valid JSON. No explanation.",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -576,
+        1936
+      ],
+      "id": "c18f05ef-69f3-4b73-b6ca-9f2df47f97b8",
+      "name": "Blog Post generation1"
+    },
+    {
+      "parameters": {
+        "mode": "markdownToHtml",
+        "markdown": "={{ $json.output.post_content }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        2176
+      ],
+      "id": "048128d4-231a-4c86-9a77-550166a7194b",
+      "name": "Converting content into HTML1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://public-api.wordpress.com/rest/v1.1/sites/253447122/posts/new",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \n  \"Site Title\" : \"Automation\",\n  \"title\":{{ JSON.stringify($json.output.post_title) }},\n  \"content\":{{ JSON.stringify($json.data) }},\n  \"status\": \"publish\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        400,
+        2480
+      ],
+      "id": "1e68637f-dadd-4f36-b2d7-65988a259587",
+      "name": "Blog Posting on Wordpress1",
+      "retryOnFail": false,
+      "waitBetweenTries": 5000,
+      "maxTries": 4,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "mode": "list",
+          "cachedResultName": "Final_capstone(Content-creation)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 415154879,
+          "mode": "list",
+          "cachedResultName": "Unified data of post",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=415154879"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Platform ": "WordPress",
+            "Posted Time": "={{ new Date().toLocaleString('en', { timeZone: 'Asia/Kolkata' }) }}",
+            "POST type": "Blog",
+            "URL": "={{ $json.URL }}",
+            "Content_id": "={{ $('Get topic_title').first().json.content_id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Platform ",
+              "displayName": "Platform ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Posted Time",
+              "displayName": "Posted Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "POST type",
+              "displayName": "POST type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Content_id",
+              "displayName": "Content_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1536,
+        2816
+      ],
+      "id": "fbccb997-f6cd-42aa-86a2-5aecb7e3fb0e",
+      "name": "Adding info in Unified platform1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "746743e4-79b0-4ab9-ada9-ba6f85c62b0a",
+              "leftValue": "={{ $json.error.message }}",
+              "rightValue": "invalid_token",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "d523129a-684d-4f35-a307-c8dd7095d790",
+              "leftValue": "={{ $json.error.message }}",
+              "rightValue": "token_expires",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "e1a22d9d-efa7-4139-bca8-501f24a4abe5",
+              "leftValue": "={{ $json.error.message }}",
+              "rightValue": "401",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "0ebbaba9-b602-4877-bf6c-0c4478c0a4b1",
+              "leftValue": "={{ $json.error.name }}",
+              "rightValue": "AxiosError",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        960,
+        2592
+      ],
+      "id": "df1dc05c-9bcb-444c-9d2c-91756309875b",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "8c1673b1-48f4-42c4-96c7-22d588a46166",
+              "leftValue": "={{ $json.error.message }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1280,
+        1936
+      ],
+      "id": "6ac85c6b-d92c-42d3-bd2c-20f190ef5ec5",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "mode": "list",
+          "cachedResultName": "Final_capstone(Content-creation)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1331242044,
+          "mode": "list",
+          "cachedResultName": "Content_research",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=1331242044"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "content_id": "={{ $('Get topic_title').first().json.content_id }}",
+            "Blog_Status": "Posted"
+          },
+          "matchingColumns": [
+            "content_id"
+          ],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Time",
+              "displayName": "Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "content_id",
+              "displayName": "content_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "topic_title",
+              "displayName": "topic_title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "topic_keyword",
+              "displayName": "topic_keyword",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "intent",
+              "displayName": "intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "target_problem",
+              "displayName": "target_problem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cta_angle",
+              "displayName": "cta_angle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "problem_explanation",
+              "displayName": "problem_explanation",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "why_it_happens",
+              "displayName": "why_it_happens",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "business_impact",
+              "displayName": "business_impact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "current_wrong_solution",
+              "displayName": "current_wrong_solution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "automation_solution",
+              "displayName": "automation_solution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "real_world_example",
+              "displayName": "real_world_example",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Blog_Status",
+              "displayName": "Blog_Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Facebook_status",
+              "displayName": "Facebook_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "LinkedIn_status",
+              "displayName": "LinkedIn_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1520,
+        2512
+      ],
+      "id": "c4eee7d4-c08a-4da8-8fe3-4210f68fb863",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/system-health",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "workflow_name",
+              "value": "={{ $workflow.name }}"
+            },
+            {
+              "name": "workflow_id",
+              "value": "={{ $workflow.id }}"
+            },
+            {
+              "name": "platform",
+              "value": "n8n"
+            },
+            {
+              "name": "Status",
+              "value": "Success"
+            },
+            {
+              "name": "timestamp",
+              "value": "={{ new Date().toLocaleString('en', { timeZone: 'Asia/Kolkata' }) }}"
+            },
+            {
+              "name": "execution_id",
+              "value": "={{ $execution.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2208,
+        2784
+      ],
+      "id": "b9bc61a0-a1eb-44b8-89b0-1e58f00b99ca",
+      "name": "System success health"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 12,
+              "triggerAtMinute": 5
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1056,
+        1664
+      ],
+      "id": "a4a763a6-0dd1-4168-8889-b765dd5f7d45",
+      "name": "Scheduled at 12:45 pm"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "mode": "list",
+          "cachedResultName": "Final_capstone(Content-creation)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1331242044,
+          "mode": "list",
+          "cachedResultName": "Content_research",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=1331242044"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Blog_Status",
+              "lookupValue": "Pending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -640,
+        1616
+      ],
+      "id": "3730a505-df29-496b-894e-4069ad2ff2d5",
+      "name": "Get topic_title",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\nconst blogData = $input.first().json;\n\nreturn [{\n  json: {\n    ...blogData,\n    access_token: staticData.wp_token || 'j#4NTnYbUxT4^6z$NEqhvCufmg^$c%jEqm2^FPR2XGzp!X@DOMsF^TKHFu(5clCn'\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        112,
+        2240
+      ],
+      "id": "3a6c2748-857b-41ea-b8f8-1b8c3585f798",
+      "name": "preserved access_token"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://public-api.wordpress.com/oauth2/token",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "client_id",
+              "value": "138187"
+            },
+            {
+              "name": "client_secret",
+              "value": "TgaJpksN6WFHmXuAibD9toaOGXYpe4BvgjaPipClXHjFaToHvtfUanovhydDyCwR"
+            },
+            {
+              "name": "grant_type",
+              "value": "password"
+            },
+            {
+              "name": "username",
+              "value": "sonal.aimaven@gmail.com"
+            },
+            {
+              "name": "password",
+              "value": "wuqw 7ltv mu4x h3iy "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        960,
+        1888
+      ],
+      "id": "dab26951-3dbf-4f87-89e3-e3036a940a05",
+      "name": "Generating new_access_token",
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AR045GP5L",
+          "mode": "id"
+        },
+        "text": "=New Token Generation Error for wordpress: \nError name: {{ $json.error.name }}\nError message: {{ $json.error.message }}\nTime: ",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        1696,
+        1616
+      ],
+      "id": "8f27fea0-f191-45e3-a341-b75efdef9beb",
+      "name": "Sending alert message if access_token generation fails",
+      "webhookId": "06fbacdd-0b1d-45aa-9a9f-e326d1a881b9",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "LwPPOeQtaUgbNMW1",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\n\n// Save new token to static\nconst newToken = $input.first().json.access_token;\nstaticData.wp_token = newToken;\n\n// Get original blog content\nconst blogData = $('Converting content into HTML1').first().json;\n\n// Return merged data — blog content + fresh token\nreturn [{\n  json: {\n    ...blogData,\n    access_token: newToken\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1712,
+        1936
+      ],
+      "id": "2f5aebc1-b381-4b29-9632-e5b6629108fd",
+      "name": "Sending new_access_token back"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AU5CG7D3P",
+          "mode": "id"
+        },
+        "text": "=Wordpress Blog post:\ntitle: {{ $('Blog Post generation1').first().json.output.post_title }}\nPost_url: {{ $('Blog Posting on Wordpress1').item.json.URL }}\nTime: {{ new Date($('Blog Posting on Wordpress1').item.json.date).toLocaleString('en', { timeZone: 'Asia/Kolkata' }) }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        1968,
+        2432
+      ],
+      "id": "08326643-ef02-4fd9-8983-16ff3e51d000",
+      "name": "Sending posting message",
+      "webhookId": "d051cd3c-676d-40d5-b2ed-235c37960da6",
+      "credentials": {
+        "slackApi": {
+          "id": "ekJzRR6RASxiEuDX",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Blog Post generation1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Blog Post generation1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blog Post generation1": {
+      "main": [
+        [
+          {
+            "node": "Converting content into HTML1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Converting content into HTML1": {
+      "main": [
+        [
+          {
+            "node": "preserved access_token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blog Posting on Wordpress1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Generating new_access_token",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Adding info in Unified platform1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Sending alert message if access_token generation fails",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sending new_access_token back",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Adding info in Unified platform1": {
+      "main": [
+        [
+          {
+            "node": "System success health",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Sending posting message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scheduled at 12:45 pm": {
+      "main": [
+        [
+          {
+            "node": "Get topic_title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get topic_title": {
+      "main": [
+        [
+          {
+            "node": "Blog Post generation1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "preserved access_token": {
+      "main": [
+        [
+          {
+            "node": "Blog Posting on Wordpress1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generating new_access_token": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sending new_access_token back": {
+      "main": [
+        [
+          {
+            "node": "Blog Posting on Wordpress1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "IKMAttkJdoMmQk3fxlmuu",
+    "timezone": "Asia/Kolkata"
+  },
+  "versionId": "c917ceaf-32c9-4803-8d44-c35171ab6ab1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "oN07kPBeqLUSOyZSXF9fH",
+  "tags": []
+}
