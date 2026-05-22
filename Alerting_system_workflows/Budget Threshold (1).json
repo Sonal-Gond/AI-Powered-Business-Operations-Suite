@@ -1,0 +1,319 @@
+{
+  "name": "Budget Threshold",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 12,
+              "triggerAtMinute": 20
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        896,
+        208
+      ],
+      "id": "f1175a28-346f-4d28-88a3-5c556aa01672",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://eu1.make.com/api/v2/organizations/6512127",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Token c9a74278-7fbd-4af0-926e-8841ec5a5828"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1248,
+        64
+      ],
+      "id": "e175cee1-aef2-404a-b7be-f064ee2fffa9",
+      "name": "Make.com Information"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://analytics-api.voiceflow.com/v2/query/usage",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "VF.DM.69eb4452c7feddfd4ab9dc92.OuCz0OZmDnBTmlBF"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"data\": {\n    \"name\": \"credit_usage\",\n    \"filter\": {\n      \"projectID\": \"69eb3f83b35e2349a18f88cd\"\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1248,
+        320
+      ],
+      "id": "b0fe8e19-d71c-4317-be9f-6f4ad6b61c15",
+      "name": "Voiceflow Analytics"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.vapi.ai/analytics",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 1beb307d-08f4-481b-98dc-cf0ebb00456b"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"queries\": [\n    {\n      \"table\": \"call\",\n      \"name\": \"Assistant Cost Analysis\",\n      \"timeRange\": {\n        \"start\": \"2026-04-23T00:00:00.000Z\",\n        \"end\": \"2026-05-07T23:59:59.999Z\"\n      },\n      \"groupBy\": [\n        \"assistantId\"\n      ],\n      \"operations\": [\n        {\n          \"operation\": \"count\",\n          \"column\": \"id\",\n          \"alias\": \"totalCalls\"\n        },\n        {\n          \"operation\": \"sum\",\n          \"column\": \"duration\",\n          \"alias\": \"totalDuration\"\n        },\n        {\n          \"operation\": \"avg\",\n          \"column\": \"duration\",\n          \"alias\": \"avgDuration\"\n        },\n        {\n          \"operation\": \"sum\",\n          \"column\": \"cost\",\n          \"alias\": \"totalCost\"\n        },\n        {\n          \"operation\": \"sum\",\n          \"column\": \"costBreakdown.llm\",\n          \"alias\": \"llmCost\"\n        },\n        {\n          \"operation\": \"sum\",\n          \"column\": \"costBreakdown.stt\",\n          \"alias\": \"sttCost\"\n        },\n        {\n          \"operation\": \"sum\",\n          \"column\": \"costBreakdown.tts\",\n          \"alias\": \"ttsCost\"\n        },\n        {\n          \"operation\": \"sum\",\n          \"column\": \"costBreakdown.transport\",\n          \"alias\": \"transportCost\"\n        },\n        {\n          \"operation\": \"sum\",\n          \"column\": \"costBreakdown.vapi\",\n          \"alias\": \"vapiCost\"\n        }\n      ]\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1248,
+        560
+      ],
+      "id": "a8e9cb10-383f-4a14-bbe2-c9d5a0b991e7",
+      "name": "Vapi Analytics"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1600,
+        272
+      ],
+      "id": "7e846fde-dd8b-4472-a227-be92b97b1acf",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "395efda3-ff9a-4436-9cbc-456711fc6af3",
+              "leftValue": "={{$json.shouldAlert}}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2128,
+        288
+      ],
+      "id": "72ea48d7-bfc1-4fe3-ab56-00d33a89abde",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0B2M2M4692",
+          "mode": "id"
+        },
+        "text": "=🚨 Budget Threshold Alert  \nSeverity: {{$json.overallSeverity}}  \n\nVapi: \n• Current Cost: ${{$json.summary.vapi.totalCost}} \n• Projected Cost: ${{$json.summary.vapi.projectedCost}} \n\nVoiceflow: \n• AI Ops: {{$json.summary.voiceflow.aiOperations}}  \n\nMake.com: \n• Operations Used: {{$json.summary.make.operationsUsed}}  \n\nGenerated: {{$json.generatedAt}}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        2368,
+        272
+      ],
+      "id": "283b9141-0a63-4f53-b0ef-bf6f8bbd5358",
+      "name": "Send a message",
+      "webhookId": "6e92e603-9060-4883-be7e-9be6a6528c57",
+      "credentials": {
+        "slackApi": {
+          "id": "ekJzRR6RASxiEuDX",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ==============================\n// GET RAW DATA FROM PREVIOUS NODES\n// ==============================\n\nconst makeData =\n  $('Make.com Information').first().json.organization;\n\nconst voiceflowData =\n  $('Voiceflow Analytics').first().json.result.items;\n\nconst vapiData =\n  $('Vapi Analytics').first().json.result;\n\n\n// ==============================\n// MAKE.COM ANALYSIS\n// ==============================\n\nconst makeReport = {\n  plan: makeData.productName,\n  operationsLimit: Number(makeData.license.operations || 0),\n  operationsUsed: Number(makeData.operations || 0),\n  operationsRemaining: Number(makeData.unusedOperations || 0),\n\n  creditsUsed:\n    Number(makeData.centicreditsConsumed || 0) / 100,\n\n  creditsRemaining:\n    Number(makeData.unusedCenticredits || 0) / 100,\n\n  transferUsedMB:\n    (\n      Number(makeData.transfer || 0) /\n      1024 /\n      1024\n    ).toFixed(2),\n\n  activeScenarios: makeData.activeScenarios,\n  activeApps: makeData.activeApps,\n\n  nextReset: makeData.nextReset\n};\n\n\n// ==============================\n// VOICEFLOW ANALYSIS\n// ==============================\n\nlet totalAI = 0;\nlet totalInteractions = 0;\n\nconst modelStats = {};\nconst interactionStats = {};\nconst dailyUsage = {};\n\nfor (const item of voiceflowData) {\n\n  const date = item.period.split(\"T\")[0];\n\n  // DAILY USAGE\n  if (!dailyUsage[date]) {\n    dailyUsage[date] = 0;\n  }\n\n  dailyUsage[date] += item.count;\n\n  // AI USAGE\n  if (\n    item.type === \"llm-input\" ||\n    item.type === \"llm-output\"\n  ) {\n\n    totalAI += item.count;\n\n    if (!modelStats[item.model]) {\n      modelStats[item.model] = {\n        input: 0,\n        output: 0\n      };\n    }\n\n    if (item.type === \"llm-input\") {\n      modelStats[item.model].input += item.count;\n    }\n\n    if (item.type === \"llm-output\") {\n      modelStats[item.model].output += item.count;\n    }\n  }\n\n  // INTERACTIONS\n  if (item.type === \"interaction\") {\n\n    totalInteractions += item.count;\n\n    if (!interactionStats[item.model]) {\n      interactionStats[item.model] = 0;\n    }\n\n    interactionStats[item.model] += item.count;\n  }\n}\n\n\n// ==============================\n// MOST USED MODEL\n// ==============================\n\nlet mostUsedModel = \"\";\nlet highestModelUsage = 0;\n\nfor (const model in modelStats) {\n\n  const total =\n    modelStats[model].input +\n    modelStats[model].output;\n\n  if (total > highestModelUsage) {\n    highestModelUsage = total;\n    mostUsedModel = model;\n  }\n}\n\n\n// ==============================\n// HIGHEST USAGE DAY\n// ==============================\n\nlet highestUsageDay = \"\";\nlet highestUsage = 0;\n\nfor (const day in dailyUsage) {\n\n  if (dailyUsage[day] > highestUsage) {\n    highestUsage = dailyUsage[day];\n    highestUsageDay = day;\n  }\n}\n\n\n// ==============================\n// FORMAT MODEL TABLE\n// ==============================\n\nconst aiBreakdown = [];\n\nfor (const model in modelStats) {\n\n  aiBreakdown.push({\n    model,\n    inputUsage: modelStats[model].input,\n    outputUsage: modelStats[model].output,\n    total:\n      modelStats[model].input +\n      modelStats[model].output\n  });\n}\n\n\n// ==============================\n// FORMAT INTERACTION TABLE\n// ==============================\n\nconst interactionBreakdown = [];\n\nfor (const source in interactionStats) {\n\n  interactionBreakdown.push({\n    source,\n    count: interactionStats[source]\n  });\n}\n\n\n// ==============================\n// FORMAT DAILY TREND\n// ==============================\n\nconst dailyTrend = [];\n\nfor (const day in dailyUsage) {\n\n  dailyTrend.push({\n    date: day,\n    totalUsage: dailyUsage[day]\n  });\n}\n\n\n// ==============================\n// VOICEFLOW FINAL REPORT\n// ==============================\n\nconst voiceflowReport = {\n  totalAIOperations: totalAI,\n  totalInteractions,\n  mostUsedModel,\n  highestUsageDay,\n  aiBreakdown,\n  interactionBreakdown,\n  dailyTrend,\n\n  notes: [\n    \"Counts represent usage events, not exact billing.\",\n    \"Voiceflow API does not expose exact USD costs.\",\n    \"AI usage estimated using llm-input and llm-output.\"\n  ]\n};\n\n\n// ==============================\n// VAPI ANALYSIS\n// ==============================\n\nlet totalCalls = 0;\nlet totalDuration = 0;\nlet totalCost = 0;\n\nlet llmCost = 0;\nlet sttCost = 0;\nlet ttsCost = 0;\nlet transportCost = 0;\nlet vapiCost = 0;\n\nconst assistantBreakdown = [];\n\nfor (const item of vapiData) {\n\n  totalCalls += Number(item.totalCalls || 0);\n\n  totalDuration += Number(item.totalDuration || 0);\n\n  totalCost += Number(item.totalCost || 0);\n\n  llmCost += Number(item.llmCost || 0);\n\n  sttCost += Number(item.sttCost || 0);\n\n  ttsCost += Number(item.ttsCost || 0);\n\n  transportCost += Number(item.transportCost || 0);\n\n  vapiCost += Number(item.vapiCost || 0);\n\n  assistantBreakdown.push({\n    assistantId: item.assistantId,\n    totalCalls: Number(item.totalCalls || 0),\n    totalDuration: Number(item.totalDuration || 0).toFixed(2),\n    avgDuration: Number(item.avgDuration || 0).toFixed(2),\n    totalCost: Number(item.totalCost || 0).toFixed(4)\n  });\n}\n\n\n// ==============================\n// VAPI FINAL REPORT\n// ==============================\n\nconst vapiReport = {\n\n  totalCalls,\n\n  totalDurationMinutes:\n    totalDuration.toFixed(2),\n\n  avgCallDuration:\n    totalCalls > 0\n      ? (totalDuration / totalCalls).toFixed(2)\n      : 0,\n\n  totalCost:\n    totalCost.toFixed(4),\n\n  costBreakdown: {\n    llmCost: llmCost.toFixed(4),\n    sttCost: sttCost.toFixed(4),\n    ttsCost: ttsCost.toFixed(4),\n    transportCost:\n      transportCost.toFixed(4),\n    vapiCost:\n      vapiCost.toFixed(4)\n  },\n\n  assistantBreakdown\n};\n\n\n// ==============================\n// FINAL EXECUTIVE SUMMARY\n// ==============================\n\nconst executiveSummary = {\n\n  make: {\n    operationsUsed:\n      makeReport.operationsUsed,\n\n    creditsUsed:\n      makeReport.creditsUsed\n  },\n\n  voiceflow: {\n    aiOperations:\n      voiceflowReport.totalAIOperations,\n\n    interactions:\n      voiceflowReport.totalInteractions\n  },\n\n  vapi: {\n    totalCalls:\n      vapiReport.totalCalls,\n\n    totalCost:\n      vapiReport.totalCost\n  }\n};\n\n\n// ==============================\n// RETURN FINAL STRUCTURED REPORT\n// ==============================\n\nreturn [\n  {\n    json: {\n      generatedAt:\n        new Date().toISOString(),\n\n      executiveSummary:\n        executiveSummary || {},\n\n      makeReport:\n        makeReport || {},\n\n      voiceflowReport:\n        voiceflowReport || {},\n\n      vapiReport:\n        vapiReport || {}\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1776,
+        288
+      ],
+      "id": "5e4ce695-0275-4b7a-ac72-e5dbd4f3b16a",
+      "name": "Structured Reports of three raw API"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ─────────────────────────────────────────────\n// Budget Threshold Monitoring Engine\n// Input:\n// {\n//   generatedAt,\n//   executiveSummary,\n//   makeReport,\n//   voiceflowReport,\n//   vapiReport\n// }\n// ─────────────────────────────────────────────\n\nconst data = $input.first().json;\n\n// ─────────────────────────────────────────────\n// DATE CALCULATIONS\n// ─────────────────────────────────────────────\n\nconst now = new Date();\n\nconst dayOfMonth = now.getDate();\n\nconst daysInMonth = new Date(\n  now.getFullYear(),\n  now.getMonth() + 1,\n  0\n).getDate();\n\nconst projectionMultiplier = daysInMonth / dayOfMonth;\n\n// ─────────────────────────────────────────────\n// THRESHOLD CONFIG\n// ─────────────────────────────────────────────\n\nconst thresholds = {\n\n  make: {\n    operationsLimit: 1000,\n    warning: 70,\n    high: 85,\n    critical: 95\n  },\n\n  voiceflow: {\n    aiOpsLimit: 5000,\n    interactionsLimit: 2000,\n    warning: 75,\n    high: 90,\n    critical: 100\n  },\n\n  vapi: {\n    monthlyBudget: 10,\n    warning: 70,\n    high: 90,\n    critical: 100\n  }\n\n};\n\n// ─────────────────────────────────────────────\n// HELPER FUNCTIONS\n// ─────────────────────────────────────────────\n\nfunction calculatePercentage(used, limit) {\n  if (!limit || limit === 0) return 0;\n  return Number(((used / limit) * 100).toFixed(2));\n}\n\nfunction getSeverity(percent, config) {\n\n  if (percent >= config.critical) {\n    return \"CRITICAL\";\n  }\n\n  if (percent >= config.high) {\n    return \"HIGH\";\n  }\n\n  if (percent >= config.warning) {\n    return \"WARNING\";\n  }\n\n  return \"NORMAL\";\n}\n\n// ─────────────────────────────────────────────\n// MAKE.COM ANALYSIS\n// ─────────────────────────────────────────────\n\nconst makeOpsUsed =\n  Number(data.makeReport?.operationsUsed || 0);\n\nconst makeCreditsUsed =\n  Number(data.makeReport?.creditsUsed || 0);\n\nconst makeProjectedOps =\n  Number((makeOpsUsed * projectionMultiplier).toFixed(2));\n\nconst makeUsagePercent =\n  calculatePercentage(\n    makeOpsUsed,\n    thresholds.make.operationsLimit\n  );\n\nconst makeSeverity =\n  getSeverity(makeUsagePercent, thresholds.make);\n\n// ─────────────────────────────────────────────\n// VOICEFLOW ANALYSIS\n// ─────────────────────────────────────────────\n\nconst vfAiOps =\n  Number(data.voiceflowReport?.totalAIOperations || 0);\n\nconst vfInteractions =\n  Number(data.voiceflowReport?.totalInteractions || 0);\n\nconst vfProjectedOps =\n  Number((vfAiOps * projectionMultiplier).toFixed(2));\n\nconst vfProjectedInteractions =\n  Number((vfInteractions * projectionMultiplier).toFixed(2));\n\nconst vfOpsPercent =\n  calculatePercentage(\n    vfAiOps,\n    thresholds.voiceflow.aiOpsLimit\n  );\n\nconst vfInteractionPercent =\n  calculatePercentage(\n    vfInteractions,\n    thresholds.voiceflow.interactionsLimit\n  );\n\nconst vfSeverity =\n  getSeverity(\n    Math.max(vfOpsPercent, vfInteractionPercent),\n    thresholds.voiceflow\n  );\n\n// ─────────────────────────────────────────────\n// VAPI ANALYSIS\n// ─────────────────────────────────────────────\n\nconst vapiTotalCost =\n  Number(data.vapiReport?.totalCost || 0);\n\nconst vapiCalls =\n  Number(data.vapiReport?.totalCalls || 0);\n\nconst vapiProjectedCost =\n  Number(\n    (vapiTotalCost * projectionMultiplier).toFixed(2)\n  );\n\nconst vapiUsagePercent =\n  calculatePercentage(\n    vapiTotalCost,\n    thresholds.vapi.monthlyBudget\n  );\n\nconst vapiSeverity =\n  getSeverity(vapiUsagePercent, thresholds.vapi);\n\n// ─────────────────────────────────────────────\n// OVERALL SEVERITY\n// ─────────────────────────────────────────────\n\nconst severityOrder = {\n  NORMAL: 0,\n  WARNING: 1,\n  HIGH: 2,\n  CRITICAL: 3\n};\n\nconst allSeverities = [\n  makeSeverity,\n  vfSeverity,\n  vapiSeverity\n];\n\nlet overallSeverity = \"NORMAL\";\n\nfor (const sev of allSeverities) {\n\n  if (\n    severityOrder[sev] >\n    severityOrder[overallSeverity]\n  ) {\n    overallSeverity = sev;\n  }\n\n}\n\n// ─────────────────────────────────────────────\n// SHOULD ALERT?\n// ─────────────────────────────────────────────\n\nconst shouldAlert =\n  overallSeverity !== \"NORMAL\";\n\n// ─────────────────────────────────────────────\n// BUILD ALERTS ARRAY\n// ─────────────────────────────────────────────\n\nconst alerts = [];\n\nif (makeSeverity !== \"NORMAL\") {\n\n  alerts.push({\n    platform: \"Make.com\",\n    severity: makeSeverity,\n    metric: \"Operations Usage\",\n    current: makeOpsUsed,\n    projected: makeProjectedOps,\n    limit: thresholds.make.operationsLimit,\n    usagePercent: makeUsagePercent\n  });\n\n}\n\nif (vfSeverity !== \"NORMAL\") {\n\n  alerts.push({\n    platform: \"Voiceflow\",\n    severity: vfSeverity,\n    metric: \"AI Operations\",\n    current: vfAiOps,\n    projected: vfProjectedOps,\n    limit: thresholds.voiceflow.aiOpsLimit,\n    usagePercent: vfOpsPercent\n  });\n\n}\n\nif (vapiSeverity !== \"NORMAL\") {\n\n  alerts.push({\n    platform: \"Vapi\",\n    severity: vapiSeverity,\n    metric: \"Monthly Cost\",\n    current: vapiTotalCost,\n    projected: vapiProjectedCost,\n    limit: thresholds.vapi.monthlyBudget,\n    usagePercent: vapiUsagePercent\n  });\n\n}\n\n// ─────────────────────────────────────────────\n// FINAL OUTPUT\n// ─────────────────────────────────────────────\n\nreturn [\n  {\n    json: {\n\n      generatedAt: now.toISOString(),\n\n      overallSeverity,\n\n      shouldAlert,\n\n      summary: {\n\n        make: {\n          operationsUsed: makeOpsUsed,\n          creditsUsed: makeCreditsUsed,\n          projectedOperations: makeProjectedOps,\n          usagePercent: makeUsagePercent,\n          severity: makeSeverity\n        },\n\n        voiceflow: {\n          aiOperations: vfAiOps,\n          interactions: vfInteractions,\n          projectedOperations: vfProjectedOps,\n          projectedInteractions: vfProjectedInteractions,\n          usagePercent: vfOpsPercent,\n          severity: vfSeverity\n        },\n\n        vapi: {\n          totalCalls: vapiCalls,\n          totalCost: vapiTotalCost,\n          projectedCost: vapiProjectedCost,\n          usagePercent: vapiUsagePercent,\n          severity: vapiSeverity\n        }\n\n      },\n\n      alerts\n\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1968,
+        304
+      ],
+      "id": "657f8399-e09c-447a-875b-a4982ef73e8a",
+      "name": "Budget threshold Calculation"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Make.com Information",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Voiceflow Analytics",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Vapi Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Make.com Information": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Voiceflow Analytics": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Vapi Analytics": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Structured Reports of three raw API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Structured Reports of three raw API": {
+      "main": [
+        [
+          {
+            "node": "Budget threshold Calculation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Budget threshold Calculation": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Kolkata",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "0e752073-07b1-4edf-8f7e-b3a867e5d8a5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "0WFW8iFhItQctQwQwiuiX",
+  "tags": []
+}
