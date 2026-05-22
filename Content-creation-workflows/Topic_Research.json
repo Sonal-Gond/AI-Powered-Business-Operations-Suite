@@ -43,7 +43,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://localhost:5678/webhook/system-health",
+        "url": "http://your-n8n-domain/webhook/system-health",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -118,17 +118,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "value": "your_spreadsheet_id",
           "mode": "list",
           "cachedResultName": "Final_capstone(Content-creation)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1331242044,
           "mode": "list",
           "cachedResultName": "Sheet9",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=1331242044"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit#gid=1331242044"
         },
         "columns": {
           "mappingMode": "defineBelow",
