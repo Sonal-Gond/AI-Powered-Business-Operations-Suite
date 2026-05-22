@@ -4,13 +4,11 @@
     "voiceId": "Elliot",
     "provider": "vapi"
   },
-  "createdAt": "2026-04-16T09: 48: 30.122Z",
-  "updatedAt": "2026-04-17T07: 25: 31.077Z",
   "model": {
     "model": "gpt-4.1",
     "toolIds": [
-      "",
-      "f2ef462f-c4da-47ce-a9a8-545a3f85bf8f"
+      "check_availability_tool_id",
+      "book_appointment_tool_id"
     ],
     "messages": [
       {
