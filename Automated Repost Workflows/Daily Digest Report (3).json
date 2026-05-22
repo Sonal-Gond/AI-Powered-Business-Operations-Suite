@@ -1,0 +1,563 @@
+{
+  "name": "Daily Digest Report",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 18
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -688,
+        -464
+      ],
+      "id": "b68d25b8-b24f-4593-b88d-ebfddc88f347",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        592,
+        -416
+      ],
+      "id": "16078ecc-d7f4-48ac-a336-953ac2b0e701",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "mode": "list",
+          "cachedResultName": "Lead Capture form (final_capstone)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1709189993,
+          "mode": "list",
+          "cachedResultName": "Omnichannel_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Timestamp",
+              "lookupValue": "={{ $today.toFormat('MM/dd/yyyy') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -352,
+        -736
+      ],
+      "id": "d9f806eb-b453-436b-a525-59021fa508bd",
+      "name": "Lead data",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww",
+          "mode": "list",
+          "cachedResultName": "Final_capstone(Content-creation)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1331242044,
+          "mode": "list",
+          "cachedResultName": "Content_research",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PgvYOPNZOnZexKVbK5Tly65kSqauAZNzLVCsCt3_lww/edit#gid=1331242044"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Timestamp",
+              "lookupValue": "={{ $today.toFormat('MM/dd/yyyy') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -352,
+        -576
+      ],
+      "id": "4b05db79-a897-4fc2-869b-32f6381425ea",
+      "name": "Content information",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "mode": "list",
+          "cachedResultName": "final_capstone(Voice_operations)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1428000902,
+          "mode": "list",
+          "cachedResultName": "Voice_operation_call_summary",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=1428000902"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -352,
+        -400
+      ],
+      "id": "860a75e0-f84a-4dd8-b369-996d77ecf2b6",
+      "name": "Voice summary",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "mode": "list",
+          "cachedResultName": "Lead Capture form (final_capstone)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 757520354,
+          "mode": "list",
+          "cachedResultName": "Chatbot_performance",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=757520354"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -400,
+        -240
+      ],
+      "id": "48e207a5-e023-4204-bc96-44f17485c914",
+      "name": "Chatbot performance",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "mode": "list",
+          "cachedResultName": "final_capstone(Voice_operations)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Appointment_details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -496,
+        -64
+      ],
+      "id": "581cbc84-135d-4f5a-b5da-5fee03602ef8",
+      "name": "Appointment data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Handle empty input gracefully\nconst data = items.map(item => item.json);\n\n// If no data today, return zeros\nif (data.length === 0) {\n  return [{\n    json: {\n      summary: {\n        totalLeads: 0,\n        newLeads: 0,\n        existingLeads: 0,\n        warmLeads: 0,\n        coldLeads: 0,\n        hotLeads: 0,\n        meetingsScheduled: 0,\n        sourceBreakdown: {},\n        channelBreakdown: {}\n      }\n    }\n  }];\n}\n\nconst normalize = (val) => (val || \"\").toString().trim().toLowerCase();\n\nlet newLeads = 0, existingLeads = 0;\nlet warmLeads = 0, coldLeads = 0, hotLeads = 0;\nlet meetingsScheduled = 0;\nlet sourceCount = {}, channelCount = {};\n\nfor (const row of data) {\n  const leadStatus = normalize(row[\"Lead_staus\"]);\n  if (leadStatus.includes(\"new\")) newLeads++;\n  else if (leadStatus.includes(\"existing\")) existingLeads++;\n\n  const leadTemp = normalize(row[\"Lead type\"]);\n  if (leadTemp === \"warm\") warmLeads++;\n  else if (leadTemp === \"cold\") coldLeads++;\n  else if (leadTemp === \"hot\") hotLeads++;\n\n  const pipeline = normalize(row[\"Pipeline_stage\"]);\n  if (pipeline.includes(\"meeting\")) meetingsScheduled++;\n\n  let source = normalize(row[\"Source\"]);\n  if (!source) source = \"direct\";\n  sourceCount[source] = (sourceCount[source] || 0) + 1;\n\n  let channel = normalize(row[\"Channel\"]);\n  if (channel.includes(\"webiste\") || channel.includes(\"website\")) channel = \"website form\";\n  if (!channel) channel = \"unknown\";\n  channelCount[channel] = (channelCount[channel] || 0) + 1;\n}\n\nreturn [{\n  json: {\n    summary: {\n      totalLeads: newLeads + existingLeads,\n      newLeads,\n      existingLeads,\n      warmLeads,\n      coldLeads,\n      hotLeads,\n      meetingsScheduled,\n      sourceBreakdown: sourceCount,\n      channelBreakdown: channelCount\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -96,
+        -704
+      ],
+      "id": "6f67ad91-6acf-4a18-8228-9b41ac34fca7",
+      "name": "Lead summary"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Handle empty input gracefully\nconst row = items[0]?.json || null;\n\n// If no content data today, return defaults\nif (!row || Object.keys(row).length === 0) {\n  return [{\n    json: {\n      summary: {\n        topic: \"No Content Today\",\n        keyword: \"N/A\",\n        intent: \"N/A\",\n        publishingStatus: {\n          wordpress: \"No Data ➖\",\n          facebook: \"No Data ➖\",\n          linkedin: \"No Data ➖\"\n        },\n        overallStatus: \"No Data for Today ➖\"\n      }\n    }\n  }];\n}\n\nconst normalize = (val) => (val || \"\").toString().trim().toLowerCase();\n\nconst topicTitle = row[\"topic_title\"] || \"No Topic\";\nconst keyword = row[\"topic_keyword\"] || \"N/A\";\nconst intent = row[\"intent\"] || \"N/A\";\n\nconst blogStatus = normalize(row[\"Blog_Status\"]);\nconst fbStatus = normalize(row[\"Facebook_status\"]);\nconst liStatus = normalize(row[\"LinkedIn_status\"]);\n\nconst formatStatus = (status) => {\n  if (status === \"posted\") return \"Posted ✅\";\n  if (!status) return \"Not Started ❌\";\n  return \"Pending ⏳\";\n};\n\nlet overallStatus = \"\";\nif (blogStatus === \"posted\" && fbStatus === \"posted\" && liStatus === \"posted\") {\n  overallStatus = \"Fully Published ✅\";\n} else if (blogStatus || fbStatus || liStatus) {\n  overallStatus = \"Partially Published ⚠️\";\n} else {\n  overallStatus = \"Not Published ❌\";\n}\n\nreturn [{\n  json: {\n    summary: {\n      topic: topicTitle,\n      keyword,\n      intent,\n      publishingStatus: {\n        wordpress: formatStatus(blogStatus),\n        facebook: formatStatus(fbStatus),\n        linkedin: formatStatus(liStatus)\n      },\n      overallStatus\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        16,
+        -528
+      ],
+      "id": "2853a027-d129-42b7-9532-c92fb6cfe03e",
+      "name": "Content summary"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Safe Overall summary\nconst getSum = (index) => items[index]?.json?.summary || {};\n\nconst leads = getSum(0);\nconst content = getSum(1);\nconst voice = getSum(2);\nconst chatbot = getSum(3);\nconst appointments = getSum(4);\n\nreturn [{ json: { leads, content, voice, chatbot, appointments } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        -352
+      ],
+      "id": "7b295316-e3fd-46d3-baa5-ed15934d0a05",
+      "name": "Overall summary"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $json;\n\nconst html = `\n<html>\n<head>\n<style>\nbody { font-family: Arial; padding: 20px; background:#f5f7fa; }\nh2 { color:#2c3e50; }\n.section { margin-bottom:20px; }\n.card {\n  background:white;\n  padding:15px;\n  border-radius:10px;\n  box-shadow:0 2px 6px rgba(0,0,0,0.1);\n}\n.good { color:green; }\n.bad { color:red; }\n</style>\n</head>\n\n<body>\n\n<h2>📊 Daily Business Digest</h2>\n\n<div class=\"section\">\n<h3>🧲 Leads</h3>\n<div class=\"card\">\nTotal: ${data.leads.totalLeads} <br/>\nNew: ${data.leads.newLeads} | Existing: ${data.leads.existingLeads} <br/>\nWarm: ${data.leads.warmLeads} | Cold: ${data.leads.coldLeads} | Hot: ${data.leads.hotLeads} <br/>\nMeetings: ${data.leads.meetingsScheduled}\n</div>\n</div>\n\n<div class=\"section\">\n<h3>🧠 Content</h3>\n<div class=\"card\">\nTopic: ${data.content.topic} <br/>\nKeyword: ${data.content.keyword} <br/>\nStatus: ${data.content.overallStatus}\n</div>\n</div>\n\n<div class=\"section\">\n<h3>📞 Voice AI</h3>\n<div class=\"card\">\nCalls: ${data.voice.totalCalls} <br/>\nConnection Rate: ${data.voice.metrics.connectionRate} <br/>\nSuccess Rate: ${data.voice.metrics.successRate}\n</div>\n</div>\n\n<div class=\"section\">\n<h3>🤖 Chatbot</h3>\n<div class=\"card\">\nConversations: ${data.chatbot.totalConversations} <br/>\nResolution Rate: ${data.chatbot.effectiveness.resolutionRate}\n</div>\n</div>\n\n<div class=\"section\">\n<h3>📅 Appointments</h3>\n<div class=\"card\">\nTotal: ${data.appointments.totalBookings} <br/>\nUpcoming: ${data.appointments.schedule.upcomingAppointments} <br/>\nAlerts: ${data.appointments.alerts.join(\", \")}\n</div>\n</div>\n\n</body>\n</html>\n`;\n\nreturn [{ json: { html } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        -192
+      ],
+      "id": "1f91cdea-7dea-4315-86c8-745323f491c1",
+      "name": "HTML generation for gmail"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0B1RSBSCNP",
+          "mode": "id"
+        },
+        "text": "=📊 *Daily Business Digest (Key Metrics)*\n\n━━━━━━━━━━━━━━━━━━\n\n🧲 *Leads*\n• Total: {{$json.leads.totalLeads}}\n• New: {{$json.leads.newLeads}} | Existing: {{$json.leads.existingLeads}}\n• Warm/Hot: {{$json.leads.warmLeads + $json.leads.hotLeads}}\n• Meetings: {{$json.leads.meetingsScheduled}}\n\n━━━━━━━━━━━━━━━━━━\n\n🧠 *Content*\n• Topic: {{$json.content.topic}}\n• Status: {{$json.content.overallStatus}}\n• WP: {{$json.content.publishingStatus.wordpress}}\n• FB: {{$json.content.publishingStatus.facebook}}\n• LI: {{$json.content.publishingStatus.linkedin}}\n\n━━━━━━━━━━━━━━━━━━\n\n📞 *Voice AI*\n• Calls: {{$json.voice.totalCalls}}\n• Connection: {{$json.voice.metrics.connectionRate}}\n• Success: {{$json.voice.metrics.successRate}}\n\n━━━━━━━━━━━━━━━━━━\n\n🤖 *Chatbot*\n• Conversations: {{$json.chatbot.totalConversations}}\n• Resolution: {{$json.chatbot.effectiveness.resolutionRate}}\n• Latency: {{$json.chatbot.performance.avgLatencyMs}} ms\n\n━━━━━━━━━━━━━━━━━━\n\n📅 *Appointments*\n• Total: {{$json.appointments.totalBookings}}\n• Upcoming: {{$json.appointments.schedule.upcomingAppointments}}\n• ⚠️ Pending Issues: {{$json.appointments.alerts}}\n\n━━━━━━━━━━━━━━━━━━\n\n🚨 *Key Insights*\n• {{$json.chatbot.alerts[0] || \"Chatbot stable\"}}\n• {{$json.voice.insight}}\n• {{$json.content.overallStatus.includes(\"⚠️\") ? \"Content not fully published\" : \"Content fully published\"}}\n• {{$json.appointments.alerts[0] || \"Appointments healthy\"}}\n\n━━━━━━━━━━━━━━━━━━\n",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        1216,
+        -608
+      ],
+      "id": "f151ddac-81b3-497c-aaa7-15f220f1fc58",
+      "name": "Send a message on slack",
+      "webhookId": "055aed75-2601-4434-a517-910c9c8cc3f3",
+      "credentials": {
+        "slackApi": {
+          "id": "ekJzRR6RASxiEuDX",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "sonal.aimaven@gmail.com",
+        "subject": "Daily Digest Report",
+        "message": "={{ $json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1456,
+        -240
+      ],
+      "id": "0a201b28-3551-4934-b57e-15a0d0e75c27",
+      "name": "Send a message on gmail",
+      "webhookId": "58e45237-4e6b-4a27-95c0-673be47b8a82",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aNbQYToMkCwBUu0P",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Safe Voice wrapper\nconst data = items.map(i => i.json);\n\nconst today = new Date().toLocaleDateString(\"en\");\nconst todayData = data.filter(row =>\n  (row.Timestamp || \"\").includes(today)\n);\n\nconst rows = todayData.length > 0 ? todayData : [];\nconst totalCalls = rows.length;\nlet completed = 0, notAnswered = 0, success = 0, partial = 0, failed = 0;\n\nfor (const row of rows) {\n  const status = (row.Call_status || \"\").toLowerCase();\n  const outcome = (row.Call_outcome || \"\").toLowerCase();\n  if (status === \"completed\") completed++;\n  else if (status.includes(\"not\")) notAnswered++;\n  if (outcome === \"success\") success++;\n  else if (outcome === \"partial\") partial++;\n  else if (outcome === \"failed\") failed++;\n}\n\nconst connectionRate = totalCalls ? ((completed / totalCalls) * 100).toFixed(1) : \"0.0\";\nconst successRate = completed ? ((success / completed) * 100).toFixed(1) : \"0.0\";\nconst failureRate = totalCalls ? ((failed / totalCalls) * 100).toFixed(1) : \"0.0\";\n\nreturn [{\n  json: {\n    summary: {\n      totalCalls,\n      completed,\n      notAnswered,\n      outcomes: { success, partial, failed },\n      metrics: {\n        connectionRate: connectionRate + \"%\",\n        successRate: successRate + \"%\",\n        failureRate: failureRate + \"%\"\n      },\n      insight: totalCalls === 0\n        ? \"No calls recorded today.\"\n        : notAnswered > completed\n          ? \"Majority of failures are due to calls not being answered.\"\n          : successRate > 70\n            ? \"AI performance is strong when calls are connected.\"\n            : \"Call performance needs improvement.\"\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        64,
+        -400
+      ],
+      "id": "cdc5462e-f169-4cb6-b14e-28bd371ec33a",
+      "name": "Voice today summary"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Safe Chatbot wrapper\nconst data = items.map(i => i.json);\nconst today = new Date().toISOString().split('T')[0];\nconst rows = data.filter(row => (row.created_At || \"\").includes(today));\n\nlet totalConversations = rows.length;\nlet uniqueSessions = new Set();\nlet totalDuration = 0, totalLatency = 0, totalTurns = 0, resolvedCount = 0;\nlet alerts = [];\n\nfor (const row of rows) {\n  if (row.session_id) uniqueSessions.add(row.session_id);\n  totalDuration += Number(row[\"duration (ms)\"] || 0) / 1000;\n  totalLatency += Number(row[\"Avg letancy\"] || 0);\n  totalTurns += Number(row.turns || 0);\n  const res = (row.resolution || \"\").toLowerCase();\n  if (res === \"resolved\" || res === \"success\") resolvedCount++;\n}\n\nconst avgLatency = totalConversations ? (totalLatency / totalConversations).toFixed(2) : 0;\nconst avgTurns = totalConversations ? (totalTurns / totalConversations).toFixed(2) : 0;\nconst resolutionRate = totalConversations ? ((resolvedCount / totalConversations) * 100).toFixed(1) : \"0.0\";\n\nif (avgLatency > 2000) alerts.push(\"High latency detected ⚠️\");\nif (resolutionRate < 50) alerts.push(\"Low resolution rate ⚠️\");\nif (avgTurns > 10) alerts.push(\"Conversations are too long ⚠️\");\nif (totalConversations === 0) alerts.push(\"No chatbot data for today\");\n\nreturn [{\n  json: {\n    summary: {\n      totalConversations,\n      uniqueSessions: uniqueSessions.size,\n      performance: {\n        avgDurationSeconds: totalConversations ? (totalDuration / totalConversations).toFixed(2) : 0,\n        avgLatencyMs: avgLatency,\n        avgTurns\n      },\n      effectiveness: { resolved: resolvedCount, resolutionRate: resolutionRate + \"%\" },\n      alerts\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        16,
+        -240
+      ],
+      "id": "aa0858b8-e3e2-4f79-a3e2-5b21ec127256",
+      "name": "Chatbot today data"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Safe Appointments wrapper\nconst data = items.map(i => i.json);\nconst today = new Date().toLocaleDateString(\"en\");\nconst rows = data.filter(row => (row.Timestamp || \"\").includes(today));\n\nlet totalBookings = rows.length;\nlet uniqueUsers = new Set();\nlet todayAppointments = 0, upcomingAppointments = 0, pastAppointments = 0;\nlet statusCount = {}, reminderCount = {}, serviceCount = {}, hourCount = {};\nlet missingReminders = 0;\nconst todayStr = new Date().toDateString();\n\nfor (const row of rows) {\n  if (row.User_email) uniqueUsers.add(row.User_email);\n  const apptDate = row.Appointmnet_date ? new Date(row.Appointmnet_date).toDateString() : \"\";\n  if (apptDate === todayStr) todayAppointments++;\n  else if (new Date(row.Appointmnet_date) > new Date()) upcomingAppointments++;\n  else pastAppointments++;\n\n  const status = (row.Appintment_status || \"unknown\").toLowerCase().trim();\n  statusCount[status] = (statusCount[status] || 0) + 1;\n  const reminder = (row.Reminder_status || \"unknown\").toLowerCase().trim();\n  reminderCount[reminder] = (reminderCount[reminder] || 0) + 1;\n  if (reminder !== \"sent\") missingReminders++;\n  const service = (row.Service || \"unknown\").trim();\n  serviceCount[service] = (serviceCount[service] || 0) + 1;\n  const hour = row.Appointment_hour || \"unknown\";\n  hourCount[hour] = (hourCount[hour] || 0) + 1;\n}\n\nlet peakHour = Object.entries(hourCount).sort((a, b) => b[1] - a[1])[0]?.[0] || \"No Data\";\nlet alerts = [];\nif ((statusCount[\"pending\"] || 0) > 0) alerts.push(`${statusCount[\"pending\"]} appointments pending`);\nif (missingReminders > 0) alerts.push(`${missingReminders} appointments without reminders`);\nif (totalBookings === 0) alerts.push(\"No appointment data for today\");\n\nreturn [{\n  json: {\n    summary: {\n      totalBookings,\n      uniqueUsers: uniqueUsers.size,\n      schedule: { todayAppointments, upcomingAppointments, pastAppointments },\n      statusBreakdown: statusCount,\n      reminderBreakdown: reminderCount,\n      serviceBreakdown: serviceCount,\n      peakHour,\n      alerts\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -48,
+        -48
+      ],
+      "id": "d487d9ea-9582-4b66-95a5-95b5da5ec315",
+      "name": "today's Appointment data"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Lead data",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Content information",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Voice summary",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Chatbot performance",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Appointment data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Overall summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead data": {
+      "main": [
+        [
+          {
+            "node": "Lead summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content information": {
+      "main": [
+        [
+          {
+            "node": "Content summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Voice summary": {
+      "main": [
+        [
+          {
+            "node": "Voice today summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chatbot performance": {
+      "main": [
+        [
+          {
+            "node": "Chatbot today data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Appointment data": {
+      "main": [
+        [
+          {
+            "node": "today's Appointment data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead summary": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content summary": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Overall summary": {
+      "main": [
+        [
+          {
+            "node": "HTML generation for gmail",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message on slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML generation for gmail": {
+      "main": [
+        [
+          {
+            "node": "Send a message on gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message on gmail": {
+      "main": [
+        []
+      ]
+    },
+    "Voice today summary": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Chatbot today data": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "today's Appointment data": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Kolkata",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "6166b7cd-7c58-4321-925b-0ba393e98e9f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "rEok3PYpQ9h_G-k2uRJIH",
+  "tags": []
+}
