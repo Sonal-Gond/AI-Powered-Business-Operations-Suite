@@ -1,0 +1,551 @@
+{
+  "name": "Survey_call",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -112,
+        -192
+      ],
+      "id": "3a12e555-b17c-4cdc-b6dc-42968d7abe16",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b9019c4f-0b0b-4710-ba07-384ebd12975e",
+              "leftValue": "={{ $json.row_number }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        464,
+        -48
+      ],
+      "id": "d0ea68bd-2d9f-4940-8eb3-1e5e77ac9c58",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 17
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -560,
+        -80
+      ],
+      "id": "4d21d8ca-851d-4872-a197-d78b0c03eea9",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8",
+          "mode": "list",
+          "cachedResultName": "Lead Capture form (final_capstone)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1709189993,
+          "mode": "list",
+          "cachedResultName": "Omnichannel_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BBtXMGD374IRHdMgtWdQYRlhXvT1Vbxhc9u8KlzObu8/edit#gid=1709189993"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Pipeline_stage",
+              "lookupValue": "Won"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -336,
+        -80
+      ],
+      "id": "97e44abc-2fcb-4490-b047-6d595cddcbf2",
+      "name": "Getting won leads from lead data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "usNDrYntbumBCLRa",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "mode": "list",
+          "cachedResultName": "final_capstone(Voice_operations)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1676749235,
+          "mode": "list",
+          "cachedResultName": "Survey_response",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=1676749235"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Phone",
+              "lookupValue": "=91{{ $json['User number'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        192,
+        -96
+      ],
+      "id": "3860d9ca-d3db-4768-8e2a-2005f68ad568",
+      "name": "Lookup whether already surveyed or not",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "usNDrYntbumBCLRa",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.vapi.ai/call",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\"assistantId\": \"e75cc95f-211c-4eed-b49c-45fd8efee515\",\n\"phoneNumberId\": \"2c5b5379-cd5e-40dd-b6f3-07f514ab1ae5\",\n\"customer\": {\n    \"number\": \"+91{{ $('Getting won leads from lead data').item.json['User number'] }}\",\n    \"name\": \"{{ $('Getting won leads from lead data').item.json['User name'] }}\"\n  },\n  \"assistantOverrides\": {\n    \"variableValues\": {\n      \"name\": \"{{ $('Getting won leads from lead data').item.json['User name'] }}\",\n      \"phone\": \"+91{{ $('Getting won leads from lead data').item.json['User number'] }}\" }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        640,
+        128
+      ],
+      "id": "98aa77de-ecfc-4965-9928-7fe11b606af2",
+      "name": "Vapi survey call",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "nP0wGfk2MRHFtOdQ",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "mode": "list",
+          "cachedResultName": "final_capstone(Voice_operations)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1676749235,
+          "mode": "list",
+          "cachedResultName": "Sheet7",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=1676749235"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.assistantOverrides.variableValues.name }}",
+            "Phone": "={{ $json.assistantOverrides.variableValues.phone }}",
+            "Survey_response": "Remain",
+            "Survey_date": "={{ DateTime.now().toFormat(\"MM/dd/yyyy\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Rating",
+              "displayName": "Rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Feature",
+              "displayName": "Feature",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Recommendation",
+              "displayName": "Recommendation",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Survey_response",
+              "displayName": "Survey_response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Survey_date",
+              "displayName": "Survey_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        32,
+        128
+      ],
+      "id": "407794e4-835b-41fc-a288-902dbc7eeab5",
+      "name": "Adding info of lead in survey sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "usNDrYntbumBCLRa",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "survey-call-report",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -320,
+        -560
+      ],
+      "id": "58548d39-2f1d-4733-8ac0-3d2c07c64739",
+      "name": "Survey response trigger",
+      "webhookId": "9ac4578e-d3bd-4a2a-bb96-00931fe692e2"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "mode": "list",
+          "cachedResultName": "final_capstone(Voice_operations)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1676749235,
+          "mode": "list",
+          "cachedResultName": "Sheet7",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=1676749235"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Rating": "={{ $('Survey response trigger').item.json.body.message.toolCalls[0].function.arguments.satisfaction_rating }}",
+            "Feature": "={{ $('Survey response trigger').item.json.body.message.toolCalls[0].function.arguments.feature_used }}",
+            "Recommendation": "={{ $('Survey response trigger').item.json.body.message.toolCalls[0].function.arguments.recommendation }}",
+            "Phone": "={{ $('Survey response trigger').item.json.body.message.artifact.variables.customer.number.replace(\"+\", \"\") }}",
+            "Name": "={{ $('Survey response trigger').item.json.body.message.artifact.variables.customer.name }}",
+            "Survey_response": "Done"
+          },
+          "matchingColumns": [
+            "Phone"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Rating",
+              "displayName": "Rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Feature",
+              "displayName": "Feature",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Recommendation",
+              "displayName": "Recommendation",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Survey_response",
+              "displayName": "Survey_response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Survey_date",
+              "displayName": "Survey_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        96,
+        -576
+      ],
+      "id": "b1940863-81e3-4f28-ba52-6acc0c619044",
+      "name": "Adding survey response to corresponding lead",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "usNDrYntbumBCLRa",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Lookup whether already surveyed or not",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Vapi survey call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Getting won leads from lead data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Getting won leads from lead data": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lookup whether already surveyed or not": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vapi survey call": {
+      "main": [
+        [
+          {
+            "node": "Adding info of lead in survey sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Adding info of lead in survey sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Survey response trigger": {
+      "main": [
+        [
+          {
+            "node": "Adding survey response to corresponding lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Kolkata",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "2c10f2ac-8b20-4fb0-ad5e-2ebab3e761d0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "LSJwOUF5pFYtJniZwJ_K2",
+  "tags": []
+}
