@@ -96,7 +96,7 @@
         "nodeCredentialType": "linkedInOAuth2Api",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "{\n  \"registerUploadRequest\": {\n    \"recipes\": [\"urn:li:digitalmediaRecipe:feedshare-image\"],\n    \"owner\": \"urn:li:person:wFI_ouB88P\",\n    \"serviceRelationships\": [\n      {\n        \"relationshipType\": \"OWNER\",\n        \"identifier\": \"urn:li:userGeneratedContent\"\n      }\n    ]\n  }\n}",
+        "jsonBody": "{\n  \"registerUploadRequest\": {\n    \"recipes\": [\"urn:li:digitalmediaRecipe:feedshare-image\"],\n    \"owner\": \"your-person-urn\",\n    \"serviceRelationships\": [\n      {\n        \"relationshipType\": \"OWNER\",\n        \"identifier\": \"urn:li:userGeneratedContent\"\n      }\n    ]\n  }\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -246,7 +246,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"author\": \"urn:li:person:wFI_ouB88P\",\n  \"lifecycleState\": \"PUBLISHED\",\n  \"specificContent\": {\n    \"com.linkedin.ugc.ShareContent\": {\n      \"shareCommentary\": {\n        \"text\": {{ JSON.stringify($('Caption+Prompt Agent1').item.json.output.linkedin_content.full_post) }}\n      },\n      \"shareMediaCategory\": \"IMAGE\",\n      \"media\": [\n        {\n          \"status\": \"READY\",\n          \"description\": {\n            \"text\": \"Image description\"\n          },\n          \"media\": \"{{ $('LinkedIn-Register Upload Node1').item.json.value.asset }}\",\n          \"title\": {\n            \"text\": \"Post Image\"\n          }\n        }\n      ]\n    }\n  },\n  \"visibility\": {\n    \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n  }\n} ",
+        "jsonBody": "={\n  \"author\": \"your-person-urn\",\n  \"lifecycleState\": \"PUBLISHED\",\n  \"specificContent\": {\n    \"com.linkedin.ugc.ShareContent\": {\n      \"shareCommentary\": {\n        \"text\": {{ JSON.stringify($('Caption+Prompt Agent1').item.json.output.linkedin_content.full_post) }}\n      },\n      \"shareMediaCategory\": \"IMAGE\",\n      \"media\": [\n        {\n          \"status\": \"READY\",\n          \"description\": {\n            \"text\": \"Image description\"\n          },\n          \"media\": \"{{ $('LinkedIn-Register Upload Node1').item.json.value.asset }}\",\n          \"title\": {\n            \"text\": \"Post Image\"\n          }\n        }\n      ]\n    }\n  },\n  \"visibility\": {\n    \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n  }\n} ",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
