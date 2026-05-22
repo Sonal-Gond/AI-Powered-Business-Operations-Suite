@@ -1,6 +1,6 @@
 # AI-Powered-Business-Operations-Suite
 
-# Requiremnets**
+# Requiremnets
 - n8n self hosted or cloud based account
 - make.com account
 - OpenAI API key 
@@ -14,4 +14,9 @@
 - Calendly account (For Appoinment link)  
 
 
-**Setup steps**
+# Setup steps
+**n8n workflows setup steps**
+-> Download n8n workflow from these repository
+-> Goto n8n dashboard 
+-> Create workflow -> click on three dots (top right corner) -> select import from file -> select   json file (downloaded workflow) 
+ 
