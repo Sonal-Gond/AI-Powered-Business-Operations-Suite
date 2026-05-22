@@ -1,0 +1,241 @@
+{
+  "name": "SLA Violation alert",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -560,
+        -160
+      ],
+      "id": "4707106e-330f-460f-ad8d-65d0d2283fb9",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0102fc29-b08a-415e-9532-c2315a805260",
+              "leftValue": "={{ $json.uptime }}",
+              "rightValue": 99.99,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        112,
+        80
+      ],
+      "id": "ee35f950-ee5a-463b-94ee-a369d5497b70",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0B2M2M4692",
+          "mode": "id"
+        },
+        "text": "=\"🚨 SLA BREACHED \nWorkflow uptime dropped below 99.9%\n\nCurrent Uptime: {{$json.uptime}}%\n\nFailure Rate: {{$json.failureRate}}%\n\nSeverity: {{$json.severity}}\" ",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        464,
+        -64
+      ],
+      "id": "85a071bf-228b-44bc-a4a5-5b6aca83ebc7",
+      "name": "Send a message",
+      "webhookId": "a24e2bca-596e-46b9-b274-d0eb5ce6d625",
+      "credentials": {
+        "slackApi": {
+          "id": "ekJzRR6RASxiEuDX",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0",
+          "mode": "list",
+          "cachedResultName": "Final_capstone(System_health)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -400,
+        -96
+      ],
+      "id": "5f049175-477e-4482-8557-8f4d2d0e0405",
+      "name": "Getting system logged data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "usNDrYntbumBCLRa",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\n\nconst oneHourAgo = new Date(\n  now.getTime() - 60 * 60 * 1000\n);\n\nconst filtered = items.filter(item => {\n\n  const raw =\n    item.json.timestamp;\n\n  if (!raw) return false;\n\n  // Convert MM/DD/YYYY HH:mm:ss\n  const [datePart, timePart] =\n    raw.split(\" \");\n\n  const [month, day, year] =\n    datePart.split(\"/\").map(Number);\n\n  const [hour, minute, second] =\n    timePart.split(\":\").map(Number);\n\n  const ts = new Date(\n    year,\n    month - 1,\n    day,\n    hour,\n    minute,\n    second\n  );\n\n  return ts >= oneHourAgo;\n});\n\nreturn filtered;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        -128
+      ],
+      "id": "46ca2b33-5ecf-48c0-b6de-458a59264ea3",
+      "name": "Fetching only last hour system log"
+    },
+    {
+      "parameters": {
+        "jsCode": "const total = items.length;\n\nconst success = items.filter(\n  i => i.json.Status === \"Success\"\n).length;\n\nconst failed = items.filter(\n  i =>\n    i.json.Status === \"Error\" ||\n    i.json.Status === \"Failed\"\n).length;\n\nconst uptime =\nNumber(((success / total) * 100).toFixed(2));\n\nconst failureRate =\nNumber(((failed / total) * 100).toFixed(2));\n\nreturn [{\n  json: {\n    total,\n    success,\n    failed,\n    uptime,\n    failureRate\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -48,
+        -96
+      ],
+      "id": "b7a663e0-8273-49fe-bf51-369f3afdccb0",
+      "name": "Calculating failure rate and uptime"
+    },
+    {
+      "parameters": {
+        "jsCode": "const uptime =\nparseFloat($json.uptime);\n\nlet severity = \"Healthy\";\n\nif (uptime < 95) {\n  severity = \"Critical\";\n}\nelse if (uptime < 99) {\n  severity = \"High\";\n}\nelse if (uptime < 99.9) {\n  severity = \"Medium\";\n}\n\nreturn [{\n  json: {\n    ...$json,\n    severity\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        -64
+      ],
+      "id": "298b4906-4d39-4dae-906d-976516dc3eda",
+      "name": "Severity of SLA violation"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Getting system logged data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Severity of SLA violation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Getting system logged data": {
+      "main": [
+        [
+          {
+            "node": "Fetching only last hour system log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetching only last hour system log": {
+      "main": [
+        [
+          {
+            "node": "Calculating failure rate and uptime",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculating failure rate and uptime": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Severity of SLA violation": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Kolkata",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "36c4eadd-cc3a-441b-bb15-f6878ec8e665",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "0jJG8JDtvNgjz1k5OJky9",
+  "tags": []
+}
