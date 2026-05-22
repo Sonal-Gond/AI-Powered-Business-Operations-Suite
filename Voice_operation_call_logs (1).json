@@ -1,0 +1,296 @@
+{
+  "name": "Voice_operation_call_logs",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "vapi-calls-report",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -592,
+        -416
+      ],
+      "id": "9d4e7558-b790-4df7-835f-0230e31b7c68",
+      "name": "Vapi triggeres webhook",
+      "webhookId": "83c44101-78f8-4556-b4e1-e5513311577b"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.vapi.ai/call/{{ $json.body.message.call.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 1beb307d-08f4-481b-98dc-cf0ebb00456b"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -320,
+        -288
+      ],
+      "id": "114e5d5e-4350-4505-80c5-758505a02311",
+      "name": "Fetch the info thorugh call id"
+    },
+    {
+      "parameters": {
+        "jsCode": "const reason = ($json.endedReason || \"\").toLowerCase();\nconst transcript = ($json.transcript || \"\").toLowerCase();\n\n// calculate duration safely\nlet duration = 0;\nif ($json.startedAt && $json.endedAt) {\n  duration =\n    (new Date($json.endedAt) - new Date($json.startedAt)) / 1000;\n}\n\n// =====================\n// 🎯 CALL STATUS\n// =====================\n\nlet status = \"Unknown\";\n\n// 1. NOT ANSWERED\nif (\n  reason.includes(\"did-not-answer\") ||\n  reason.includes(\"busy\") ||\n  reason.includes(\"voicemail\")\n) {\n  status = \"Not Answered\";\n}\n\n// 2. FAILED (infra / provider / system)\nelse if (\n  reason.includes(\"error\") ||\n  reason.includes(\"failed\") ||\n  reason.includes(\"transport\") ||\n  reason.includes(\"worker-died\") ||\n  reason.includes(\"provider\")\n) {\n  status = \"Failed\";\n}\n\n// 3. COMPLETED (normal end)\nelse if (\n  reason.includes(\"assistant-ended-call\") ||\n  reason.includes(\"customer-ended-call\") ||\n  reason.includes(\"completed\") ||\n  reason.includes(\"max-duration\") ||\n  reason.includes(\"silence-timed-out\")\n) {\n  status = \"Completed\";\n}\n\n// 4. FALLBACK USING DURATION\nelse if (duration === 0) {\n  status = \"Not Answered\";\n} else if (duration < 10) {\n  status = \"Abandoned\";\n} else {\n  status = \"Completed\";\n}\n\n// =====================\n// 🎯 CALL OUTCOME (GENERIC)\n// =====================\n\nlet outcome = \"Failed\";\n\n// Not answered = always failed\nif (status === \"Not Answered\") {\n  outcome = \"Failed\";\n}\n\n// strong success signals\nelse if (\n  transcript.includes(\"thank you\") ||\n  transcript.includes(\"resolved\") ||\n  transcript.includes(\"scheduled\") ||\n  transcript.includes(\"done\")\n) {\n  outcome = \"Success\";\n}\n\n// engagement based\nelse if (duration > 60) {\n  outcome = \"Partial\";\n}\nelse if (duration > 20) {\n  outcome = \"Partial\";\n}\nelse {\n  outcome = \"Failed\";\n}\n\n// =====================\n// RETURN\n// =====================\n\nreturn [{\n  json: {\n    ...$json,\n    call_status: status,\n    call_outcome: outcome,\n    duration_sec: duration\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -64,
+        -304
+      ],
+      "id": "e1c812fc-75ba-4c41-837d-accc5a3c5b71",
+      "name": "Derive call_status and call outcome"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "mode": "list",
+          "cachedResultName": "final_capstone(Voice_operations)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1428000902,
+          "mode": "list",
+          "cachedResultName": "Voice_operation_call_summary",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=1428000902"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ new Date().toLocaleString('en', { timeZone: 'Asia/Kolkata' }) }}",
+            "Transcript": "={{ $json.artifact.transcript }}",
+            "Recording url": "={{ $json.artifact.recordingUrl }}",
+            "Assistant_name": "={{ $json.artifact.assistantActivations[0].assistantName }}",
+            "Assistant_id": "={{ $('Fetch the info thorugh call id').item.json.assistantId }}",
+            "customer_number": "={{ $json.artifact.variables.customer.number }}",
+            "customer_name": "=",
+            "Call_cost": "={{ $json.cost }}",
+            "Call_duration(second)": "={{ $json.duration_sec }}",
+            "Call_duration(minutes)": "=",
+            "Call_id": "={{ $json.id }}",
+            "Call_status": "={{ $json.call_status }}",
+            "Call_outcome": "={{ $json.call_outcome }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assistant_name",
+              "displayName": "Assistant_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assistant_id",
+              "displayName": "Assistant_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Call_cost",
+              "displayName": "Call_cost",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Call_duration(second)",
+              "displayName": "Call_duration(second)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Call_duration(minutes)",
+              "displayName": "Call_duration(minutes)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Transcript",
+              "displayName": "Transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Recording url",
+              "displayName": "Recording url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "customer_number",
+              "displayName": "customer_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "customer_name",
+              "displayName": "customer_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Call_id",
+              "displayName": "Call_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Call_status",
+              "displayName": "Call_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Call_outcome",
+              "displayName": "Call_outcome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        192,
+        -288
+      ],
+      "id": "196b851f-ed57-48dc-aea6-bde166659767",
+      "name": "Append row in Voice call summary sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Overview of voice_operation_call_logs\n \nWhenver call ends by any vapi assistant they will trigger these workflow's webhook then thorugh http request we will get the info of that particular call_id and then use that for deriving call status and ca;l outcome then the data will be append in sheet"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -704,
+        -448
+      ],
+      "typeVersion": 1,
+      "id": "62bce370-2442-444e-aafa-ae7aa28b07ed",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Vapi triggeres webhook": {
+      "main": [
+        [
+          {
+            "node": "Fetch the info thorugh call id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch the info thorugh call id": {
+      "main": [
+        [
+          {
+            "node": "Derive call_status and call outcome",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Derive call_status and call outcome": {
+      "main": [
+        [
+          {
+            "node": "Append row in Voice call summary sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "41c255e3-aafa-491f-859d-29c54a7ed905",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "qwoBAG_627AMhOzaRPYOn",
+  "tags": []
+}
