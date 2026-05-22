@@ -1,0 +1,207 @@
+{
+  "name": "System Failure health logging",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        -128
+      ],
+      "id": "545a0f78-36d3-4e2a-956f-35aab8067819",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0",
+          "mode": "list",
+          "cachedResultName": "Final_capstone(System_health)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T0r890hVQFCoC9Htm3KMHeQ61jUrUnOTdIUk-XzfhE0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "timestamp": "={{ new Date().toLocaleString('en', { timeZone: 'Asia/Kolkata' }) }}",
+            "Workflow_name": "={{ $json.workflow.name }}",
+            "Workflow_id": "={{ $json.workflow.id }}",
+            "Platform": "n8n",
+            "Status": "Error",
+            "Error_module": "={{ $json.execution.lastNodeExecuted }}",
+            "Error_msg": "={{ $json.execution.error.message }}",
+            "Execution_id": "={{ $execution.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Workflow_name",
+              "displayName": "Workflow_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Workflow_id",
+              "displayName": "Workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Platform",
+              "displayName": "Platform",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Error_module",
+              "displayName": "Error_module",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error_msg",
+              "displayName": "Error_msg",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution_id",
+              "displayName": "Execution_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -32,
+        -80
+      ],
+      "id": "b4863e19-744f-4044-8045-6aaf628da41b",
+      "name": "Append error log in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jlKm2nGVNcSMQ1dn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AR2A6ATK4",
+          "mode": "id"
+        },
+        "text": "=Workflow error:  \nPlatform : n8n\nWorkflow name: {{ $('Error Trigger').item.json.workflow.name }}\nWorkflow_id : {{ $('Error Trigger').item.json.workflow.id }}\nError message: {{ $('Error Trigger').item.json.execution.error.message }}\nError_node : {{ $('Error Trigger').item.json.execution.lastNodeExecuted }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        256,
+        -80
+      ],
+      "id": "379c9eaa-ffb9-4479-8869-364e9b16285e",
+      "name": "Send alert on slack",
+      "webhookId": "0c17aaea-a4d4-4149-8efe-78867120abe4",
+      "credentials": {
+        "slackApi": {
+          "id": "ekJzRR6RASxiEuDX",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Append error log in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append error log in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send alert on slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "775efde7-6f0d-4231-8c07-6d8ec42c7a16",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "IKMAttkJdoMmQk3fxlmuu",
+  "tags": []
+}
