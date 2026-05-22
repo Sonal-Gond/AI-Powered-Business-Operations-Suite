@@ -1,0 +1,680 @@
+{
+  "name": "Re-engagement campaign",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "mode": "list",
+          "cachedResultName": "final_capstone(Voice_operations)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 461571680,
+          "mode": "list",
+          "cachedResultName": "Re-Engagement ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=461571680"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1104,
+        576
+      ],
+      "id": "c8bc9173-a952-47b4-a05f-2fe6e05ab277",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "usNDrYntbumBCLRa",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6e6d6f6f-cb00-4e32-baaf-3fb8aa43e349",
+              "leftValue": "={{ $json[\"Days Inactive\"] }}",
+              "rightValue": 30,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "75d5f487-d613-4d9a-849d-476c4b141097",
+              "leftValue": "={{ $json.Called }}",
+              "rightValue": "No",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -864,
+        560
+      ],
+      "id": "52660ad4-b537-4349-85b5-f8f6593ca9b0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -576,
+        544
+      ],
+      "id": "fc9bc87f-19e3-4bd2-bb4b-b321a47a2bc9",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "content": "## Get row(s):\n\nIt send all the data store in re-engagement data sheet"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1360,
+        64
+      ],
+      "typeVersion": 1,
+      "id": "638c6ca1-4eee-437c-b7b6-378f2187f431",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Loop Over Item node:\nLoop  for every data which are inactiave from 30 days and which re-enagement call is remains.\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -768,
+        64
+      ],
+      "typeVersion": 1,
+      "id": "a535b7a2-2774-40fb-a281-7e9052468bad",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## If node:\nCheck only those data which are inactive from 30 day and greater than 30 days\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1056,
+        64
+      ],
+      "typeVersion": 1,
+      "id": "a6adcc62-a3a6-48c2-aeb7-38c36ab2bde0",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Vapi outbound call for Re-engagement\n\nIt calls to user on number that is stored in google sheet.\n\nfor vapi it requires Bearer Auth Authentication \n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -352,
+        128
+      ],
+      "typeVersion": 1,
+      "id": "103c93ce-9873-4602-b911-d5283bb197f3",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.vapi.ai/call",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"phoneNumberId\": \"2c5b5379-cd5e-40dd-b6f3-07f514ab1ae5\",\n  \"assistantId\": \"626c8905-4807-42ee-9400-ed5ba37ce432\",\n  \"customer\": {\n    \"name\": \"{{ $json.Name }}\",\n    \"number\":\"+{{ $json.Phone }}\"\n  },\n \"assistantOverrides\": {\n  \"variableValues\": {\n    \"Name\": \"{{ $json.Name }}\",\n    \"phone\": \"{{ $json.Phone }}\",\n    \"Plan\": \"{{ $json.Plan }}\",\n    \"phone\":\"{{ $json.Phone }}\",\n    \"Days_inactive\": \"{{ $json[\"Days Inactive\"] }}\",\n    \"Last active date\": \"{{ $json[\"Last Active Date\"] }}\"\n  } \n}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -288,
+        688
+      ],
+      "id": "352eeb1e-37aa-4a82-86e8-a40169ce859b",
+      "name": "Vapi outbound call for Re-engagement",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "2yFDnz7pu6Ryjh3g",
+          "name": "Bearer Auth account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Call_time and called updation in sheet\nIt update the Called column from No to Yes and Call_time with time when call placed"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        128
+      ],
+      "typeVersion": 1,
+      "id": "6ead8512-19ae-4dbc-9f13-103f38b28719",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "mode": "list",
+          "cachedResultName": "final_capstone(Voice_operations)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 461571680,
+          "mode": "list",
+          "cachedResultName": "Re-Engagement ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=461571680"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Phone": "={{ $json.assistantOverrides.variableValues.phone }}",
+            "Call_time": "={{ new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) }}",
+            "Called": "Yes"
+          },
+          "matchingColumns": [
+            "Phone"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Plan",
+              "displayName": "Plan",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Active Date",
+              "displayName": "Last Active Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Days Inactive",
+              "displayName": "Days Inactive",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Called",
+              "displayName": "Called",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Call_time",
+              "displayName": "Call_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Intent",
+              "displayName": "Intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        768
+      ],
+      "id": "ceaab9d6-3714-42b9-b8d8-2e07fd4dc20f",
+      "name": "Call_time and called updation in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "usNDrYntbumBCLRa",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Vapi-Re-engagement_customer_response \n\nVapi sent while calling its tool after getting response from user "
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1360,
+        -1632
+      ],
+      "typeVersion": 1,
+      "id": "39f3731d-1149-4abc-b305-57c0a115224d",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "vapi-re-enagaement-call-details",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -816,
+        -1312
+      ],
+      "id": "9502d12d-b69d-4166-b1df-47eeaef436d0",
+      "name": "Vapi-Re-engagement_customer_response",
+      "webhookId": "a175a1d6-5d72-4a62-9074-d0dd61236b6e"
+    },
+    {
+      "parameters": {
+        "content": "## Update row in sheet\n\nIt updates the row with intent that vapi detected from user for service and note which is the short summary of call regarding interested in service or not"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1104,
+        -1648
+      ],
+      "typeVersion": 1,
+      "id": "4303de6c-5d97-4019-abf3-3942e2eac65f",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/system-health",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "workflow_name",
+              "value": "={{ $workflow.name }}"
+            },
+            {
+              "name": "workflow_id",
+              "value": "={{ $workflow.id }}"
+            },
+            {
+              "name": "platform",
+              "value": "n8n"
+            },
+            {
+              "name": "Status",
+              "value": "Success"
+            },
+            {
+              "name": "timestamp",
+              "value": "={{ new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -224,
+        448
+      ],
+      "id": "32482ba6-c7cb-4593-854f-f26afe9e6936",
+      "name": "System success health logging"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 16
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1344,
+        672
+      ],
+      "id": "42d1c3f1-5a88-4866-8f55-971c8f2eda3d",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI",
+          "mode": "list",
+          "cachedResultName": "final_capstone(Voice_operations)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 461571680,
+          "mode": "list",
+          "cachedResultName": "Re-Engagement ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/190pBj7mjFk44TA7jPkH1C_VLUE9Q7-oy9HDkQlN0mJI/edit#gid=461571680"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Intent": "={{ $json.body.message.toolWithToolCallList[0].toolCall.function.arguments.intent }}",
+            "Notes": "={{ $json.body.message.toolWithToolCallList[0].toolCall.function.arguments.notes }}",
+            "Phone": "={{ $json.body.message.artifact.variables.phone }}",
+            "Call_status": "={{ $json.body.message.toolCalls[0].function.arguments.call_status }}"
+          },
+          "matchingColumns": [
+            "Phone"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Active Date",
+              "displayName": "Last Active Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Days Inactive",
+              "displayName": "Days Inactive",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Called",
+              "displayName": "Called",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Call_time",
+              "displayName": "Call_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Intent",
+              "displayName": "Intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Call_status",
+              "displayName": "Call_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -352,
+        -1328
+      ],
+      "id": "ea6b7081-9071-4513-97e8-8d1f1102e060",
+      "name": "Adding call outcome to corresponding user",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "usNDrYntbumBCLRa",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "System success health logging",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Vapi outbound call for Re-engagement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vapi outbound call for Re-engagement": {
+      "main": [
+        [
+          {
+            "node": "Call_time and called updation in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call_time and called updation in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vapi-Re-engagement_customer_response": {
+      "main": [
+        [
+          {
+            "node": "Adding call outcome to corresponding user",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "IKMAttkJdoMmQk3fxlmuu"
+  },
+  "versionId": "90bb0328-3b56-41de-a99e-86d26b5db8fa",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ead7cb487f5fc2c13d150413e6b29683b8c8b2203ff3bd68e99a2bda02a39"
+  },
+  "id": "0GEXJdG88OL4R-L-cqG3U",
+  "tags": []
+}
