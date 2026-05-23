@@ -204,7 +204,7 @@ read_insights, pages_show_list, ads_management, ads_read, page_events, pages_rea
 
 # Troubleshooting
 1. Permission Denied error - In Google sheet
-- Google sheets columns are already refrences when you will import workflows but you can get error as Permission Denied error
+- **Problem:** Google sheets columns are already refrences when you will import workflows but you can get error as Permission Denied error
 - **Solution:** Built google sheet with same sheet name and column name then you will not get error in google sheet about Permission Denies erro
  
 
