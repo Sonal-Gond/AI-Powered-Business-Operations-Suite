@@ -9,7 +9,7 @@
 - Voiceflow-powered chatbot supports English and Hindi, identifies returning users by email, answers queries from a knowledge base, and routes interested leads through a structured BANT flow with automatic webhook submission.
 
 **Voice AI Operations Suite**
-- Vapi-powered voice assistants handle inbound customer support (IVR with 5 departments), outbound appointment reminders, payment collection calls, post-sale satisfaction surveys, and re-engagement campaigns for inactive customers — all with structured post-call reporting.
+- Vapi-powered voice assistants handle inbound customer support (IVR with 5 departments), outbound appointment reminders, payment collection calls,satisfaction surveys calls for won leads, and re-engagement campaigns for inactive customers — all with structured post-call reporting.
 
 **Automated Lead Nurturing & Pipeline Management**
 - Automatically scores leads as Hot/Warm/Cold, sends personalized email and WhatsApp follow-ups with Calendly booking links, runs outbound call campaigns for hot leads, and tracks every lead through a full pipeline (Qualified → Contacted → Meeting Scheduled → Won/Lost).
@@ -21,7 +21,7 @@
 - After every meeting, automatically emails the host a formatted review request with one-click outcome buttons (Won / Lost / Opportunity). Host's response instantly updates the lead's pipeline stage in the master CRM sheet.
 
 **Real-Time Dashboards & Automated Reporting**
-- Provides live dashboards for Chatbot Performance, Voice AI Metrics, Lead Pipeline Stage, Content Attribution, and System Health & Uptime. Delivers automated Daily Digest, Weekly, Monthly, Cost Analysis, and ROI reports via Slack and Gmail.
+- Provides live dashboards for Chatbot Performance, Voice AI Metrics, Lead Pipeline Stage, Content Performance on leads, and System Health & Uptime. Delivers automated Daily Digest, Weekly, Monthly, Cost Analysis, and ROI reports via Slack and Gmail.
 
 **Proactive Alerting & System Monitoring**
 - Monitors workflow health every minute for SLA violations, detects lead volume drops using 7-day rolling averages, tracks budget thresholds across Make.com, Voiceflow, and Vapi, and fires instant Slack alerts for any automation failures — maintaining 99.99% uptime targets.
