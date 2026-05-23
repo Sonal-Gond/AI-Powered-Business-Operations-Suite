@@ -1,7 +1,10 @@
 # AI-Powered-Business-Operations-Suite
 
+
+# Features of AI-Powered-Business-Operations-Suite
 **Omnichannel Lead Capture & Qualification** 
 - Captures and qualifies leads across Website Widget, WhatsApp, Telegram, and Phone using a unified Voiceflow AI chatbot and Vapi IVR, with BANT qualification and cross-channel context stored in a single Google Sheet.
+  
 **Multilingual AI Chatbot with Smart Routing**
 - Voiceflow-powered chatbot supports English and Hindi, identifies returning users by email, answers queries from a knowledge base, and routes interested leads through a structured BANT flow with automatic webhook submission.
 
