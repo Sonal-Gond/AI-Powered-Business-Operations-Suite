@@ -52,7 +52,7 @@
 - Goto Make.com dashboard -> create scenario 
 - Click on three dots (top right corner) -> Import blueprint -> choose make.com json file -> Import blueprint
 
-**voiceflow agent**
+**Voiceflow agent**
 - Craete account on voiceflow and Download .vf file from these repository
 - Click on Project (left sidebar)
 - Click import (top right corner) -> Selct downloaded .vf file
