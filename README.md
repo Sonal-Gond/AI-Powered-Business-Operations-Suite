@@ -202,5 +202,9 @@ read_insights, pages_show_list, ads_management, ads_read, page_events, pages_rea
 <img width="4389" height="5077" alt="EXIM Manager@1 2874999046325684x" src="https://github.com/user-attachments/assets/6c58cef7-e279-4528-b7ee-596407655b86" />
 
 
+# Troubleshooting
+1. Permission Denied error - In Google sheet
+- Google sheets columns are already refrences when you will import workflows but you can get error as Permission Denied error
+- **Solution:** Built google sheet with same sheet name and column name then you will not get error in google sheet about Permission Denies erro
  
 
