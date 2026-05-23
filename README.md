@@ -197,5 +197,9 @@ read_insights, pages_show_list, ads_management, ads_read, page_events, pages_rea
 
 **make.com scenario**
 - Make.com workflows contains .blueprint.json at end of file_name
+
+# System Architecture diagram
+"C:\Users\asus\Downloads\EXIM Manager@1.2874999046325684x.png"
+
  
 
